@@ -1,0 +1,141 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Universal First Responder Guide – Complete Edition</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #f7f7f7; margin: 0; padding: 0; }
+    header {
+      background: linear-gradient(to right, #b22234, #ffffff, #3c3b6e);
+      color: #003399;
+      padding: 20px;
+      text-align: center;
+    }
+    h1 { margin: 0; font-size: 28px; color: #b22234; }
+    nav { text-align: center; margin: 20px 0; }
+    button {
+      margin: 4px;
+      padding: 10px 16px;
+      font-size: 14px;
+      border: none;
+      border-radius: 4px;
+      background-color: #3c3b6e;
+      color: white;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #2a2a5a;
+    }
+    .section { display: none; padding: 20px; }
+    .checklist-item {
+      background: white;
+      border: 1px solid #ccc;
+      padding: 12px;
+      margin-bottom: 12px;
+      border-left: 6px solid #3c3b6e;
+    }
+    .details {
+      display: none;
+      background: #eef2f7;
+      padding: 10px;
+      border-left: 4px solid #b22234;
+      margin-top: 8px;
+    }
+    .show-button {
+      color: #3c3b6e;
+      cursor: pointer;
+      text-decoration: underline;
+    }
+    input[type="text"] {
+      width: 100%;
+      padding: 10px;
+      font-size: 16px;
+      margin: 12px 0;
+      border: 2px solid #ccc;
+      border-radius: 6px;
+    }
+  </style>
+  <script>
+    function showSection(id) {
+      const sections = document.querySelectorAll(".section");
+      sections.forEach(section => section.style.display = "none");
+      document.getElementById(id).style.display = "block";
+    }
+
+    function toggleDetails(id) {
+      const el = document.getElementById(id);
+      el.style.display = el.style.display === "block" ? "none" : "block";
+    }
+
+    function searchSOPs() {
+      const input = document.getElementById('searchInput').value.toLowerCase();
+      const entries = document.getElementsByClassName('sop-entry');
+      for (let i = 0; i < entries.length; i++) {
+        const entry = entries[i];
+        const text = entry.innerText.toLowerCase();
+        entry.style.display = text.includes(input) ? 'block' : 'none';
+      }
+    }
+  </script>
+</head>
+<body>
+  <header>
+    <h1>Universal First Responder Guide</h1>
+    <p>Complete Edition – All Response Tabs + SOP Reference</p>
+  </header>
+  <nav>
+    <button onclick="showSection('fire')">🔥 Structure Fire</button>
+    <button onclick="showSection('stroke')">🧠 EMS: Stroke</button>
+    <button onclick="showSection('overdose')">💊 EMS: Overdose</button>
+    <button onclick="showSection('mci')">🚨 EMS: MCI</button>
+    <button onclick="showSection('pump')">🚒 Pump Ops</button>
+    <button onclick="showSection('aerial')">🏗️ Aerial Ops</button>
+    <button onclick="showSection('mutual')">🤝 Mutual Aid</button>
+    <button onclick="showSection('sops')">📘 All SOPs</button>
+  </nav>
+
+  <div id="fire" class="section">
+    <div class="checklist-item"><strong>IC Setup</strong><div class="show-button" onclick="toggleDetails('f1')">Show</div><div class="details" id="f1">Use LCAN, assign command roles, stay exterior, SOP 900.44.</div></div>
+    <div class="checklist-item"><strong>360° Size-Up</strong><div class="show-button" onclick="toggleDetails('f2')">Show</div><div class="details" id="f2">Check rear, basement, hazards, report via radio.</div></div>
+  </div>
+
+  <div id="stroke" class="section">
+    <div class="checklist-item"><strong>FAST Exam</strong><div class="show-button" onclick="toggleDetails('s1')">Show</div><div class="details" id="s1">Face, Arm, Speech, Time. Cincinnati optional. Alert hospital.</div></div>
+    <div class="checklist-item"><strong>Vitals</strong><div class="show-button" onclick="toggleDetails('s2')">Show</div><div class="details" id="s2">BP, SpO2, GCS, glucose. Transport to stroke center.</div></div>
+  </div>
+
+  <div id="overdose" class="section">
+    <div class="checklist-item"><strong>Scene Safety</strong><div class="show-button" onclick="toggleDetails('o1')">Show</div><div class="details" id="o1">Use PPE, check for fentanyl/needles. Assess pupils and LOC.</div></div>
+    <div class="checklist-item"><strong>Narcan</strong><div class="show-button" onclick="toggleDetails('o2')">Show</div><div class="details" id="o2">2–4mg IN/IM. Repeat q3–5 min. Max 10mg.</div></div>
+  </div>
+
+  <div id="mci" class="section">
+    <div class="checklist-item"><strong>ICS Setup</strong><div class="show-button" onclick="toggleDetails('m1')">Show</div><div class="details" id="m1">Assign Triage, Treatment, Transport. Notify hospitals.</div></div>
+    <div class="checklist-item"><strong>START Triage</strong><div class="show-button" onclick="toggleDetails('m2')">Show</div><div class="details" id="m2">RPM method. Red, Yellow, Green, Black tagging.</div></div>
+  </div>
+
+  <div id="pump" class="section">
+    <div class="checklist-item"><strong>Water Supply</strong><div class="show-button" onclick="toggleDetails('p1')">Show</div><div class="details" id="p1">Tank-to-pump open. Prime pump if drafting.</div></div>
+    <div class="checklist-item"><strong>Friction Loss</strong><div class="show-button" onclick="toggleDetails('p2')">Show</div><div class="details" id="p2">1¾” = 30 psi/100’. 2½” = 15 psi/100’. Add elevation loss.</div></div>
+  </div>
+
+  <div id="aerial" class="section">
+    <div class="checklist-item"><strong>Positioning</strong><div class="show-button" onclick="toggleDetails('a1')">Show</div><div class="details" id="a1">1.5x height of building. Scrub area + collapse zone.</div></div>
+    <div class="checklist-item"><strong>Stream Operations</strong><div class="show-button" onclick="toggleDetails('a2')">Show</div><div class="details" id="a2">Windward stream. Avoid hidden voids.</div></div>
+  </div>
+
+  <div id="mutual" class="section">
+    <div class="checklist-item"><strong>Arrival</strong><div class="show-button" onclick="toggleDetails('mu1')">Show</div><div class="details" id="mu1">Stage 1 block away. Get assignments from IC. Use assigned channel.</div></div>
+    <div class="checklist-item"><strong>Command Transfer</strong><div class="show-button" onclick="toggleDetails('mu2')">Show</div><div class="details" id="mu2">Log transfer time, name, and new IC role per SOP 900.48.</div></div>
+  </div>
+
+  <div id="sops" class="section">
+    <input type="text" id="searchInput" onkeyup="searchSOPs()" placeholder="Search SOP number or keyword..." />
+    <div class="sop-entry"><strong>SOP 900.03</strong><div>Personnel Accountability — tags, PAR every 10 mins.</div></div>
+    <div class="sop-entry"><strong>SOP 900.25</strong><div>RIT deployment, gear checklist, IC responsibility.</div></div>
+    <div class="sop-entry"><strong>SOP 1300.5</strong><div>Narcan/Epi control substance logs. Document doses, times.</div></div>
+    <div class="sop-entry"><strong>SOP 900.44</strong><div>Structure fire attack. LCAN, alarm upgrades, benchmarks.</div></div>
+  </div>
+</body>
+</html>
