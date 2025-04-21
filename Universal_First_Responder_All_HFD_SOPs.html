@@ -1,0 +1,93 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>All HFD SOPs – Reference Index</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; background: #f7f7f7; }
+    h1 { color: #b22234; }
+    #searchInput {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 20px;
+      font-size: 16px;
+      border: 2px solid #ccc;
+      border-radius: 6px;
+    }
+    .sop-entry {
+      margin-bottom: 15px;
+      padding: 10px;
+      background: white;
+      border-left: 6px solid #3c3b6e;
+      border-radius: 4px;
+    }
+    .sop-title {
+      font-weight: bold;
+      color: #003399;
+    }
+    .sop-content {
+      margin-top: 6px;
+      white-space: pre-wrap;
+    }
+  </style>
+  <script>
+    function searchSOPs() {
+      const input = document.getElementById('searchInput').value.toLowerCase();
+      const entries = document.getElementsByClassName('sop-entry');
+      for (let i = 0; i < entries.length; i++) {
+        const entry = entries[i];
+        const text = entry.innerText.toLowerCase();
+        entry.style.display = text.includes(input) ? 'block' : 'none';
+      }
+    }
+  </script>
+</head>
+<body>
+  <h1>📘 All HFD SOPs – Master Reference</h1>
+  <input type="text" id="searchInput" onkeyup="searchSOPs()" placeholder="Search by SOP number or keyword..." />
+
+  <div class="sop-entry">
+    <div class="sop-title">SOP 900.03 – Personnel Accountability System</div>
+    <div class="sop-content">
+This SOP establishes the accountability system used during emergency incidents.
+Crews must maintain visual, voice, or tag-based accountability at all times.
+PAR (Personnel Accountability Reports) must be conducted every 10 minutes or during significant incidents (e.g., collapse, Mayday).
+Incident Command is responsible for ensuring all crews are tracked and updated.
+    </div>
+  </div>
+
+  <div class="sop-entry">
+    <div class="sop-title">SOP 900.25 – Rapid Intervention Team (RIT)</div>
+    <div class="sop-content">
+RIT will be established on all structure fires and working incidents.
+Team must have full PPE, SCBA, irons, search rope, and TIC.
+RIT is staged at the point of entry and ready for immediate deployment.
+IC ensures RIT integrity is maintained until demobilized or fire is under control.
+    </div>
+  </div>
+
+  <div class="sop-entry">
+    <div class="sop-title">SOP 1300.5 – Controlled Substances Use</div>
+    <div class="sop-content">
+All uses of medications like epinephrine or naloxone must be documented with dose, time, patient response, and signature.
+Only authorized personnel may access or administer controlled drugs.
+Discrepancies or loss must be reported immediately and investigated.
+    </div>
+  </div>
+
+  <div class="sop-entry">
+    <div class="sop-title">SOP 900.44 – Structure Fire Response</div>
+    <div class="sop-content">
+First arriving unit initiates command and performs 360° size-up.
+Use LCAN format: Location, Conditions, Actions, Needs.
+Upgrade alarm levels based on risk, occupancy, and visible fire conditions.
+Assign Search, Attack, Vent, Water, RIT, and Safety as needed.
+RIT and PAR are required every 10 minutes.
+    </div>
+  </div>
+
+  <!-- Add more SOP entries below using the same format -->
+
+</body>
+</html>
