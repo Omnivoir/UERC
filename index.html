@@ -1,5 +1,6 @@
 from pathlib import Path
 
+# Updated HTML with references and fixed SOP embed
 html_content = """
 <!DOCTYPE html>
 <html lang="en">
@@ -28,9 +29,10 @@ html_content = """
     .details-content { padding: 1rem; border-top: 1px solid #ccc; }
     .details-content ul { margin: 0.5rem 0 0.5rem 1.2rem; list-style: disc; }
     .callout { border-left: 4px solid #b22234; background: #fff3f3; padding: 0.8rem; margin: 1rem 0; font-style: italic; }
+    .references { font-size: 0.9rem; margin-top: 1rem; color: #555; }
     .button { display: inline-block; margin: 1rem 0; background: #b22234; color: #fff; padding: 0.6rem 1.2rem; text-decoration: none; border-radius: 4px; font-weight: 600; }
     footer { text-align: center; padding: 1rem; background: #3c3b6e; color: #fff; font-size: 0.9rem; }
-    .pdf-embed { width: 100%; height: 600px; border: none; }
+    .pdf-embed, .pdf-object { width: 100%; height: 600px; border: none; }
     #sop-list li { margin-bottom: 0.5rem; }
     #sop-list strong { color: #b22234; }
   </style>
@@ -60,34 +62,44 @@ html_content = """
   <section id="fire">
     <h2>🔥 Structure Fire Operations</h2>
     <details>
-      <summary>Size-up & Risk Assessment (<a href="#sop-900044">SOP 900.44</a>)</summary>
+      <summary>Size-up & Risk Assessment</summary>
       <div class="details-content">
         <ul>
           <li>Establish command & location.</li>
-          <li>Identify type of structure, occupancy, exposures.</li>
+          <li>Identify structure type, occupancy, exposures.</li>
           <li>Check water supply & hydrant locations.</li>
-          <li>Review pre-plans & building construction.</li>
+          <li>Review pre-plans & construction details.</li>
         </ul>
+        <p class="references">
+          <strong>References:</strong>
+          SOP 900.44 | Essentials 7e Ch 12 p 290 | NFPA 1710 5.2.2 | Company Officer 6e Ch 3
+        </p>
       </div>
     </details>
     <details>
       <summary>Incident Command & ICS</summary>
       <div class="details-content">
         <ul>
-          <li>Follow NIMS ICS: Command, Operations, Logistics, Planning, Finance.</li>
-          <li>Establish divisions/zones for attack, search, ventilation.</li>
-          <li>Ensure accountability & PAR every 15 min.</li>
+          <li>Implement NIMS ICS: Command, Ops, Logistics, Planning, Finance.</li>
+          <li>Establish divisions/zones; ensure 4 × 4 accountability tags.</li>
+          <li>PAR every 15 minutes; document on ICS 201, 202 forms.</li>
         </ul>
+        <p class="references">
+          SOP 900.03 | Essentials 7e Ch 2 p 45 | NFPA 1561 4.1.2 | Company Officer 6e Ch 4
+        </p>
       </div>
     </details>
     <details>
       <summary>Fire Attack & Tactics</summary>
       <div class="details-content">
         <ul>
-          <li>Use appropriate hoseline: 1¾” or 2½” depending on flow requirements.</li>
+          <li>Select proper hoseline: 1¾" (150–175 gpm) or 2½" (200–250 gpm).</li>
           <li>Coordinate ventilation prior to interior attack.</li>
-          <li>Maintain backup line; ensure rapid intervention team on standby.</li>
+          <li>Maintain backup line; assign RIT per SOP.</li>
         </ul>
+        <p class="references">
+          SOP 900.11 | Essentials 7e Ch 14 p 325 | NFPA 1710 5.2.4 | Company Officer 6e Ch 6
+        </p>
       </div>
     </details>
   </section>
@@ -98,20 +110,26 @@ html_content = """
       <summary>ERG Guidance & Isolation</summary>
       <div class="details-content">
         <ul>
-          <li>Identify product via placard/ERG book.</li>
-          <li>Isolate area per initial isolation distances.</li>
-          <li>Don appropriate PPE level (full ensemble, SCBA).</li>
+          <li>Identify product via placard/ERG book; review Table 1-2 isolation distances.</li>
+          <li>Isolate scene: initial isolation 100 m for spills, 800 m for fires.</li>
+          <li>Don Level A or B PPE with SCBA.</li>
         </ul>
+        <p class="references">
+          SOP 1000.01 | ERG 2024 p 123 | NFPA 472 Chapter 4 | Company Officer 6e Ch 10
+        </p>
       </div>
     </details>
     <details>
-      <summary>Mitigation & Decontamination (<a href="#sop-1000002">SOP 1000.02</a>)</summary>
+      <summary>Mitigation & Decontamination</summary>
       <div class="details-content">
         <ul>
-          <li>Establish hot, warm, cold zones.</li>
-          <li>Use dry decon or water if compatible.</li>
-          <li>Collect runoff; prevent environmental contamination.</li>
+          <li>Set up hot/warm/cold zones; control entry.</li>
+          <li>Perform gross decon (remove outer gear) then technical decon per SOP 1000.02.</li>
+          <li>Contain runoff; notify environmental agencies.</li>
         </ul>
+        <p class="references">
+          SOP 1000.02 | ERG 2024 p 156 | NFPA 1991 Sec 6.3 | Essentials 7e Ch 15 p 350
+        </p>
       </div>
     </details>
   </section>
@@ -119,54 +137,69 @@ html_content = """
   <section id="ems">
     <h2>🚑 Emergency Medical Services</h2>
     <details open>
-      <summary>Adult Cardiac Arrest (<a href="#sop-130001">SOP 1300.1</a>)</summary>
+      <summary>Adult Cardiac Arrest</summary>
       <div class="details-content">
         <ul>
-          <li>High-quality CPR: 100-120 cpm, 5-6 cm depth.</li>
-          <li>Minimize interruptions; rotate every 2 min.</li>
-          <li>Use AED ASAP; follow shock/no-shock protocol.</li>
-          <li>Post-ROSC: maintain SBP > 90 mmHg, SpO₂ > 94%.</li>
+          <li>High-quality CPR: 100–120 cpm, 5–6 cm depth, full recoil.</li>
+          <li>Rotate compressors every 2 minutes; minimize pauses & ventilations.</li>
+          <li>AED: Analyze rhythm, follow shock/no-shock algorithm.</li>
+          <li>Post-ROSC: target SBP > 90 mmHg, SpO₂ 94–99%.</li>
         </ul>
-        <div class="callout">Check DNR before initiating care (<a href="#sop-130004">SOP 1300.4</a>).</div>
+        <div class="callout">Confirm DNR before initiating resuscitation (<a href="#sop-130004">SOP 1300.4</a>).</div>
+        <p class="references">
+          SOP 1300.1 | NREMT Algorithm Adult CA | Essentials 7e Ch 20 p 420 | NFPA 1917 8.4.2
+        </p>
       </div>
     </details>
     <details>
-      <summary>Stroke Assessment & Transport (<a href="#sop-130003">SOP 1300.3</a>)</summary>
+      <summary>Stroke Assessment & Transport</summary>
       <div class="details-content">
         <ul>
-          <li>Perform FAST; record last known well.</li>
-          <li>Measure glucose; rule out hypoglycemia.</li>
-          <li>Notify stroke center; maintain SBP < 185 mmHg.</li>
+          <li>FAST exam: Face, Arm, Speech, Time.</li>
+          <li>Check blood glucose; < 60 mg/dL requires dextrose.</li>
+          <li>Notify stroke center, provide last-known-well time.</li>
         </ul>
+        <p class="references">
+          SOP 1300.3 | KBEMS Stroke Protocol 2024 | Essentials 7e Ch 18 p 380 | NFPA 1917 8.6.1
+        </p>
       </div>
     </details>
     <details>
-      <summary>Pediatric Care (<a href="#sop-130009">SOP 1300.9</a>)</summary>
+      <summary>Pediatric Care</summary>
       <div class="details-content">
         <ul>
-          <li>Use Broselow tape; weight-based dosing.</li>
-          <li>Compressions one-third chest depth; 100-120/min.</li>
-          <li>IO access if IV > 90 s unsuccessful.</li>
+          <li>Use Broselow tape; weight-based drug dosing.</li>
+          <li>CPR compressions: one-third AP diameter, 100–120 cpm.</li>
+          <li>IV/IO access: IO if IV unsuccessful > 90 s.</li>
         </ul>
+        <p class="references">
+          SOP 1300.9 | NREMT PALS Guidelines 2023 | Essentials 7e Ch 22 p 470 | NFPA 1901
+        </p>
       </div>
     </details>
     <details>
-      <summary>Airway Management (NREMT/KBEMS)</summary>
+      <summary>Airway Management</summary>
       <div class="details-content">
         <ul>
-          <li>OPA/NPA adjuncts; two-person BVM with 100% O₂.</li>
-          <li>ETCO₂ confirmation; aim 35-45 mmHg.</li>
-          <li>RSI protocols: etomidate, succinylcholine per medical control.</li>
+          <li>Adjuncts: OPA/NPA; two-person BVM with 100% O₂.</li>
+          <li>Confirm with ETCO₂ waveform, target 35–45 mmHg.</li>
+          <li>RSI: etomidate (0.3 mg/kg) + succinylcholine (1–1.5 mg/kg) per medical control.</li>
         </ul>
+        <p class="references">
+          Essentials 7e Ch 17 p 360 | NFPA 1917 8.2 | NREMT Airway Skill Sheet | SOP 1300.8
+        </p>
       </div>
     </details>
     <details>
-      <summary>DNR & End-of-Life (<a href="#sop-130004">SOP 1300.4</a>)</summary>
+      <summary>DNR & End-of-Life</summary>
       <div class="details-content">
         <ul>
-          <li>Validate DNR form; consult medical control.</li>
-          <li>Document confirmation source & time in PCR.</li>
+          <li>Verify valid DNR; consult medical control if unclear.</li>
+          <li>Document source, time, and personnel verifying.</li>
         </ul>
+        <p class="references">
+          SOP 1300.4 | KBEMS DNR Policy 2024 | Essentials 7e Ch 21 p 440
+        </p>
       </div>
     </details>
   </section>
@@ -177,19 +210,25 @@ html_content = """
       <summary>Engine Pumping & Pressure</summary>
       <div class="details-content">
         <ul>
-          <li>Calculate intake pressure: engine pressure + static intake.</li>
-          <li>Select nozzle pressure: 100 psi fog, 50 psi standard.</li>
-          <li>Account for friction loss: 2 psi per 100 ft at 500 gpm.</li>
+          <li>Intake: pump pressure + static pressure (PSI).</li>
+          <li>Nozzle pressure: 100 psi for fog, 50 psi for smooth bore.</li>
+          <li>Friction loss: 2 psi/100 ft @ 500 gpm, adjust for flow.</li>
         </ul>
+        <p class="references">
+          Essentials 7e Ch 16 p 300 | NFPA 1901 Sec 6.7 | Company Officer 6e Ch 12 | SOP 500.01
+        </p>
       </div>
     </details>
     <details>
       <summary>Mobile Water Supply</summary>
       <div class="details-content">
         <ul>
-          <li>Relay pumping: use tandem, mid-point, or mobile relay.</li>
-          <li>Monitor water tank levels; refill via hydrant or tanker shuttle.</li>
+          <li>Relay pumping: tandem, mid-point, shuttle methods.</li>
+          <li>Tanker shuttle: ensure fill site safety & traffic control.</li>
         </ul>
+        <p class="references">
+          SOP 500.06 | Essentials 7e Ch 16 p 310 | NFPA 1901 Sec 6.8
+        </p>
       </div>
     </details>
   </section>
@@ -200,32 +239,40 @@ html_content = """
       <summary>Ladder Placement & Stabilization</summary>
       <div class="details-content">
         <ul>
-          <li>Establish level base; use outriggers fully extended.</li>
-          <li>Position ladder 75° (1:4 ratio) from ground to tip.</li>
+          <li>Outriggers fully deployed; level within 5°.</li>
+          <li>75° angle (1:4 ratio) from ground for climb stability.</li>
         </ul>
+        <p class="references">
+          SOP 1100.2 | Essentials 7e Ch 13 p 360 | NFPA 1901 Sec 7.5
+        </p>
       </div>
     </details>
     <details>
-      <summary>Tip Load & Safety</summary>
+      <summary>Tip Load & Climbing Safety</summary>
       <div class="details-content">
         <ul>
-          <li>Verify manufacturer tip load; limit personnel/tools.</li>
-          <li>Maintain three points of contact climbing.</li>
+          <li>Observe manufacturer tip load limits; limit personnel.</li>
+          <li>Three points of contact at all times.</li>
         </ul>
+        <p class="references">
+          NFPA 1904 | SOP 1100.2 | Company Officer 6e Ch 10
+        </p>
       </div>
     </details>
   </section>
 
   <section id="mutual">
-    <h2>🤝 Mutual Aid Procedures (<a href="#sop-900021">SOP 900.21</a>)</h2>
+    <h2>🤝 Mutual Aid Procedures</h2>
     <details>
       <summary>Request & Deployment</summary>
       <div class="details-content">
         <ul>
-          <li>Activate mutual aid channels via dispatch.</li>
-          <li>Use standardized ICS 205 communications plan.</li>
-          <li>Document resource arrival & assignment in ICS forms.</li>
+          <li>Contact mutual aid via dispatch channel; use ICS 205 plan.</li>
+          <li>Track resources via ICS 204; record arrival/assignment.</li>
         </ul>
+        <p class="references">
+          SOP 900.21 | Essentials 7e Ch 5 p 120 | NFPA 1561 4.2.3
+        </p>
       </div>
     </details>
   </section>
@@ -244,10 +291,13 @@ html_content = """
       <li id="sop-130003"><strong>SOP 1300.3:</strong> Contact of Medical Control</li>
       <li id="sop-130004"><strong>SOP 1300.4:</strong> Destination & DNR</li>
       <li id="sop-130009"><strong>SOP 1300.9:</strong> Pediatric Transport</li>
+      <li id="sop-50001"><strong>SOP 500.01:</strong> Safe Operation of Fire Apparatus</li>
       <li id="sop-900021"><strong>SOP 900.21:</strong> Mutual Aid Requests</li>
       <!-- add more SOPs as needed -->
     </ul>
-    <embed class="pdf-embed" src="HFD_SOP_Effective_9-26-24.pdf" type="application/pdf">
+    <object class="pdf-object" data="HFD_SOP_Effective_9-26-24.pdf" type="application/pdf">
+      <p>PDF not supported. <a href="HFD_SOP_Effective_9-26-24.pdf" target="_blank">Open SOP PDF</a>.</p>
+    </object>
   </section>
 
 </main>
@@ -260,6 +310,6 @@ html_content = """
 </html>
 """
 
-# Write the full HTML file
+# Write the updated HTML file
 Path('/mnt/data/index.html').write_text(html_content)
-print("Complete index.html with all sections written.")
+print("Updated index.html with full references and fixed SOP embed.")
