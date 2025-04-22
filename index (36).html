@@ -1,0 +1,199 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Universal First Responder Guide</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    /* Base reset */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f8f9fa; color: #333; }
+    header { background: #b22234; color: #fff; padding: 1rem; text-align: center; }
+    header h1 { margin-bottom: 0.3rem; }
+    header p { font-size: 0.9rem; }
+
+    nav { background: #3c3b6e; }
+    nav ul { display: flex; flex-wrap: wrap; justify-content: center; list-style: none; }
+    nav li { margin: 0.5rem 1rem; }
+    nav a { color: #fff; text-decoration: none; font-weight: 600; }
+    nav a:hover { text-decoration: underline; }
+
+    main { max-width: 1000px; margin: 2rem auto; padding: 0 1rem; }
+
+    section { margin-bottom: 2rem; border-radius: 8px; overflow: hidden; background: #fff;
+               box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
+    section h2 { background: #003399; color: #fff; padding: 1rem; font-size: 1.4rem; }
+    details { border-top: 1px solid #ddd; }
+    summary { cursor: pointer; padding: 0.8rem 1rem; font-weight: bold; background: #e9ecef; }
+    summary:hover { background: #dee2e6; }
+    .details-content { padding: 1rem; border-top: 1px solid #ccc; background: #fff; }
+    .callout { border-left: 4px solid #b22234; background: #fff3f3; padding: 0.8rem; margin: 1rem 0; }
+
+    .button { display: inline-block; margin: 1rem 0; background: #b22234; color: #fff; padding: 0.6rem 1.2rem; text-decoration: none; border-radius: 4px; font-weight: 600; }
+    
+    footer { text-align: center; padding: 1rem; background: #3c3b6e; color: #fff; font-size: 0.9rem; }
+    .pdf-embed { width: 100%; height: 600px; border: none; }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Universal First Responder Guide</h1>
+  <p>Comprehensive SOP-driven resource for Fire, EMS, Hazmat & Command</p>
+</header>
+
+<nav>
+  <ul>
+    <li><a href="#fire">Structure Fire</a></li>
+    <li><a href="#hazmat">Hazmat</a></li>
+    <li><a href="#ems">EMS</a></li>
+    <li><a href="#pump">Pump Ops</a></li>
+    <li><a href="#aerial">Aerial Ops</a></li>
+    <li><a href="#mutual">Mutual Aid</a></li>
+    <li><a href="#mapping">RHQC Map</a></li>
+    <li><a href="#sopembed">HFD SOPs</a></li>
+  </ul>
+</nav>
+
+<main>
+
+  <section id="fire">
+    <h2>🔥 Structure Fire Response</h2>
+    
+    <details open>
+      <summary>1. Establish Incident Command</summary>
+      <div class="details-content">
+        <p><strong>SOP 900.03 / NIMS ICS:</strong> IC must be declared immediately on arrival. Use LCAN radio report.</p>
+        <div class="callout">
+          <strong>Reminder:</strong> Always verify command transfers with clear radio announcement to prevent confusion.
+        </div>
+        <p><strong>Why:</strong> Clear command structure ensures coordination, resource management, and safety.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>2. 360° Size-Up & SLICERS</summary>
+      <div class="details-content">
+        <p><strong>SOP 900.44 / Essentials Ch.17:</strong> Perform rapid full-circle walkaround. Use SLICERS checklist.</p>
+        <div class="callout">
+          <strong>Reminder:</strong> Never enter until hazards identified; call for additional resources if collapse risk.
+        </div>
+        <p><strong>Why:</strong> Thorough size-up identifies hazards (collapse, fire spread) to inform tactics and protect crews.</p>
+      </div>
+    </details>
+
+    <!-- More details blocks for each step... -->
+
+  </section>
+
+  <section id="hazmat">
+    <h2>☣️ Hazardous Materials Response</h2>
+    
+    <details>
+      <summary>1. Identify the Hazard</summary>
+      <div class="details-content">
+        <p><strong>SOP 900.23 / ERG 2024:</strong> Use placards & UN numbers to find substance in ERG Orange guide.</p>
+        <div class="callout">
+          <strong>Reminder:</strong> Secondary check MSDS online if product name known—ensures correct PPE.
+        </div>
+        <p><strong>Why:</strong> Accurate ID drives protective actions and selection of proper PPE and decon protocols.</p>
+      </div>
+    </details>
+
+    <!-- Additional hazmat steps... -->
+
+  </section>
+
+  <section id="ems">
+    <h2>🚑 Emergency Medical Services</h2>
+    
+    <details>
+      <summary>Cardiac Arrest: High-Quality CPR & AED</summary>
+      <div class="details-content">
+        <p><strong>SOP 1300.18 / Essentials Ch.11:</strong> 100-120 compressions/min, depth 2-2.4".</p>
+        <div class="callout">
+          <strong>Reminder:</strong> Rotate compressors every 2 minutes to prevent fatigue and maintain quality.
+        </div>
+        <p><strong>Why:</strong> Continuous perfusion and early shock improve survival; protocols ensure consistency.</p>
+      </div>
+    </details>
+
+    <!-- Additional EMS details... -->
+
+  </section>
+
+  <section id="pump">
+    <h2>🚒 Pump Operations & Water Supply</h2>
+    
+    <details>
+      <summary>Friction Loss Calculation</summary>
+      <div class="details-content">
+        <p><strong>SOP 1600.3 / Essentials Ch.20:</strong> FL = C × (Q/100)^2 × L.</p>
+        <div class="callout">
+          <strong>Reminder:</strong> Always verify you’re using the correct coefficient (C) for hose diameter.
+        </div>
+        <p><strong>Why:</strong> Accurate pressure management ensures adequate flow without over-pressurizing lines.</p>
+      </div>
+    </details>
+
+    <!-- Additional pump details... -->
+
+  </section>
+
+  <section id="aerial">
+    <h2>🏗️ Aerial Operations</h2>
+    
+    <details>
+      <summary>Apparatus Placement & Outriggers</summary>
+      <div class="details-content">
+        <p><strong>SOP 900.12 / Essentials Ch.14:</strong> Position aerial approx. 1.5× building height.</p>
+        <div class="callout">
+          <strong>Reminder:</strong> Always use spotter to verify level before extending boom.
+        </div>
+        <p><strong>Why:</strong> Proper setup prevents tip-over and provides safe platform for elevated streams and rescues.</p>
+      </div>
+    </details>
+
+    <!-- Additional aerial details... -->
+
+  </section>
+
+  <section id="mutual">
+    <h2>🤝 Mutual Aid & Unified Command</h2>
+    
+    <details>
+      <summary>Requesting & Dispatch</summary>
+      <div class="details-content">
+        <p><strong>SOP 900.36:</strong> Provide incident type, location, ETA, resources needed.</p>
+        <div class="callout">
+          <strong>Reminder:</strong> Use pre-defined mutual aid forms to ensure no details are omitted.
+        </div>
+        <p><strong>Why:</strong> Clear requests expedite aid arrival and prevent confusion across agencies.</p>
+      </div>
+    </details>
+
+    <!-- Additional mutual aid details... -->
+
+  </section>
+
+  <section id="mapping">
+    <h2>🗺️ RHQC Mapping System</h2>
+    <p>Real-time incident & resource tracking:</p>
+    <a href="https://omnivoir.github.io/RHQC-System/" target="_blank" class="button">Open RHQC Map</a>
+  </section>
+
+  <section id="sopembed">
+    <h2>📘 HFD SOPs Reference</h2>
+    <p><a href="HFD SOP Effective 9-26-24.pdf" download class="button">Download Full SOP Manual (PDF)</a></p>
+    <iframe src="HFD SOP Effective 9-26-24.pdf" class="pdf-embed" title="HFD SOP Manual"></iframe>
+  </section>
+
+</main>
+
+<footer>
+  <p>&copy; Hopkinsville Fire Department – Universal First Responder Guide</p>
+</footer>
+
+</body>
+</html>
