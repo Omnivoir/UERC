@@ -1,141 +1,344 @@
+from pathlib import Path
 
+# Revised HTML with callouts and updated title
+html_content = """
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>Universal First Responder Guide – Complete Edition</title>
+  <meta charset="UTF-8">
+  <title>Universal Emergency Response Guide</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
-    body { font-family: Arial, sans-serif; background: #f7f7f7; margin: 0; padding: 0; }
-    header {
-      background: linear-gradient(to right, #b22234, #ffffff, #3c3b6e);
-      color: #003399;
-      padding: 20px;
-      text-align: center;
-    }
-    h1 { margin: 0; font-size: 28px; color: #b22234; }
-    nav { text-align: center; margin: 20px 0; }
-    button {
-      margin: 4px;
-      padding: 10px 16px;
-      font-size: 14px;
-      border: none;
-      border-radius: 4px;
-      background-color: #3c3b6e;
-      color: white;
-      cursor: pointer;
-    }
-    button:hover {
-      background-color: #2a2a5a;
-    }
-    .section { display: none; padding: 20px; }
-    .checklist-item {
-      background: white;
-      border: 1px solid #ccc;
-      padding: 12px;
-      margin-bottom: 12px;
-      border-left: 6px solid #3c3b6e;
-    }
-    .details {
-      display: none;
-      background: #eef2f7;
-      padding: 10px;
-      border-left: 4px solid #b22234;
-      margin-top: 8px;
-    }
-    .show-button {
-      color: #3c3b6e;
-      cursor: pointer;
-      text-decoration: underline;
-    }
-    input[type="text"] {
-      width: 100%;
-      padding: 10px;
-      font-size: 16px;
-      margin: 12px 0;
-      border: 2px solid #ccc;
-      border-radius: 6px;
-    }
+    /* Reset & base */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f2f2f2; color: #333; }
+    header { background: #b22234; color: #fff; padding: 1.5rem; text-align: center; }
+    header h1 { font-size: 2rem; margin-bottom: 0.5rem; }
+    header p { font-size: 1rem; opacity: 0.9; }
+    nav { background: #3c3b6e; }
+    nav ul { display: flex; flex-wrap: wrap; justify-content: center; list-style: none; }
+    nav li { margin: 0.5rem 1rem; }
+    nav a { color: #fff; text-decoration: none; font-weight: 600; }
+    main { max-width: 960px; margin: 2rem auto; padding: 0 1rem; }
+    section { margin-bottom: 2rem; border-radius: 8px; overflow: hidden; background: #fff;
+               box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
+    section h2 { background: #003399; color: #fff; padding: 1rem; font-size: 1.6rem; }
+    details { border-top: 1px solid #ddd; }
+    summary { cursor: pointer; padding: 1rem; font-weight: 600; background: #e9ecef; transition: background 0.2s; }
+    summary:hover { background: #dee2e6; }
+    .details-content { padding: 1rem; border-top: 1px solid #ccc; }
+    .details-content ul { margin: 0.5rem 0 0.5rem 1.2rem; list-style: disc; }
+    .callout { border-left: 4px solid #b22234; background: #fff3f3; padding: 0.8rem; margin: 1rem 0; font-style: italic; }
+    .references { font-size: 0.9rem; margin-top: 1rem; color: #555; }
+    .button { display: inline-block; margin: 1rem 0; background: #b22234; color: #fff; padding: 0.6rem 1.2rem; text-decoration: none; border-radius: 4px; font-weight: 600; }
+    footer { text-align: center; padding: 1rem; background: #3c3b6e; color: #fff; font-size: 0.9rem; }
+    .pdf-embed, .pdf-object { width: 100%; height: 600px; border: none; }
+    #sop-list li { margin-bottom: 0.5rem; }
+    #sop-list strong { color: #b22234; }
   </style>
-  <script>
-    function showSection(id) {
-      const sections = document.querySelectorAll(".section");
-      sections.forEach(section => section.style.display = "none");
-      document.getElementById(id).style.display = "block";
-    }
-
-    function toggleDetails(id) {
-      const el = document.getElementById(id);
-      el.style.display = el.style.display === "block" ? "none" : "block";
-    }
-
-    function searchSOPs() {
-      const input = document.getElementById('searchInput').value.toLowerCase();
-      const entries = document.getElementsByClassName('sop-entry');
-      for (let i = 0; i < entries.length; i++) {
-        const entry = entries[i];
-        const text = entry.innerText.toLowerCase();
-        entry.style.display = text.includes(input) ? 'block' : 'none';
-      }
-    }
-  </script>
 </head>
 <body>
-  <header>
-    <h1>Universal First Responder Guide</h1>
-    <p>Complete Edition – All Response Tabs + SOP Reference</p>
-  </header>
-  <nav>
-    <button onclick="showSection('fire')">🔥 Structure Fire</button>
-    <button onclick="showSection('stroke')">🧠 EMS: Stroke</button>
-    <button onclick="showSection('overdose')">💊 EMS: Overdose</button>
-    <button onclick="showSection('mci')">🚨 EMS: MCI</button>
-    <button onclick="showSection('pump')">🚒 Pump Ops</button>
-    <button onclick="showSection('aerial')">🏗️ Aerial Ops</button>
-    <button onclick="showSection('mutual')">🤝 Mutual Aid</button>
-    <button onclick="showSection('sops')">📘 All SOPs</button>
-  </nav>
 
-  <div id="fire" class="section">
-    <div class="checklist-item"><strong>IC Setup</strong><div class="show-button" onclick="toggleDetails('f1')">Show</div><div class="details" id="f1">Use LCAN, assign command roles, stay exterior, SOP 900.44.</div></div>
-    <div class="checklist-item"><strong>360° Size-Up</strong><div class="show-button" onclick="toggleDetails('f2')">Show</div><div class="details" id="f2">Check rear, basement, hazards, report via radio.</div></div>
-  </div>
+<header>
+  <h1>Universal Emergency Response Guide</h1>
+  <p>Your all-in-one SOP-driven manual for Fire, EMS, Hazmat & Command</p>
+</header>
 
-  <div id="stroke" class="section">
-    <div class="checklist-item"><strong>FAST Exam</strong><div class="show-button" onclick="toggleDetails('s1')">Show</div><div class="details" id="s1">Face, Arm, Speech, Time. Cincinnati optional. Alert hospital.</div></div>
-    <div class="checklist-item"><strong>Vitals</strong><div class="show-button" onclick="toggleDetails('s2')">Show</div><div class="details" id="s2">BP, SpO2, GCS, glucose. Transport to stroke center.</div></div>
-  </div>
+<nav>
+  <ul>
+    <li><a href="#fire">Structure Fire</a></li>
+    <li><a href="#hazmat">Hazmat</a></li>
+    <li><a href="#ems">EMS</a></li>
+    <li><a href="#pump">Pump Ops</a></li>
+    <li><a href="#aerial">Aerial Ops</a></li>
+    <li><a href="#mutual">Mutual Aid</a></li>
+    <li><a href="#mapping">RHQC Map</a></li>
+    <li><a href="#sopembed">HFD SOPs</a></li>
+  </ul>
+</nav>
 
-  <div id="overdose" class="section">
-    <div class="checklist-item"><strong>Scene Safety</strong><div class="show-button" onclick="toggleDetails('o1')">Show</div><div class="details" id="o1">Use PPE, check for fentanyl/needles. Assess pupils and LOC.</div></div>
-    <div class="checklist-item"><strong>Narcan</strong><div class="show-button" onclick="toggleDetails('o2')">Show</div><div class="details" id="o2">2–4mg IN/IM. Repeat q3–5 min. Max 10mg.</div></div>
-  </div>
+<main>
 
-  <div id="mci" class="section">
-    <div class="checklist-item"><strong>ICS Setup</strong><div class="show-button" onclick="toggleDetails('m1')">Show</div><div class="details" id="m1">Assign Triage, Treatment, Transport. Notify hospitals.</div></div>
-    <div class="checklist-item"><strong>START Triage</strong><div class="show-button" onclick="toggleDetails('m2')">Show</div><div class="details" id="m2">RPM method. Red, Yellow, Green, Black tagging.</div></div>
-  </div>
+  <section id="fire">
+    <h2>🔥 Structure Fire Operations</h2>
+    <details>
+      <summary>Size-up & Risk Assessment</summary>
+      <div class="details-content">
+        <ul>
+          <li>Establish command & location.</li>
+          <li>Identify structure type, occupancy, exposures.</li>
+          <li>Check water supply & hydrant locations.</li>
+          <li>Review pre-plans & construction details.</li>
+        </ul>
+        <div class="callout">
+          <strong>NFPA 1710 5.2.2:</strong> First due engine—arrival & crew setup within 4 min; ensure 4‑person crew staffing per engine.
+        </div>
+        <p class="references">
+          <strong>References:</strong>
+          SOP 900.44 | Essentials 7e Ch 12 | NFPA 1710 5.2.2 | Company Officer 6e Ch 3
+        </p>
+      </div>
+    </details>
+    <details>
+      <summary>Incident Command & ICS</summary>
+      <div class="details-content">
+        <ul>
+          <li>Implement NIMS ICS: Command, Ops, Logistics, Planning, Finance.</li>
+          <li>Establish divisions/zones; ensure 4 × 4 accountability tags.</li>
+          <li>PAR every 15 minutes; document on ICS 201/202 forms.</li>
+        </ul>
+        <div class="callout">
+          <strong>Company Officer 6e Ch 4:</strong> Assign clear ICS roles, maintain communication via tactical worksheets.
+        </div>
+        <p class="references">
+          SOP 900.03 | Essentials 7e Ch 2 | NFPA 1561 4.1.2 | Company Officer 6e Ch 4
+        </p>
+      </div>
+    </details>
+    <details>
+      <summary>Fire Attack & Tactics</summary>
+      <div class="details-content">
+        <ul>
+          <li>Select proper hoseline: 1¾" (150–175 gpm) or 2½" (200–250 gpm).</li>
+          <li>Coordinate ventilation before interior attack.</li>
+          <li>Maintain backup line; assign RIT per SOP.</li>
+        </ul>
+        <div class="callout">
+          <strong>Essentials 7e Ch 14:</strong> Advance hoseline with a two‑in/two‑out safety rule; control fire flow rates.
+        </div>
+        <p class="references">
+          SOP 900.11 | Essentials 7e Ch 14 | NFPA 1710 5.2.4 | Company Officer 6e Ch 6
+        </p>
+      </div>
+    </details>
+  </section>
 
-  <div id="pump" class="section">
-    <div class="checklist-item"><strong>Water Supply</strong><div class="show-button" onclick="toggleDetails('p1')">Show</div><div class="details" id="p1">Tank-to-pump open. Prime pump if drafting.</div></div>
-    <div class="checklist-item"><strong>Friction Loss</strong><div class="show-button" onclick="toggleDetails('p2')">Show</div><div class="details" id="p2">1¾” = 30 psi/100’. 2½” = 15 psi/100’. Add elevation loss.</div></div>
-  </div>
+  <section id="hazmat">
+    <h2>☣️ Hazardous Materials Response</h2>
+    <details>
+      <summary>ERG Guidance & Isolation</summary>
+      <div class="details-content">
+        <ul>
+          <li>Identify product via placard/ERG; use guide pages for isolation distances.</li>
+          <li>Initial isolation 25–75 m (yellow) for spills; 800 m (orange/red) for fires.</li>
+          <li>Don Level A or B PPE with SCBA.</li>
+        </ul>
+        <div class="callout">
+          <strong>ERG 2024 Table 1-2:</strong> Match scene scale—protect bystanders with appropriate isolation & protective action distances.
+        </div>
+        <p class="references">
+          SOP 1000.01 | ERG 2024 Ch 1 | NFPA 472 Ch 4 | Company Officer 6e Ch 10
+        </p>
+      </div>
+    </details>
+    <details>
+      <summary>Mitigation & Decontamination</summary>
+      <div class="details-content">
+        <ul>
+          <li>Set up hot/warm/cold zones; control entry.</li>
+          <li>Perform gross & technical decon per SOP 1000.02.</li>
+          <li>Contain runoff; notify environmental agencies.</li>
+        </ul>
+        <div class="callout">
+          <strong>NFPA 1991 6.3:</strong> Establish decon corridor—minimum 50 ft, adequate water flow & waste containment.
+        </div>
+        <p class="references">
+          SOP 1000.02 | ERG 2024 Ch 5 | NFPA 1991 6.3 | Essentials 7e Ch 15
+        </p>
+      </div>
+    </details>
+  </section>
 
-  <div id="aerial" class="section">
-    <div class="checklist-item"><strong>Positioning</strong><div class="show-button" onclick="toggleDetails('a1')">Show</div><div class="details" id="a1">1.5x height of building. Scrub area + collapse zone.</div></div>
-    <div class="checklist-item"><strong>Stream Operations</strong><div class="show-button" onclick="toggleDetails('a2')">Show</div><div class="details" id="a2">Windward stream. Avoid hidden voids.</div></div>
-  </div>
+  <section id="ems">
+    <h2>🚑 Emergency Medical Services</h2>
+    <details>
+      <summary>Adult Cardiac Arrest</summary>
+      <div class="details-content">
+        <ul>
+          <li>High‑quality CPR: 100–120 cpm, 5–6 cm depth, full chest recoil.</li>
+          <li>Rotate compressors every 2 min; pause pauses < 10 s.</li>
+          <li>AED: shock every 2 min; follow one‑shock protocol.</li>
+          <li>Post‑ROSC: maintain SBP > 90 mmHg, SpO₂ 94–99%.</li>
+        </ul>
+        <div class="callout">
+          <strong>AHA 2020 Guidelines:</strong> Compression fraction > 60%; minimize interruptions; integrate advanced airway management only if CPR quality maintained.
+        </div>
+        <p class="references">
+          SOP 1300.1 | AHA 2020 Adult CA | Essentials 7e Ch 20 | NFPA 1917 8.4.2
+        </p>
+      </div>
+    </details>
+    <details>
+      <summary>Stroke Assessment & Transport</summary>
+      <div class="details-content">
+        <ul>
+          <li>FAST exam; assess facial droop, arm drift, speech.</li>
+          <li>Check glucose; correct hypo‑/hyperglycemia.</li>
+          <li>Pre‑notify stroke center: include last‑known‑well & NIHSS score.</li>
+        </ul>
+        <div class="callout">
+          <strong>KBEMS Stroke Protocol 2024:</strong> Door‑to‑needle goal < 60 min; CT<sup>+</sup> stroke center transport if within 20 min.
+        </div>
+        <p class="references">
+          SOP 1300.3 | KBEMS 2024 Stroke | Essentials 7e Ch 18 | NFPA 1917 8.6.1
+        </p>
+      </div>
+    </details>
+    <details>
+      <summary>Pediatric Care</summary>
+      <div class="details-content">
+        <ul>
+          <li>Use Broselow tape; weight‑based drug dosing & equipment sizing.</li>
+          <li>CPR: depth one‑third AP diameter, 100–120 cpm.</li>
+          <li>Defib energy: 2 J/kg escalating to 4 J/kg.</li>
+        </ul>
+        <div class="callout">
+          <strong>PALS 2023:</strong> IO access if IV > 90 s; epinephrine 0.01 mg/kg every 3–5 min.
+        </div>
+        <p class="references">
+          SOP 1300.9 | PALS 2023 | Essentials 7e Ch 22 | NFPA 1901
+        </p>
+      </div>
+    </details>
+    <details>
+      <summary>Airway Management</summary>
+      <div class="details-content">
+        <ul>
+          <li>OPA/NPA adjuncts; two‑person BVM with 100% O₂.</li>
+          <li>ETCO₂: target 35–45 mmHg; confirm every 5 min.</li>
+          <li>RSI meds per local protocol: etomidate, succinylcholine.</li>
+        </ul>
+        <div class="callout">
+          <strong>NFPA 1917 8.2:</strong> Mandatory continuous capnography for all intubations; document waveform.
+        </div>
+        <p class="references">
+          SOP 1300.8 | Essentials 7e Ch 17 | NFPA 1917 8.2 | NREMT Airway Sheet
+        </p>
+      </div>
+    </details>
+  </section>
 
-  <div id="mutual" class="section">
-    <div class="checklist-item"><strong>Arrival</strong><div class="show-button" onclick="toggleDetails('mu1')">Show</div><div class="details" id="mu1">Stage 1 block away. Get assignments from IC. Use assigned channel.</div></div>
-    <div class="checklist-item"><strong>Command Transfer</strong><div class="show-button" onclick="toggleDetails('mu2')">Show</div><div class="details" id="mu2">Log transfer time, name, and new IC role per SOP 900.48.</div></div>
-  </div>
+  <section id="pump">
+    <h2>🚒 Pump Operations</h2>
+    <details>
+      <summary>Engine Pumping & Pressure</summary>
+      <div class="details-content">
+        <ul>
+          <li>Calculate intake: pump PSI + static.</li>
+          <li>Friction loss formula: FL = C × (Q/100)<sup>2</sup> × (L/100).</li>
+          <li>Nozzle pressure: 50 psi (smooth bore), 100 psi (fog).</li>
+        </ul>
+        <div class="callout">
+          <strong>Company Officer 6e Ch 12:</strong> Use correct coefficient (C) per hose diameter; pre‑set throttle in volume mode.
+        </div>
+        <p class="references">
+          SOP 500.01 | NFPA 1901 6.7 | Essentials 7e Ch 16
+        </p>
+      </div>
+    </details>
+    <details>
+      <summary>Mobile Water Supply</summary>
+      <div class="details-content">
+        <ul>
+          <li>Relay: maintain 20 psi residual at attack engine.</li>
+          <li>Shuttle: fill/transport cycles, ensure fill site signage.</li>
+        </ul>
+        <div class="callout">
+          <strong>SOP 500.06:</strong> Standard fill operation—one tanker every 6 min to sustain 250 gpm for 10 min.
+        </div>
+        <p class="references">
+          Essentials 7e Ch 16 | NFPA 1901 6.8
+        </p>
+      </div>
+    </details>
+  </section>
 
-  <div id="sops" class="section">
-    <input type="text" id="searchInput" onkeyup="searchSOPs()" placeholder="Search SOP number or keyword..." />
-    <div class="sop-entry"><strong>SOP 900.03</strong><div>Personnel Accountability — tags, PAR every 10 mins.</div></div>
-    <div class="sop-entry"><strong>SOP 900.25</strong><div>RIT deployment, gear checklist, IC responsibility.</div></div>
-    <div class="sop-entry"><strong>SOP 1300.5</strong><div>Narcan/Epi control substance logs. Document doses, times.</div></div>
-    <div class="sop-entry"><strong>SOP 900.44</strong><div>Structure fire attack. LCAN, alarm upgrades, benchmarks.</div></div>
-  </div>
+  <section id="aerial">
+    <h2>🛗 Aerial Operations</h2>
+    <details>
+      <summary>Ladder Placement & Stabilization</summary>
+      <div class="details-content">
+        <ul>
+          <li>Deploy outriggers on firm ground; level within 5°.</li>
+          <li>Set ladder at 75° (1:4 ratio) for optimal climb angle.</li>
+        </ul>
+        <div class="callout">
+          <strong>NFPA 1901 7.5:</strong> Outrigger pads minimum 18×18 in; inspect ground pad condition.
+        </div>
+        <p class="references">
+          SOP 1100.2 | Essentials 7e Ch 13 | NFPA 1901 7.5
+        </p>
+      </div>
+    </details>
+    <details>
+      <summary>Tip Load & Climbing Safety</summary>
+      <div class="details-content">
+        <ul>
+          <li>Observe manufacturer tip load limits; no more than 2 personnel at tip.</li>
+          <li>Maintain three points of contact; don harness & lanyard properly.</li>
+        </ul>
+        <div class="callout">
+          <strong>NFPA 1904 :</strong> Verify aerial device certification date; inspect fall protection equipment before use.
+        </div>
+        <p class="references">
+          Company Officer 6e Ch 10 | NFPA 1904 | SOP 1100.2
+        </p>
+      </div>
+    </details>
+  </section>
+
+  <section id="mutual">
+    <h2>🤝 Mutual Aid Procedures</h2>
+    <details>
+      <summary>Request & Deployment</summary>
+      <div class="details-content">
+        <ul>
+          <li>Use pre‑established mutual aid channels; reference ICS 205 for resource needs.</li>
+          <li>Track with ICS 204; log arrival, assignment, and demobilization.</li>
+        </ul>
+        <div class="callout">
+          <strong>NFPA 1561 4.2.3:</strong> Mutual aid agreements must be documented, signed, and routinely reviewed.
+        </div>
+        <p class="references">
+          SOP 900.21 | Essentials 7e Ch 5 | NFPA 1561 4.2.3
+        </p>
+      </div>
+    </details>
+  </section>
+
+  <section id="mapping">
+    <h2>🗺️ RHQC Mapping System</h2>
+    <a class="button" href="https://omnivoir.github.io/RHQC-System/" target="_blank">Open RHQC Map</a>
+  </section>
+
+  <section id="sopembed">
+    <h2>📘 HFD SOPs Reference & PDF</h2>
+    <ul id="sop-list">
+      <li id="sop-900044"><strong>SOP 900.44:</strong> Structure Fire Operations</li>
+      <li id="sop-1000002"><strong>SOP 1000.02:</strong> Hazmat Decontamination</li>
+      <li id="sop-130001"><strong>SOP 1300.1:</strong> EMS Orientation & Protocols</li>
+      <li id="sop-130003"><strong>SOP 1300.3:</strong> Contact of Medical Control</li>
+      <li id="sop-130004"><strong>SOP 1300.4:</strong> Destination & DNR</li>
+      <li id="sop-130009"><strong>SOP 1300.9:</strong> Pediatric Transport</li>
+      <li id="sop-50001"><strong>SOP 500.01:</strong> Safe Operation of Fire Apparatus</li>
+      <li id="sop-900021"><strong>SOP 900.21:</strong> Mutual Aid Requests</li>
+      <!-- add more SOPs as needed -->
+    </ul>
+    <object class="pdf-object" data="HFD_SOP_Effective_9-26-24.pdf" type="application/pdf">
+      <p>PDF not supported. <a href="HFD_SOP_Effective_9-26-24.pdf" target="_blank">Open SOP PDF</a>.</p>
+    </object>
+  </section>
+
+</main>
+
+<footer>
+  <p>&copy; Hopkinsville Fire Department – Universal Emergency Response Guide</p>
+</footer>
+
 </body>
 </html>
+"""
+
+# Write the updated HTML file
+Path('/mnt/data/index.html').write_text(html_content)
+print("Updated index.html with callouts, SOP embed, and new title.")
