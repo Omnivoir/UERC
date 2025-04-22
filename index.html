@@ -1,7 +1,6 @@
 from pathlib import Path
 
-# Updated HTML with clickable SOP anchors and expanded content
-updated_html = """
+html_content = """
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -27,7 +26,7 @@ updated_html = """
     summary { cursor: pointer; padding: 1rem; font-weight: 600; background: #e9ecef; transition: background 0.2s; }
     summary:hover { background: #dee2e6; }
     .details-content { padding: 1rem; border-top: 1px solid #ccc; }
-    .details-content ul { margin: 0.5rem 0 0.5rem 1.2rem; }
+    .details-content ul { margin: 0.5rem 0 0.5rem 1.2rem; list-style: disc; }
     .callout { border-left: 4px solid #b22234; background: #fff3f3; padding: 0.8rem; margin: 1rem 0; font-style: italic; }
     .button { display: inline-block; margin: 1rem 0; background: #b22234; color: #fff; padding: 0.6rem 1.2rem; text-decoration: none; border-radius: 4px; font-weight: 600; }
     footer { text-align: center; padding: 1rem; background: #3c3b6e; color: #fff; font-size: 0.9rem; }
@@ -59,67 +58,59 @@ updated_html = """
 <main>
 
   <section id="fire">
-    <h2>🔥 Structure Fire Response</h2>
-    <details open>
-      <summary>Size-Up & 360° Recon (<a href="#sop-90044">SOP 900.44</a>)</summary>
+    <h2>🔥 Structure Fire Operations</h2>
+    <details>
+      <summary>Size-up & Risk Assessment (<a href="#sop-900044">SOP 900.44</a>)</summary>
       <div class="details-content">
-        <p>Conduct a rapid exterior survey to identify fire location, building construction, and potential collapse zones.</p>
         <ul>
-          <li>Check building type (wood, brick, steel) and roof condition.</li>
-          <li>Locate utilities (gas, electric, water) and shutoffs.</li>
-          <li>Identify safe approach routes; note wind direction and weather.</li>
+          <li>Establish command & location.</li>
+          <li>Identify type of structure, occupancy, exposures.</li>
+          <li>Check water supply & hydrant locations.</li>
+          <li>Review pre-plans & building construction.</li>
         </ul>
-        <p><strong>Standards:</strong> NFPA 1561, ICS Form 201.</p>
-        <div class="callout">Reminder: Use thermal imager for hidden fire extension and maintain safe distance.</div>
       </div>
     </details>
     <details>
-      <summary>Incident Command & NIMS (<a href="#sop-90003">SOP 900.03</a>)</summary>
+      <summary>Incident Command & ICS</summary>
       <div class="details-content">
-        <p>Establish an Incident Command Post (ICP), assign Divisions/Groups, and initiate unified command if needed.</p>
         <ul>
-          <li>Confirm Command identity on radio (“Station 1 Command”).</li>
-          <li>Assign safety officer, operations, planning, logistics.</li>
-          <li>Document all strategic objectives in ICS 201/202.</li>
+          <li>Follow NIMS ICS: Command, Operations, Logistics, Planning, Finance.</li>
+          <li>Establish divisions/zones for attack, search, ventilation.</li>
+          <li>Ensure accountability & PAR every 15 min.</li>
         </ul>
-        <p><strong>Why:</strong> Clear leadership structure ensures coordination and accountability.</p>
       </div>
     </details>
     <details>
-      <summary>Fire Attack & Ventilation (<a href="#sop-90011">SOP 900.11</a> / <a href="#sop-90012">900.12</a>)</summary>
+      <summary>Fire Attack & Tactics</summary>
       <div class="details-content">
-        <p>Implement coordinated interior attack with cross-lay hoseline, vertical ventilation to relieve heat.</p>
         <ul>
-          <li>Open overhead vents or roof cut per NFPA 1901 procedures.</li>
-          <li>Place hoseline tip 5-10 ft inside door to cool interior before entry.</li>
-          <li>Coordinate ventilation timing with attack team to prevent flashover.</li>
+          <li>Use appropriate hoseline: 1¾” or 2½” depending on flow requirements.</li>
+          <li>Coordinate ventilation prior to interior attack.</li>
+          <li>Maintain backup line; ensure rapid intervention team on standby.</li>
         </ul>
-        <p><strong>Why:</strong> Minimizes occupant and firefighter risk, improves visibility and advance.</p>
       </div>
     </details>
   </section>
 
   <section id="hazmat">
     <h2>☣️ Hazardous Materials Response</h2>
-    <details open>
-      <summary>Isolation & Identification (<a href="#sop-100001">SOP 1000.01</a>)</summary>
+    <details>
+      <summary>ERG Guidance & Isolation</summary>
       <div class="details-content">
-        <p>Identify chemical using ERG2024. Establish initial isolation zone (25-100 ft) and control entry.</p>
         <ul>
-          <li>Use binoculars and placard ID guide (ERG pages 7-51).</li>
-          <li>Keep wind at your back; move uphill/upwind.</li>
+          <li>Identify product via placard/ERG book.</li>
+          <li>Isolate area per initial isolation distances.</li>
+          <li>Don appropriate PPE level (full ensemble, SCBA).</li>
         </ul>
-        <div class="callout">Reminder: Only trained Hazmat techs in Level B/C PPE may enter hot zone.</div>
       </div>
     </details>
     <details>
-      <summary>Containment & Decon (<a href="#sop-100002">SOP 1000.02</a>)</summary>
+      <summary>Mitigation & Decontamination (<a href="#sop-1000002">SOP 1000.02</a>)</summary>
       <div class="details-content">
-        <p>Control spill with absorbents or diking. Set up decon corridor per HFD SOP.</p>
         <ul>
-          <li>Use expansion foam for flammable liquid pools.</li>
-          <li>Deploy water wash-down outside hot zone.</li>
-          <li>Record all decon fluid disposal as hazardous waste.</li>
+          <li>Establish hot, warm, cold zones.</li>
+          <li>Use dry decon or water if compatible.</li>
+          <li>Collect runoff; prevent environmental contamination.</li>
         </ul>
       </div>
     </details>
@@ -127,63 +118,113 @@ updated_html = """
 
   <section id="ems">
     <h2>🚑 Emergency Medical Services</h2>
-    <!-- Detailed EMS content from previous version (copy here) -->
-    <!-- For brevity, content omitted in this snippet -->
-  </section>
-
-  <section id="pump">
-    <h2>🚒 Pump Operations & Water Supply</h2>
     <details open>
-      <summary>Daily Pump Checks (<a href="#sop-50001">SOP 500.01</a>)</summary>
+      <summary>Adult Cardiac Arrest (<a href="#sop-130001">SOP 1300.1</a>)</summary>
       <div class="details-content">
-        <p>Inspect oil, coolant, belts, pump packings; test primer and gauges.</p>
         <ul>
-          <li>Verify discharge at 150 PSI with engine at 1000 RPM.</li>
-          <li>Check relief valve operation and aerial device coolant.</li>
+          <li>High-quality CPR: 100-120 cpm, 5-6 cm depth.</li>
+          <li>Minimize interruptions; rotate every 2 min.</li>
+          <li>Use AED ASAP; follow shock/no-shock protocol.</li>
+          <li>Post-ROSC: maintain SBP > 90 mmHg, SpO₂ > 94%.</li>
+        </ul>
+        <div class="callout">Check DNR before initiating care (<a href="#sop-130004">SOP 1300.4</a>).</div>
+      </div>
+    </details>
+    <details>
+      <summary>Stroke Assessment & Transport (<a href="#sop-130003">SOP 1300.3</a>)</summary>
+      <div class="details-content">
+        <ul>
+          <li>Perform FAST; record last known well.</li>
+          <li>Measure glucose; rule out hypoglycemia.</li>
+          <li>Notify stroke center; maintain SBP < 185 mmHg.</li>
         </ul>
       </div>
     </details>
     <details>
-      <summary>Master Stream Deployment</summary>
+      <summary>Pediatric Care (<a href="#sop-130009">SOP 1300.9</a>)</summary>
       <div class="details-content">
-        <p>Position apparatus perpendicular to building; confirm stability sensors before water flow.</p>
         <ul>
-          <li>Use 2.5" line at 1000 GPM for large fire exposure protection.</li>
-          <li>Coordinate with incident command for safe angle and reach.</li>
+          <li>Use Broselow tape; weight-based dosing.</li>
+          <li>Compressions one-third chest depth; 100-120/min.</li>
+          <li>IO access if IV > 90 s unsuccessful.</li>
+        </ul>
+      </div>
+    </details>
+    <details>
+      <summary>Airway Management (NREMT/KBEMS)</summary>
+      <div class="details-content">
+        <ul>
+          <li>OPA/NPA adjuncts; two-person BVM with 100% O₂.</li>
+          <li>ETCO₂ confirmation; aim 35-45 mmHg.</li>
+          <li>RSI protocols: etomidate, succinylcholine per medical control.</li>
+        </ul>
+      </div>
+    </details>
+    <details>
+      <summary>DNR & End-of-Life (<a href="#sop-130004">SOP 1300.4</a>)</summary>
+      <div class="details-content">
+        <ul>
+          <li>Validate DNR form; consult medical control.</li>
+          <li>Document confirmation source & time in PCR.</li>
+        </ul>
+      </div>
+    </details>
+  </section>
+
+  <section id="pump">
+    <h2>🚒 Pump Operations</h2>
+    <details>
+      <summary>Engine Pumping & Pressure</summary>
+      <div class="details-content">
+        <ul>
+          <li>Calculate intake pressure: engine pressure + static intake.</li>
+          <li>Select nozzle pressure: 100 psi fog, 50 psi standard.</li>
+          <li>Account for friction loss: 2 psi per 100 ft at 500 gpm.</li>
+        </ul>
+      </div>
+    </details>
+    <details>
+      <summary>Mobile Water Supply</summary>
+      <div class="details-content">
+        <ul>
+          <li>Relay pumping: use tandem, mid-point, or mobile relay.</li>
+          <li>Monitor water tank levels; refill via hydrant or tanker shuttle.</li>
         </ul>
       </div>
     </details>
   </section>
 
   <section id="aerial">
-    <h2>🏗️ Aerial Operations</h2>
+    <h2>🛗 Aerial Operations</h2>
     <details>
-      <summary>Platform Stabilization</summary>
+      <summary>Ladder Placement & Stabilization</summary>
       <div class="details-content">
-        <p>Deploy outriggers fully; confirm level via onboard indicators.</p>
         <ul>
-          <li>Extend stabilizers before raising aerial.</li>
-          <li>Check for overhead obstructions (power lines).</li>
+          <li>Establish level base; use outriggers fully extended.</li>
+          <li>Position ladder 75° (1:4 ratio) from ground to tip.</li>
         </ul>
       </div>
     </details>
     <details>
-      <summary>Rescue & Ventilation</summary>
+      <summary>Tip Load & Safety</summary>
       <div class="details-content">
-        <p>Use aerial for elevated rescue with safety harness; open high windows for smoke release.</p>
+        <ul>
+          <li>Verify manufacturer tip load; limit personnel/tools.</li>
+          <li>Maintain three points of contact climbing.</li>
+        </ul>
       </div>
     </details>
   </section>
 
   <section id="mutual">
-    <h2>🤝 Mutual Aid & Unified Command</h2>
+    <h2>🤝 Mutual Aid Procedures (<a href="#sop-900021">SOP 900.21</a>)</h2>
     <details>
-      <summary>Mutual Aid Request (<a href="#sop-90021">SOP 900.21</a>)</summary>
+      <summary>Request & Deployment</summary>
       <div class="details-content">
-        <p>Initiate aid per county agreement; share IC roles under unified command.</p>
         <ul>
-          <li>Use radio channel 7 for mutual aid operations.</li>
-          <li>Document resource tracking in ICS 214.</li>
+          <li>Activate mutual aid channels via dispatch.</li>
+          <li>Use standardized ICS 205 communications plan.</li>
+          <li>Document resource arrival & assignment in ICS forms.</li>
         </ul>
       </div>
     </details>
@@ -191,24 +232,22 @@ updated_html = """
 
   <section id="mapping">
     <h2>🗺️ RHQC Mapping System</h2>
-    <a class="button" href="https://omnivoir.github.io/RHQC-System/" target="_blank">Launch RHQC Map</a>
+    <a class="button" href="https://omnivoir.github.io/RHQC-System/" target="_blank">Open RHQC Map</a>
   </section>
 
   <section id="sopembed">
-    <h2>📘 HFD SOPs Reference</h2>
+    <h2>📘 HFD SOPs Reference & PDF</h2>
     <ul id="sop-list">
-      <li id="sop-90044"><strong>SOP 900.44:</strong> Structure Fire – Incident command, size-up, fire attack.</li>
-      <li id="sop-90003"><strong>SOP 900.03:</strong> Incident Command System – NIMS-based ICS structure.</li>
-      <li id="sop-90011"><strong>SOP 900.11:</strong> Engine Company Fire Ground Operations.</li>
-      <li id="sop-90012"><strong>SOP 900.12:</strong> Ladder Company Fire Ground Operations.</li>
-      <li id="sop-100001"><strong>SOP 1000.01:</strong> Hazardous Materials Expended Equipment Recovery.</li>
-      <li id="sop-100002"><strong>SOP 1000.02:</strong> Hazardous Materials Decontamination.</li>
-      <li id="sop-50001"><strong>SOP 500.01:</strong> Safe Operation of Fire Apparatus/ECU.</li>
-      <li id="sop-90021"><strong>SOP 900.21:</strong> Mutual Aid Requests & Responses.</li>
-      <!-- Add additional SOP list items as needed -->
+      <li id="sop-900044"><strong>SOP 900.44:</strong> Structure Fire Operations</li>
+      <li id="sop-1000002"><strong>SOP 1000.02:</strong> Hazmat Decontamination</li>
+      <li id="sop-130001"><strong>SOP 1300.1:</strong> EMS Orientation & Protocols</li>
+      <li id="sop-130003"><strong>SOP 1300.3:</strong> Contact of Medical Control</li>
+      <li id="sop-130004"><strong>SOP 1300.4:</strong> Destination & DNR</li>
+      <li id="sop-130009"><strong>SOP 1300.9:</strong> Pediatric Transport</li>
+      <li id="sop-900021"><strong>SOP 900.21:</strong> Mutual Aid Requests</li>
+      <!-- add more SOPs as needed -->
     </ul>
-    <iframe class="pdf-embed" src="HFD_SOP_Effective_9-26-24.pdf"></iframe>
-    <p>Click any SOP above to jump to its details.</p>
+    <embed class="pdf-embed" src="HFD_SOP_Effective_9-26-24.pdf" type="application/pdf">
   </section>
 
 </main>
@@ -221,6 +260,6 @@ updated_html = """
 </html>
 """
 
-# Write the file
-Path('/mnt/data/index.html').write_text(updated_html)
-print("Clickable SOP anchors added and sections expanded in index.html")
+# Write the full HTML file
+Path('/mnt/data/index.html').write_text(html_content)
+print("Complete index.html with all sections written.")
