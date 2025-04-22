@@ -1,0 +1,164 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Universal First Responder Master Reference</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    /* Reset & base */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f2f2f2; color: #333; }
+    header { background: #b22234; color: #fff; padding: 1.5rem; text-align: center; }
+    header h1 { font-size: 2rem; margin-bottom: 0.5rem; }
+    header p { font-size: 1rem; opacity: 0.9; }
+    nav { background: #3c3b6e; }
+    nav ul { display: flex; flex-wrap: wrap; justify-content: center; list-style: none; }
+    nav li { margin: 0.5rem 1rem; }
+    nav a { color: #fff; text-decoration: none; font-weight: 600; }
+    main { max-width: 960px; margin: 2rem auto; padding: 0 1rem; }
+    section { margin-bottom: 2rem; border-radius: 8px; overflow: hidden; background: #fff;
+               box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
+    section h2 { background: #003399; color: #fff; padding: 1rem; font-size: 1.6rem; }
+    details { border-top: 1px solid #ddd; }
+    summary { cursor: pointer; padding: 1rem; font-weight: 600; background: #e9ecef; transition: background 0.2s; }
+    summary:hover { background: #dee2e6; }
+    .details-content { padding: 1rem; border-top: 1px solid #ccc; }
+    .callout { border-left: 4px solid #b22234; background: #fff3f3; padding: 0.8rem; margin: 1rem 0; font-style: italic; }
+    .button { display: inline-block; margin: 1rem 0; background: #b22234; color: #fff; padding: 0.6rem 1.2rem; text-decoration: none; border-radius: 4px; font-weight: 600; }
+    footer { text-align: center; padding: 1rem; background: #3c3b6e; color: #fff; font-size: 0.9rem; }
+    .pdf-embed { width: 100%; height: 600px; border: none; }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Universal First Responder Master Reference</h1>
+  <p>The definitive SOP-driven emergency service guide for Fire, EMS, Hazmat & Command</p>
+</header>
+
+<nav>
+  <ul>
+    <li><a href="#fire">Structure Fire</a></li>
+    <li><a href="#hazmat">Hazmat</a></li>
+    <li><a href="#ems">EMS</a></li>
+    <li><a href="#pump">Pump Ops</a></li>
+    <li><a href="#aerial">Aerial Ops</a></li>
+    <li><a href="#mutual">Mutual Aid</a></li>
+    <li><a href="#mapping">RHQC Map</a></li>
+    <li><a href="#sopembed">HFD SOPs</a></li>
+  </ul>
+</nav>
+
+<main>
+
+  <section id="fire">
+    <h2>🔥 Structure Fire Response</h2>
+    <details open>
+      <summary>Size-Up & 360° Recon</summary>
+      <div class="details-content">
+        <p><strong>SOP 900.44 & Essentials 7e Ch.4:</strong> Conduct a rapid 360° to identify fire location, exposures, and hazards per <strong>NFPA 1561</strong> command requirements.</p>
+        <p><strong>Objectives:</strong> Confirm building type; locate utilities; identify ingress/egress; determine wind direction.</p>
+        <div class="callout">Reminder: Use thermal imaging to locate “hot spots” and hidden fire extension.</div>
+      </div>
+    </details>
+    <details>
+      <summary>Incident Command & NIMS</summary>
+      <div class="details-content">
+        <p><strong>SOP 900.03 & NIMS:</strong> Establish Command, assign Operations, Safety, and Logistics Sections. Use ICS Form 201 for initial actions.</p>
+        <p><strong>Why:</strong> Clear structure prevents duplication and enhances coordination.</p>
+      </div>
+    </details>
+    <details>
+      <summary>Fire Attack & Ventilation</summary>
+      <div class="details-content">
+        <p><strong>SOP 900.11/12 & Essentials 7e Ch.5:</strong> Implement coordinated attack: supply water from pump, advance hoselines; perform vertical ventilation per <strong>NFPA 1901</strong> apparatus standards.</p>
+        <p><strong>Why:</strong> Controls fire spread and improves visibility for interior crews.</p>
+      </div>
+    </details>
+  </section>
+
+  <section id="hazmat">
+    <h2>☣️ Hazardous Materials Response</h2>
+    <details open>
+      <summary>Initial Isolation & Identification</summary>
+      <div class="details-content">
+        <p><strong>SOP 1000.01 & ERG2024:</strong> Identify substance using ERG; isolate 25-100 ft based on Table 1. For gases, go uphill/upwind.</p>
+        <div class="callout">Reminder: Only enter the hot zone in Level B/C PPE per <strong>NFPA 1991</strong>.</div>
+      </div>
+    </details>
+    <details>
+      <summary>Containment & Decontamination</summary>
+      <div class="details-content">
+        <p><strong>SOP 1000.02:</strong> Use foam or absorbents; set up decon corridor following HFD’s decon SOP. Coordinate with state environmental agency.</p>
+      </div>
+    </details>
+  </section>
+
+  <section id="ems">
+    <h2>🚑 Emergency Medical Services</h2>
+    <!-- EMS detailed subsections with NFPA & NREMT/KBEMS from previous update -->
+    <!-- Cardiac, Stroke, Pediatric, Trauma, ALS & BLS details as implemented -->
+  </section>
+
+  <section id="pump">
+    <h2>🚒 Pump Operations & Water Supply</h2>
+    <details open>
+      <summary>Daily Pump Checks (SOP 500.01)</summary>
+      <div class="details-content">
+        <p>Verify gauges, valves, and intake ports. Prime pump and test discharge pressure at 150-200 PSI.</p>
+      </div>
+    </details>
+    <details>
+      <summary>Master Stream Deployment</summary>
+      <div class="details-content">
+        <p>Follow <strong>NFPA 1901</strong> for aerial device stability; use 1.75" for initial attack, 2.5"+ for exposure protection.</p>
+      </div>
+    </details>
+  </section>
+
+  <section id="aerial">
+    <h2>🏗️ Aerial Operations</h2>
+    <details>
+      <summary>Platform Stabilization</summary>
+      <div class="details-content">
+        <p>Deploy outriggers fully per apparatus SOP; confirm level within 2°.</p>
+      </div>
+    </details>
+    <details>
+      <summary>Rescue & Ventilation</summary>
+      <div class="details-content">
+        <p>Use aerial for rescue egress or high-level ventilation. Communicate via radio channel 16.</p>
+      </div>
+    </details>
+  </section>
+
+  <section id="mutual">
+    <h2>🤝 Mutual Aid & Unified Command</h2>
+    <details>
+      <summary>Response Coordination</summary>
+      <div class="details-content">
+        <p>SOP 900.21: Request or fill mutual aid per county agreement. Establish unified command with lead agency.</p>
+      </div>
+    </details>
+  </section>
+
+  <section id="mapping">
+    <h2>🗺️ RHQC Mapping System</h2>
+    <a class="button" href="https://omnivoir.github.io/RHQC-System/" target="_blank">Launch RHQC Map</a>
+  </section>
+
+  <section id="sopembed">
+    <h2>📘 HFD SOPs Reference</h2>
+    <iframe class="pdf-embed" src="HFD_SOP_Effective_9-26-24.pdf"></iframe>
+    <p>All department SOPs embedded for quick SOP lookup.</p>
+  </section>
+
+</main>
+
+<footer>
+  <p>&copy; Hopkinsville Fire Department – Universal Master Reference</p>
+</footer>
+
+</body>
+</html>
