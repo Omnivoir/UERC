@@ -312,17 +312,21 @@
   <ul id="sop-list">
     <!-- your SOP list items -->
   </ul>
-  <!-- Embed PDF from repo root: -->
-  <object class="pdf-object"
-          data="./HFD SOP Effective 9-26-24.pdf"
-          type="application/pdf">
-    <p>
-      Your browser doesn’t support PDFs. 
-      <a href="./HFD_SOP_Effective_9-26-24.pdf" target="_blank">
-        Click here to open the full HFD SOPs PDF
-      </a>.
-    </p>
-  </object>
+  <div class="pdf-container">
+    <iframe
+      class="pdf-embed"
+      src="./HFD_SOP_Effective_9-26-24.pdf"
+      allowfullscreen
+    ></iframe>
+    <noscript>
+      <p>
+        Your browser doesn’t support embedded PDFs.
+        <a href="./HFD_SOP_Effective_9-26-24.pdf" target="_blank">
+          Tap here to open the full HFD SOP PDF
+        </a>.
+      </p>
+    </noscript>
+  </div>
 </section>
 
 </main>
