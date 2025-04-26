@@ -325,12 +325,101 @@
     </a>
   </p>
 </section>
+<section id="scenario-generator" class="module">
+  <h2>🔄 Random Training Scenario</h2>
 
+  <label for="scenario-type">Choose a discipline:</label>
+  <select id="scenario-type">
+    <option value="fire">Structure Fire</option>
+    <option value="hazmat">HazMat</option>
+    <option value="ems">EMS</option>
+    <option value="pump">Pump Ops</option>
+  </select>
+
+  <button id="generate-btn">Generate Scenario</button>
+
+  <div id="scenario-card" class="hidden">
+    <h3>Scenario:</h3>
+    <p id="scenario-text" class="scenario-text"></p>
+    <button id="reveal-btn">Reveal Model Answer</button>
+    <div id="answer-text" class="answer-text hidden"></div>
+  </div>
+</section>
 </main>
 
 <footer>
   <p>&copy; Hopkinsville Fire Department – Universal Emergency Response Guide</p>
 </footer>
+<script>
+// 1️⃣ Define your scenarios & answers:
+const scenarios = {
+  fire: [
+    {
+      text: "Engine 21 arrives at a 2-story wood-frame residence with heavy smoke showing from the second floor. Hydrant 50’ away. What’s your 360°, initial attack line choice, and entry plan?",
+      answer: "360°: identify collapse risk at C-corner, back porch. Attack: 1¾” hose in first, backup 2½”. Entry: primary search on A/B side, maintain water on seat of fire via window."
+    },
+    {
+      text: "A working attic fire in a large church, single 2” hand line is in place but losing steam. What’s your next move?",
+      answer: "Switch to a 2½” supply line, establish aerial master stream on roof, cut inspection holes at peak, coordinate interior standpipe use per NFPA 1901."
+    }
+  ],
+  hazmat: [
+    {
+      text: "You’re first on-scene to a leaking 55-gal drum of corrosive acid in a warehouse. No SCBA yet. What’s your 1st three actions?",
+      answer: "1) Secure the area via hot zone perimeter, 2) call for HazMat techs, 3) don APR or SCBA, consult ERG Guide 154 for product ID and PPE level (Level B), then transfer to overpack."
+    },
+    {
+      text: "A tanker truck overturned carrying an unknown flammable liquid. You have ERG up. How do you identify product, pick isolation distances, and extinguish engine fire safely?",
+      answer: "Use placard ID → Guide 128. Evacuate 300m downwind. Isolate 100m in other directions. Extinguish with fog patterns from safe distance; cool exposed tanks."
+    }
+  ],
+  ems: [
+    {
+      text: "You find a 68-year-old unresponsive patient in VFib arrest. Bystanders have started CPR. Outline your ALS sequence & key meds per AHA.",
+      answer: "Attach defib — 200J biphasic → shock. Resume CPR 2min, IV/IO access → epi 1mg q3–5min, amio 300mg bolus if refractory after 3 shocks. Advanced airway and EtCO₂ monitoring."
+    },
+    {
+      text: "A 5-year-old child with croup, moderate stridor, sitting upright. What’s your management?",
+      answer: "Keep calm, humidified O₂, nebulized racemic epi (0.5 mL 2.25% in 2 mL saline), dexamethasone 0.15 mg/kg IV/IM, monitor for rebound and airway compromise."
+    }
+  ],
+  pump: [
+    {
+      text: "You’re the engineer on E-31 at a hydrant. Attack line is flowing 150 gpm at 1 ½” hose. Engine friction loss is 10 psi. What pump pressure do you set?",
+      answer: "Ppump = NP + FL + elevation (+ fog nozzle if used). NP (100 psi solid tip) + FL (10psi) → 110 psi. If uphill—add 5 psi per story."
+    },
+    {
+      text: "Drafting from a static water source. What’s your step-by-step:",
+      answer: "1) Spot intake 3-in hose, install foot valve strainer 2) Clear air: open primer, engage primer 3) Reach 20” Hg vacuum, then throttle to maintain 10 psi intake pressure, monitor cavitation."
+    }
+  ]
+};
 
+// 2️⃣ Grab DOM elements:
+const typeSel = document.getElementById("scenario-type");
+const genBtn  = document.getElementById("generate-btn");
+const card    = document.getElementById("scenario-card");
+const textP   = document.getElementById("scenario-text");
+const ansBtn  = document.getElementById("reveal-btn");
+const ansDiv  = document.getElementById("answer-text");
+
+// 3️⃣ Generate & show a random scenario:
+genBtn.addEventListener("click", () => {
+  const cat = typeSel.value;
+  const pool = scenarios[cat];
+  const pick = pool[Math.floor(Math.random()*pool.length)];
+  textP.textContent = pick.text;
+  ansDiv.textContent = pick.answer;
+  ansDiv.classList.add("hidden");
+  card.classList.remove("hidden");
+  ansBtn.disabled = false;
+});
+
+// 4️⃣ Reveal the hidden answer:
+ansBtn.addEventListener("click", () => {
+  ansDiv.classList.remove("hidden");
+  ansBtn.disabled = true;
+});
+</script>
 </body>
 </html>
