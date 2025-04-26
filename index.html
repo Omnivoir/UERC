@@ -397,49 +397,117 @@
   <p>&copy; Hopkinsville Fire Department – Universal Emergency Response Guide</p>
 </footer>
 <script>
-// 1️⃣ Define your scenarios & answers:
+// ─── Updated Scenario Bank ─────────────────────────────────────────────────────
 const scenarios = {
   fire: [
     {
-      text: "Engine 21 arrives at a 2-story wood-frame residence with heavy smoke showing from the second floor. Hydrant 50’ away. What’s your 360°, initial attack line choice, and entry plan?",
-      answer: "360°: identify collapse risk at C-corner, back porch. Attack: 1¾” hose in first, backup 2½”. Entry: primary search on A/B side, maintain water on seat of fire via window."
+      text: "Engine 21 arrives at a 2-story garden-style apartment building with smoke showing from the C-D corner attic vents. What’s your 360° size-up and initial action?",
+      answer: "Objective: Conduct 360°—size up collapse potential at C-corner overhang; confirm vent openings. Action: Deploy 1¾” hand line to A-side entrance under officer’s command.  \nSubjective: Following SOP 900.11 for Engine Company Ops and NFPA 1710, rapid interior attack keeps fire confined and limits extension to attic."
     },
     {
-      text: "A working attic fire in a large church, single 2” hand line is in place but losing steam. What’s your next move?",
-      answer: "Switch to a 2½” supply line, establish aerial master stream on roof, cut inspection holes at peak, coordinate interior standpipe use per NFPA 1901."
+      text: "You’re first on scene to a working kitchen fire in a two-family home. The occupant reports possible upstairs occupants. What’s your primary search plan and hoseline choice?",
+      answer: "Objective: 1) Assign a crew for search of reported bedrooms while attack line flows; 2) Stretch 1¾” cross-lay to kitchen doorway.  \nSubjective: Per SOP 900.07 (ICS) and SOP 900.08 (Mayday prep), simultaneous search & attack maximizes life safety and fire control."
+    },
+    {
+      text: "A reported high-rise alarm: heavy smoke on floor 12, no fire confirmed. How do you establish lobby control and what standpipe prep do you order?",
+      answer: "Objective: Lobby Officer secures elevator recall, radio comms; order 2½” hoseline to FDC and confirm standpipe pressure.  \nSubjective: Aligns with SOP 900.14 (High-Rise Ops) and NFPA 14—ensures water supply before ascent."
+    },
+    {
+      text: "You arrive at a residential fire with a visible attic fire. Aerial 23 is working but water supply is marginal. What’s your water-supply plan?",
+      answer: "Objective: Pump to aerial master stream at 120 psi + FL; call for second engine to draft portable tank from hydrant 200’ away.  \nSubjective: SOP 400.07 (Equipment securement) demands stable pump ops; portable tank bridging hydrants prevents supply interruption."
+    },
+    {
+      text: "On a working fire, you observe heavy fire impinging on a bowstring-truss roof. What command action do you take?",
+      answer: "Objective: Order an immediate personnel withdrawal and declare defensive mode, reposition apparatus for master streams.  \nSubjective: SOP 900.07 (Incident Command) requires rapid risk assessment; bowstring truss collapse is imminent and must be respected."
+    },
+    {
+      text: "A crew’s inside with a 1¾” line but reports low psi and kinks. How do you fix it in-stream without canceling the flow?",
+      answer: "Objective: Command shut-down nozzle, back-charge the line past kink, re-charge at pump at 50 psi, resume.  \nSubjective: SOP 500.02 (Ground guide) stresses pump-to-engine communication to maintain flow and safety."
     }
   ],
+
   hazmat: [
     {
-      text: "You’re first on-scene to a leaking 55-gal drum of corrosive acid in a warehouse. No SCBA yet. What’s your 1st three actions?",
-      answer: "1) Secure the area via hot zone perimeter, 2) call for HazMat techs, 3) don APR or SCBA, consult ERG Guide 154 for product ID and PPE level (Level B), then transfer to overpack."
+      text: "A single leaking drum of corrosive acid is found in a warehouse. No placard. What’s your initial SOP-driven steps?",
+      answer: "Objective: Isolate hot zone 50’, don Level C (APR + chem-resist suit per SOP 900.23), call HazMat Team.  \nSubjective: SOP 900.23 (Initial HazMat Mitigation) & ERG 154 ensure you protect self before ID or overpack."
     },
     {
-      text: "A tanker truck overturned carrying an unknown flammable liquid. You have ERG up. How do you identify product, pick isolation distances, and extinguish engine fire safely?",
-      answer: "Use placard ID → Guide 128. Evacuate 300m downwind. Isolate 100m in other directions. Extinguish with fog patterns from safe distance; cool exposed tanks."
+      text: "A highway spill of liquid chlorine in a rail tank car. What ERG guide do you consult, and what evacuation distance?",
+      answer: "Objective: ERG 112—large spill >100 lbs → 800m (0.5 mile) downwind.  \nSubjective: Per SOP 900.23 and ERG, wind-driven chlorine tox cloud risks pulmonary injury."
+    },
+    {
+      text: "You arrive to find ammonia leak in food-processing plant. Plant ops say shut-off is in machine room. How do you proceed?",
+      answer: "Objective: Secure scene behind Level B perimeter, SCBA on, escort techs to shut-off, then decon per SOP 1000.02.  \nSubjective: SOP 400.12 (Infection/decon) and NFPA 473 require buddy-system & formal decon after ammonia workup."
+    },
+    {
+      text: "Freon leak at supermarket—no fire, just vapor. What PPE and monitoring do you use?",
+      answer: "Objective: Level C (APR) + PID gas monitor to keep below TLV (1000 ppm).  \nSubjective: SOP 900.23 directs minimum Level C for non-IDLH refrigerants; continuous monitoring prevents overexposure."
+    },
+    {
+      text: "Bulk LPG tank is venting pressure-relief valve. What defensive tactic do you employ?",
+      answer: "Objective: Position unmanned master stream at 200’ away in runoff valley; cool adjacent tank dikes.  \nSubjective: SOP 500.01 (Apparatus ops) & NFPA 58 guidelines keep operators out of BLEVE range."
+    },
+    {
+      text: "You’re called for a Class C electrical fire with transformer oil. Which extinguishing agent per SOP and NFPA?",
+      answer: "Objective: Dry chem (NaHCO₃) per NFPA 17; avoid water stream on energized equipment.  \nSubjective: SOP 900.10 (Haz atmospheres) prohibits water; dry chem prevents reignition of oil-based fires."
     }
   ],
+
   ems: [
     {
-      text: "You find a 68-year-old unresponsive patient in VFib arrest. Bystanders have started CPR. Outline your ALS sequence & key meds per AHA.",
-      answer: "Attach defib — 200J biphasic → shock. Resume CPR 2min, IV/IO access → epi 1mg q3–5min, amio 300mg bolus if refractory after 3 shocks. Advanced airway and EtCO₂ monitoring."
+      text: "Unresponsive 55 yo in VFib arrest. According to HFD SOP 1300.18 and AHA, outline your ACLS steps & meds.",
+      answer: "Objective: Defib 200 J biphasic → CPR 2 min → epi 1 mg IV/IO → CPR → shock → amio 300 mg if refractory.  \nSubjective: SOP 1300.18 Scope of Care mirrors AHA 2024, maximizing ROSC chances."
     },
     {
-      text: "A 5-year-old child with croup, moderate stridor, sitting upright. What’s your management?",
-      answer: "Keep calm, humidified O₂, nebulized racemic epi (0.5 mL 2.25% in 2 mL saline), dexamethasone 0.15 mg/kg IV/IM, monitor for rebound and airway compromise."
+      text: "70 yo with sudden slurred speech & right-side weakness. What stroke scale & protocol?",
+      answer: "Objective: Use C-STAT or Cincinnati scale; notify stroke center, keep SBP <180 per SOP 1300.12.  \nSubjective: SOP 1300.12 (Mandatory Reporting) forces rapid triage—'time is brain'."
+    },
+    {
+      text: "3 yo child with febrile seizure lasting 3 mins, post-ictal. What’s your management per SOP 1300.15?",
+      answer: "Objective: Protect airway, O₂ via blow-by, obtain IV/IO, give midazolam 0.1 mg/kg IM if seizing >5 min.  \nSubjective: SOP 1300.15 (Patient Restraint) stresses gentleness in pediatrics—reassure parents."
+    },
+    {
+      text: "Elderly diabetic found unresponsive, glucometer reads 35 mg/dL. What’s your next two actions?",
+      answer: "Objective: Administer D50 IV (0.5 g/kg), recheck sugar q5 min.  \nSubjective: SOP 1300.08 (On-scene regs) demands prompt reversal—avoids neuronal damage."
+    },
+    {
+      text: "Asthmatic, severe wheeze, speaking 1-word sentences. According to SOP 1300.09 & NREMT, what meds & transport decisions?",
+      answer: "Objective: Nebulized albuterol 5 mg + ipratropium, consider CPAP if tolerated, expedite ALS transport.  \nSubjective: SOP 1300.09 (Safe ops) warns against delay—airway compromise can progress to arrest."
+    },
+    {
+      text: "Active labor, second baby born breech. What’s your emergency OB protocol per SOP & AHA?",
+      answer: "Objective: Support delivery—don gloves, elevate hips, keep head down until shoulders deliver, prepare for neonatal resuscitation.  \nSubjective: SOP 1300.11 (Consent/Refusal) & PALS/BLS neonatal guidelines ensure gentle, controlled delivery."
     }
   ],
+
   pump: [
     {
-      text: "You’re the engineer on E-31 at a hydrant. Attack line is flowing 150 gpm at 1 ½” hose. Engine friction loss is 10 psi. What pump pressure do you set?",
-      answer: "Ppump = NP + FL + elevation (+ fog nozzle if used). NP (100 psi solid tip) + FL (10psi) → 110 psi. If uphill—add 5 psi per story."
+      text: "Your engine is drafting from a static pond. What’s your step-by-step per SOP 500.08 to establish prime?",
+      answer: "Objective: Inspect strainer, connect 3” suction, bleed air via priming valve, engage primer until 20” Hg, then throttle to 100 psi pump pressure.  \nSubjective: SOP 500.08 stresses no air leaks—maintains uninterrupted supply."
     },
     {
-      text: "Drafting from a static water source. What’s your step-by-step:",
-      answer: "1) Spot intake 3-in hose, install foot valve strainer 2) Clear air: open primer, engage primer 3) Reach 20” Hg vacuum, then throttle to maintain 10 psi intake pressure, monitor cavitation."
+      text: "Hydrant 150’ away—attack crew flowing 200 gpm on 1¾” handline. FL is 15 psi. What pump discharge pressure?",
+      answer: "Objective: PDP = NP (100 psi) + FL (15 psi) → 115 psi.  \nSubjective: SOP 500.01 (Safe ops) demands correct PDP to avoid nozzle blowoff or insufficient flow."
+    },
+    {
+      text: "You need to supply a master stream from E-24 to a second engine 500’ back. How do you set up relay?",
+      answer: "Objective: Engine-in hammer, lay supply line to engineer-in; maintain 20 psi residual in each relay; use gated wyes per SOP 500.02.  \nSubjective: NFPA 1962 relay standards ensure flow continuity over long distances."
+    },
+    {
+      text: "Pump panel shows cavitation—gauge dropping to zero intermittently. What’s your immediate fix?",
+      answer: "Objective: Close tank-to-pump valve, open fill-level valve, reduce throttle 200 rpm then reset.  \nSubjective: SOP 500.03 (Roadway Safety) reminds you—don’t over-speed pump; cavitation damages seals."
+    },
+    {
+      text: "Crew requests additional discharge for roof handline. You’re at 150 psi with 1¾” hose. What’s your nozzle and PDP adjustment?",
+      answer: "Objective: Switch to smooth-bore 1½” tip (NP=50 psi) then throttle down to PDP=65 psi (50+15).  \nSubjective: SOP 400.07 belts & equipment rule—smooth-bore reduces handler fatigue on elevated positions."
+    },
+    {
+      text: "When supplying an aerial ladder from an engine pump, what gauge to monitor and SOP calls it out?",
+      answer: "Objective: Watch the aerial master gauge (should be 100–125 psi) per SOP 500.01.  \nSubjective: NFPA 1901 & SOP 500.01 require stable pressure to prevent ladder water hammer."
     }
   ]
 };
+// ────────────────────────────────────────────────────────────────────────────────
 
 // 2️⃣ Grab DOM elements:
 const typeSel = document.getElementById("scenario-type");
