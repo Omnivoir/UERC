@@ -279,146 +279,134 @@
     </details>
   </section>
 
-<section id="pump">
+<section id="pump-ops">
   <h2>🚒 Pump Operations</h2>
 
-  <!-- Overview & Formulas -->
-  <div class="details-content">
-    <p>Use this section to calculate friction loss, pump discharge pressure, nozzle pressures, and required fire flow on the fire ground. All driver-operators should understand the underlying formulas, know their apparatus coefficients, and be able to adapt to any hose layout or appliance.</p>
-    <h3>1. Friction Loss Formula</h3>
-    <p><strong>FL = C × (Q/100)<sup>2</sup> × L</strong>, where:</p>
-    <ul>
-      <li><strong>C</strong> = hose friction coefficient (see hose table below)</li>
-      <li><strong>Q</strong> = flow rate in GPM</li>
-      <li><strong>L</strong> = hose length in feet (one-way)</li>
-    </ul>
+  <!-- 1) Friction-Loss & PDP Calculator -->
+  <details>
+    <summary>💧 Friction-Loss & PDP Calculator</summary>
+    <div style="padding:1rem; background:#f9f9f9; border:1px solid #ddd; border-radius:4px;">
 
-    <!-- Hose Coefficient Table -->
-    <h4>Hose Coefficients (C)</h4>
-    <table style="width:100%; border-collapse:collapse; margin-bottom:1rem;">
-      <thead>
-        <tr><th style="border:1px solid #ccc; padding:0.5rem">Hose Size</th><th style="border:1px solid:#ccc; padding:0.5rem">Coefficient (C)</th></tr>
-      </thead>
-      <tbody>
-        <tr><td style="border:1px solid #ccc; padding:0.5rem">1¾″</td><td style="border:1px solid:#ccc; padding:0.5rem">15.5</td></tr>
-        <tr><td style="border:1px solid #ccc; padding:0.5rem">2½″</td><td style="border:1px solid:#ccc; padding:0.5rem">2.0</td></tr>
-        <tr><td style="border:1px solid #ccc; padding:0.5rem">3″</td><td style="border:1px solid:#ccc; padding:0.5rem">0.08</td></tr>
-        <tr><td style="border:1px solid #ccc; padding:0.5rem">5″ Supply</td><td style="border:1px solid:#ccc; padding:0.5rem">0.02</td></tr>
-      </tbody>
-    </table>
+      <!-- Input rows -->
+      <form id="fl-form" style="display:flex; flex-direction:column; gap:0.5rem; margin-bottom:1rem;">
+        <div class="fl-row" style="display:flex; gap:0.5rem;">
+          <select class="fl-hose" title="Hose size">
+            <option value="15.5">1¾″</option>
+            <option value="2.0">2½″</option>
+            <option value="0.08">3″</option>
+            <option value="0.02">5″</option>
+          </select>
+          <input type="number" class="fl-gpm" placeholder="GPM" title="Flow (gpm)" />
+          <input type="number" class="fl-len" placeholder="Length (ft)" title="Hose length (ft)" />
+          <select class="fl-np" title="Nozzle pressure">
+            <option value="50">Smooth 50</option>
+            <option value="100">Fog 100</option>
+            <option value="80">Deck 80</option>
+            <option value="100">Aerial 100</option>
+          </select>
+          <button type="button" class="remove-line" style="background:#e74c3c;color:#fff;border:none;padding:0 .5rem;">×</button>
+        </div>
+      </form>
 
-    <h3>2. Nozzle Friction & Pump Discharge Pressure (PDP)</h3>
-    <p><strong>PDP = FL + NP</strong>, where <strong>NP</strong> is nozzle pressure (psi). Typical NP values:</p>
-    <ul>
-      <li>Smooth-bore: 50 psi</li>
-      <li>Fog nozzle: 100 psi</li>
-      <li>Deck/gun master stream: 80 psi</li>
-      <li>Aerial master stream: 100 psi</li>
-    </ul>
+      <button id="add-line" style="margin-bottom:1rem;">+ Add Section</button>
+      <button id="calc-fl" style="margin-left:0.5rem;">Calculate FL & PDP</button>
 
-    <!-- Friction Loss Calculator UI -->
-    <details>
-      <summary>💧 Friction Loss & PDP Calculator</summary>
-      <div class="details-content">
-        <button id="add-line" class="button" style="margin-bottom:1rem;">➕ Add Hose Section</button>
-        <form id="fl-form">
-          <div class="fl-row" style="display:flex; gap:0.8rem; margin-bottom:0.5rem;">
-            <select class="fl-hose" style="width:5rem;">
-              <option value="15.5">1¾″</option>
-              <option value="2.0">2½″</option>
-              <option value="0.08">3″</option>
-              <option value="0.02">5″</option>
-            </select>
-            <input type="number" class="fl-gpm" placeholder="GPM" style="width:5rem;">
-            <input type="number" class="fl-len" placeholder="ft" style="width:5rem;">
-            <select class="fl-np" style="width:6rem;">
-              <option value="50">Smooth 50</option>
-              <option value="100">Fog 100</option>
-              <option value="80">Deck 80</option>
-              <option value="100">Aerial 100</option>
-            </select>
-            <button type="button" class="remove-line button" style="background:#888;">❌</button>
-          </div>
-        </form>
-        <button id="calc-all" class="button">Calculate All</button>
-        <table id="fl-results" style="width:100%; border-collapse:collapse; margin-top:1rem;">
-          <thead>
-            <tr>
-              <th style="border:1px solid #ccc; padding:0.5rem">#</th>
-              <th style="border:1px solid:#ccc; padding:0.5rem">FL (psi)</th>
-              <th style="border:1px solid:#ccc; padding:0.5rem">NP (psi)</th>
-              <th style="border:1px solid:#ccc; padding:0.5rem">PDP (psi)</th>
-            </tr>
-          </thead>
-          <tbody></tbody>
-        </table>
+      <table id="fl-results" style="width:100%; border-collapse:collapse; margin-top:1rem;">
+        <thead>
+          <tr>
+            <th style="border:1px solid #ccc;padding:0.5rem;">#</th>
+            <th style="border:1px solid #ccc;padding:0.5rem;">FL (psi)</th>
+            <th style="border:1px solid #ccc;padding:0.5rem;">NP (psi)</th>
+            <th style="border:1px solid #ccc;padding:0.5rem;">PDP (psi)</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+
+    </div>
+  </details>
+
+  <!-- 2) Fire-Flow Calculator -->
+  <details>
+    <summary>🔥 Fire-Flow Calculator</summary>
+    <div style="padding:1rem; background:#f9f9f9; border:1px solid #ddd; border-radius:4px;">
+
+      <p>Use <em>FF = (L × W) / 3 × Floors</em> to estimate required GPM.</p>
+      <div style="display:flex; gap:0.5rem; flex-wrap:wrap; align-items:center;">
+        <input type="number" id="ff-length" placeholder="Length (ft)" style="width:5rem;" />
+        <input type="number" id="ff-width"  placeholder="Width (ft)"  style="width:5rem;" />
+        <input type="number" id="ff-floors" placeholder="Floors"    style="width:4rem;" />
+        <button id="calc-ff">Calc FF</button>
       </div>
-    </details>
+      <p id="ff-output" style="margin-top:1rem;font-weight:600;"></p>
 
-    <h3>3. Fire Flow Calculator</h3>
-    <p>Estimate required fire flow:<br><strong>Fire Flow (GPM) = k × √(Building Area)</strong>, where <strong>k</strong> depends on occupancy:</p>
-    <ul>
-      <li>Light hazard (homes): k = 0.1</li>
-      <li>Ordinary hazard (offices, stores): k = 0.2</li>
-      <li>Extra hazard (factories, warehouses): k = 0.3</li>
-    </ul>
-    <form id="ff-form" style="display:flex; gap:0.8rem; flex-wrap:wrap; margin-top:0.5rem;">
-      <input type="number" id="ff-length" placeholder="Length (ft)" style="width:6rem;">
-      <input type="number" id="ff-width" placeholder="Width (ft)" style="width:6rem;">
-      <select id="ff-occupancy" style="width:8rem;">
-        <option value="0.1">Light</option>
-        <option value="0.2">Ordinary</option>
-        <option value="0.3">Extra</option>
-      </select>
-      <button type="button" id="calc-ff" class="button">Calc Fire Flow</button>
-    </form>
-    <p id="ff-result" style="margin-top:1rem;"></p>
-  </div>
+    </div>
+  </details>
+
+  <p style="margin-top:1rem;font-size:0.9rem;color:#555;">
+    <strong>Refs:</strong><br>
+    – Pumping & Apparatus Driver/Operator NFPA Essentials Ch 3–4<br>
+    – Fireground Driver/Operator Essentials 7e Ch 16<br>
+    – Company Officer 6e Ch 10
+  </p>
 
   <script>
   (function(){
-    // Friction Loss Calculator
-    const form = document.getElementById('fl-form');
-    document.getElementById('add-line').onclick = () => {
+    // --- Friction-Loss & PDP ---
+    const form = document.getElementById('fl-form'),
+          addBtn = document.getElementById('add-line'),
+          calcBtn = document.getElementById('calc-fl'),
+          tbody  = document.querySelector('#fl-results tbody');
+
+    // Add & Remove rows
+    function bindRemove(btn){
+      btn.onclick = ()=> btn.closest('.fl-row').remove();
+    }
+    form.querySelectorAll('.remove-line').forEach(bindRemove);
+    addBtn.onclick = ()=>{
       const row = form.querySelector('.fl-row').cloneNode(true);
       row.querySelectorAll('input').forEach(i=>i.value='');
       form.appendChild(row);
-      row.querySelector('.remove-line').addEventListener('click',()=>row.remove());
+      bindRemove(row.querySelector('.remove-line'));
     };
-    document.getElementById('calc-all').onclick = ()=>{
-      const rows = form.querySelectorAll('.fl-row');
-      const tbody = document.querySelector('#fl-results tbody');
+
+    // Calculate
+    calcBtn.onclick = ()=>{
       tbody.innerHTML = '';
-      rows.forEach((r,i)=>{
-        const C = parseFloat(r.querySelector('.fl-hose').value);
-        const Q = parseFloat(r.querySelector('.fl-gpm').value);
-        const L = parseFloat(r.querySelector('.fl-len').value);
-        const NP = parseFloat(r.querySelector('.fl-np').value);
-        if(isNaN(C)||isNaN(Q)||isNaN(L)||isNaN(NP)) return;
-        const FL = (C * (Q/100)**2 * L).toFixed(1);
-        const PDP = (parseFloat(FL) + NP).toFixed(1);
-        tbody.insertAdjacentHTML('beforeend',
-          `<tr><td style="border:1px solid #ccc; padding:0.5rem;text-align:center;">${i+1}</td><td style="border:1px solid #ccc; padding:0.5rem;text-align:center;">${FL}</td><td style="border:1px solid #ccc; padding:0.5rem;text-align:center;">${NP}</td><td style="border:1px solid #ccc; padding:0.5rem;text-align:center;">${PDP}</td></tr>`
-        );
+      form.querySelectorAll('.fl-row').forEach((r,i)=>{
+        const C  = parseFloat(r.querySelector('.fl-hose').value),
+              Q  = parseFloat(r.querySelector('.fl-gpm').value),
+              L  = parseFloat(r.querySelector('.fl-len').value),
+              NP = parseFloat(r.querySelector('.fl-np').value);
+        if([C,Q,L,NP].some(x=>isNaN(x))) return;
+        const FL  = +(C * (Q/100)**2 * L).toFixed(1),
+              PDP = +(FL + NP).toFixed(1);
+        tbody.insertAdjacentHTML('beforeend', `
+          <tr>
+            <td style="border:1px solid #ccc;padding:0.5rem;text-align:center;">${i+1}</td>
+            <td style="border:1px solid #ccc;padding:0.5rem;text-align:center;">${FL}</td>
+            <td style="border:1px solid #ccc;padding:0.5rem;text-align:center;">${NP}</td>
+            <td style="border:1px solid #ccc;padding:0.5rem;text-align:center;">${PDP}</td>
+          </tr>
+        `);
       });
     };
 
-    // Fire Flow Calculator
+    // --- Fire-Flow ---
     document.getElementById('calc-ff').onclick = ()=>{
-      const L = parseFloat(document.getElementById('ff-length').value);
-      const W = parseFloat(document.getElementById('ff-width').value);
-      const k = parseFloat(document.getElementById('ff-occupancy').value);
-      const area = L*W;
-      if(isNaN(area)||area<=0){ alert('Enter valid dimensions.'); return; }
-      const ff = Math.ceil(k*Math.sqrt(area));
-      document.getElementById('ff-result').textContent = `Required Fire Flow: ${ff} GPM`;
+      const L = parseFloat(document.getElementById('ff-length').value),
+            W = parseFloat(document.getElementById('ff-width' ).value),
+            F = parseInt  (document.getElementById('ff-floors').value,10);
+      if([L,W,F].some(x=>isNaN(x)||x<=0)){
+        alert('Enter valid Length, Width and Floors.');
+        return;
+      }
+      const ff = Math.ceil((L * W) / 3 * F);
+      document.getElementById('ff-output').textContent = `Required Fire Flow: ${ff} GPM`;
     };
   })();
   </script>
-
-  <p class="references">SOP 500.01 | NFPA 1901 6.7 | Essentials 7e Ch 16</p>
 </section>
-
 
 
   <section id="aerial">
