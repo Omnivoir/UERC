@@ -280,39 +280,144 @@
   </section>
 
   <section id="pump">
-    <h2>🚒 Pump Operations</h2>
-    <details>
-      <summary>Engine Pumping & Pressure</summary>
-      <div class="details-content">
-        <ul>
-          <li>Calculate intake: pump PSI + static.</li>
-          <li>Friction loss formula: FL = C × (Q/100)<sup>2</sup> × (L/100).</li>
-          <li>Nozzle pressure: 50 psi (smooth bore), 100 psi (fog).</li>
-        </ul>
-        <div class="callout">
-          <strong>Company Officer 6e Ch 12:</strong> Use correct coefficient (C) per hose diameter; pre‑set throttle in volume mode.
-        </div>
-        <p class="references">
-          SOP 500.01 | NFPA 1901 6.7 | Essentials 7e Ch 16
-        </p>
+  <h2>🚒 Pump Operations</h2>
+
+  <!-- Handline & Appliance Friction-Loss Charts -->
+  <details>
+    <summary>Friction-Loss Coefficients & Charts</summary>
+    <div class="details-content">
+      <p>Use FL = C × (Q/100)<sup>2</sup> × (L/100).  Q = flow (gpm), L = hose length (ft), C = coefficient.</p>
+      <table style="width:100%; border-collapse:collapse; margin-top:1rem;">
+        <thead>
+          <tr>
+            <th style="border:1px solid #ccc; padding:0.5rem">Hose / Nozzle</th>
+            <th style="border:1px solid #ccc; padding:0.5rem">C-Factor</th>
+            <th style="border:1px solid #ccc; padding:0.5rem">Notes</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="border:1px solid #ccc; padding:0.5rem">1¾″ (150 gpm max)</td>
+            <td style="border:1px solid #ccc; padding:0.5rem">15.5</td>
+            <td style="border:1px solid #ccc; padding:0.5rem">Handline – smooth-bore or fog</td>
+          </tr>
+          <tr>
+            <td style="border:1px solid #ccc; padding:0.5rem">2½″ (250 gpm max)</td>
+            <td style="border:1px solid #ccc; padding:0.5rem">2.0</td>
+            <td style="border:1px solid #ccc; padding:0.5rem">Attack & supply line</td>
+          </tr>
+          <tr>
+            <td style="border:1px solid #ccc; padding:0.5rem">3″ LDH (500 gpm max)</td>
+            <td style="border:1px solid #ccc; padding:0.5rem">0.08</td>
+            <td style="border:1px solid #ccc; padding:0.5rem">Supply/relay hose</td>
+          </tr>
+          <tr>
+            <td style="border:1px solid #ccc; padding:0.5rem">5″ LDH (1000 gpm max)</td>
+            <td style="border:1px solid #ccc; padding:0.5rem">0.02</td>
+            <td style="border:1px solid #ccc; padding:0.5rem">Supply/relay hose</td>
+          </tr>
+          <tr>
+            <td style="border:1px solid #ccc; padding:0.5rem">Smooth-bore 1½″ tip</td>
+            <td style="border:1px solid #ccc; padding:0.5rem">50 psi NP</td>
+            <td style="border:1px solid #ccc; padding:0.5rem">Fixed NP</td>
+          </tr>
+          <tr>
+            <td style="border:1px solid #ccc; padding:0.5rem">Fog & master stream</td>
+            <td style="border:1px solid #ccc; padding:0.5rem">100 psi NP</td>
+            <td style="border:1px solid #ccc; padding:0.5rem">Variable gpm nozzles</td>
+          </tr>
+          <tr>
+            <td style="border:1px solid #ccc; padding:0.5rem">Deck gun / Aerial</td>
+            <td style="border:1px solid #ccc; padding:0.5rem">80–100 psi NP</td>
+            <td style="border:1px solid #ccc; padding:0.5rem">Fixed orifice</td>
+          </tr>
+        </tbody>
+      </table>
+      <p class="callout">
+        <strong>Example:</strong> 1¾″ @ 150 gpm over 200 ft → FL = 15.5×(150/100)<sup>2</sup>×(200/100) ≈ 70 psi.
+      </p>
+      <p class="references">
+        Essentials 7e Ch 16 | NFPA 1901 6.7
+      </p>
+    </div>
+  </details>
+
+  <!-- Fire Flow Calculator -->
+  <details>
+    <summary>🔥 Fire-Flow Calculator</summary>
+    <div class="details-content">
+      <p>Estimate needed flow: <em>Flow (gpm) = (Length × Width ÷ 3) × (Number of Stories)</em></p>
+      <div style="margin:1rem 0;">
+        <label>Length (ft): <input type="number" id="ffl-length" style="width:4rem"></label>
+        <label>Width (ft): <input type="number" id="ffl-width" style="width:4rem; margin-left:1rem;"></label>
+        <label>Stories: <input type="number" id="ffl-stories" style="width:3rem; margin-left:1rem;"></label>
+        <button onclick="calcFireFlow()" style="margin-left:1rem;">Calculate</button>
       </div>
-    </details>
-    <details>
-      <summary>Mobile Water Supply</summary>
-      <div class="details-content">
-        <ul>
-          <li>Relay: maintain 20 psi residual at attack engine.</li>
-          <li>Shuttle: fill/transport cycles, ensure fill site signage.</li>
-        </ul>
-        <div class="callout">
-          <strong>SOP 500.06:</strong> Standard fill operation—one tanker every 6 min to sustain 250 gpm for 10 min.
-        </div>
-        <p class="references">
-          Essentials 7e Ch 16 | NFPA 1901 6.8
-        </p>
+      <p>🔥 Required Flow: <strong id="ffl-result">—</strong> gpm</p>
+      <script>
+        function calcFireFlow(){
+          const L=+document.getElementById('ffl-length').value;
+          const W=+document.getElementById('ffl-width').value;
+          const S=+document.getElementById('ffl-stories').value;
+          if(L>0&&W>0&&S>0){
+            const flow=Math.round((L*W/3)*S);
+            document.getElementById('ffl-result').textContent=flow;
+          }
+        }
+      </script>
+      <p class="references">Essentials 7e Ch 13 | NFPA 1901 6.20</p>
+    </div>
+  </details>
+
+  <!-- Hose Friction-Loss & PDP Calculator -->
+  <details>
+    <summary>💧 Friction-Loss & PDP Calculator</summary>
+    <div class="details-content">
+      <div style="margin:1rem 0;">
+        <label>Hose Size:
+          <select id="fl-hose">
+            <option value="15.5">1¾″ (C=15.5)</option>
+            <option value="2.0">2½″ (C=2.0)</option>
+            <option value="0.08">3″ (C=0.08)</option>
+            <option value="0.02">5″ (C=0.02)</option>
+          </select>
+        </label>
+        <label style="margin-left:1rem;">Flow (gpm): <input type="number" id="fl-gpm" style="width:5rem"></label>
+        <label style="margin-left:1rem;">Length (ft): <input type="number" id="fl-len" style="width:5rem"></label>
+        <button onclick="calcFL()" style="margin-left:1rem;">Go</button>
       </div>
-    </details>
-  </section>
+      <p>⚙️ Friction Loss: <strong id="fl-loss">—</strong> psi</p>
+      <p>🚒 PDP (NP + FL): <strong id="fl-pdp">—</strong> psi</p>
+      <script>
+        function calcFL(){
+          const C=+document.getElementById('fl-hose').value;
+          const Q=+document.getElementById('fl-gpm').value;
+          const L=+document.getElementById('fl-len').value;
+          const NP = (C>0 && C<3)?50:100; /* assume smooth-bore vs fog/master */
+          const FL = (C * (Q/100)**2 * (L/100)).toFixed(1);
+          document.getElementById('fl-loss').textContent=FL;
+          document.getElementById('fl-pdp').textContent=(+FL + NP).toFixed(1);
+        }
+      </script>
+      <p class="references">Essentials 7e Ch 16 | NFPA 1901 6.7</p>
+    </div>
+  </details>
+
+  <!-- Master Streams & Aerial Tips -->
+  <details>
+    <summary>🌊 Master Streams & Aerial Ops</summary>
+    <div class="details-content">
+      <ul>
+        <li><strong>Deck Gun:</strong> 500 – 1250 gpm @ 80 psi NP</li>
+        <li><strong>Aerial Master:</strong> 750 – 2000 gpm @ 100 psi NP</li>
+        <li><strong>Aerial Placement:</strong> Level within 5°; monitor aerial intake gauge for cavitation.</li>
+        <li><strong>Pressure Gauge:</strong> Keep aerial tip flow within ±5 psi of NP.</li>
+      </ul>
+      <p class="references">Essentials 7e Ch 13 | NFPA 1901 7.5 & 7.6</p>
+    </div>
+  </details>
+</section>
+
 
   <section id="aerial">
     <h2>🛗 Aerial Operations</h2>
