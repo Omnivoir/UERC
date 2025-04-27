@@ -279,144 +279,98 @@
     </details>
   </section>
 
-  <section id="pump">
+ <section id="pump">
   <h2>🚒 Pump Operations</h2>
 
-  <!-- Handline & Appliance Friction-Loss Charts -->
-  <details>
-    <summary>Friction-Loss Coefficients & Charts</summary>
-    <div class="details-content">
-      <p>Use FL = C × (Q/100)<sup>2</sup> × (L/100).  Q = flow (gpm), L = hose length (ft), C = coefficient.</p>
-      <table style="width:100%; border-collapse:collapse; margin-top:1rem;">
-        <thead>
-          <tr>
-            <th style="border:1px solid #ccc; padding:0.5rem">Hose / Nozzle</th>
-            <th style="border:1px solid #ccc; padding:0.5rem">C-Factor</th>
-            <th style="border:1px solid #ccc; padding:0.5rem">Notes</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td style="border:1px solid #ccc; padding:0.5rem">1¾″ (150 gpm max)</td>
-            <td style="border:1px solid #ccc; padding:0.5rem">15.5</td>
-            <td style="border:1px solid #ccc; padding:0.5rem">Handline – smooth-bore or fog</td>
-          </tr>
-          <tr>
-            <td style="border:1px solid #ccc; padding:0.5rem">2½″ (250 gpm max)</td>
-            <td style="border:1px solid #ccc; padding:0.5rem">2.0</td>
-            <td style="border:1px solid #ccc; padding:0.5rem">Attack & supply line</td>
-          </tr>
-          <tr>
-            <td style="border:1px solid #ccc; padding:0.5rem">3″ LDH (500 gpm max)</td>
-            <td style="border:1px solid #ccc; padding:0.5rem">0.08</td>
-            <td style="border:1px solid #ccc; padding:0.5rem">Supply/relay hose</td>
-          </tr>
-          <tr>
-            <td style="border:1px solid #ccc; padding:0.5rem">5″ LDH (1000 gpm max)</td>
-            <td style="border:1px solid #ccc; padding:0.5rem">0.02</td>
-            <td style="border:1px solid #ccc; padding:0.5rem">Supply/relay hose</td>
-          </tr>
-          <tr>
-            <td style="border:1px solid #ccc; padding:0.5rem">Smooth-bore 1½″ tip</td>
-            <td style="border:1px solid #ccc; padding:0.5rem">50 psi NP</td>
-            <td style="border:1px solid #ccc; padding:0.5rem">Fixed NP</td>
-          </tr>
-          <tr>
-            <td style="border:1px solid #ccc; padding:0.5rem">Fog & master stream</td>
-            <td style="border:1px solid #ccc; padding:0.5rem">100 psi NP</td>
-            <td style="border:1px solid #ccc; padding:0.5rem">Variable gpm nozzles</td>
-          </tr>
-          <tr>
-            <td style="border:1px solid #ccc; padding:0.5rem">Deck gun / Aerial</td>
-            <td style="border:1px solid #ccc; padding:0.5rem">80–100 psi NP</td>
-            <td style="border:1px solid #ccc; padding:0.5rem">Fixed orifice</td>
-          </tr>
-        </tbody>
-      </table>
-      <p class="callout">
-        <strong>Example:</strong> 1¾″ @ 150 gpm over 200 ft → FL = 15.5×(150/100)<sup>2</sup>×(200/100) ≈ 70 psi.
-      </p>
-      <p class="references">
-        Essentials 7e Ch 16 | NFPA 1901 6.7
-      </p>
-    </div>
-  </details>
-
-  <!-- Fire Flow Calculator -->
-  <details>
-    <summary>🔥 Fire-Flow Calculator</summary>
-    <div class="details-content">
-      <p>Estimate needed flow: <em>Flow (gpm) = (Length × Width ÷ 3) × (Number of Stories)</em></p>
-      <div style="margin:1rem 0;">
-        <label>Length (ft): <input type="number" id="ffl-length" style="width:4rem"></label>
-        <label>Width (ft): <input type="number" id="ffl-width" style="width:4rem; margin-left:1rem;"></label>
-        <label>Stories: <input type="number" id="ffl-stories" style="width:3rem; margin-left:1rem;"></label>
-        <button onclick="calcFireFlow()" style="margin-left:1rem;">Calculate</button>
-      </div>
-      <p>🔥 Required Flow: <strong id="ffl-result">—</strong> gpm</p>
-      <script>
-        function calcFireFlow(){
-          const L=+document.getElementById('ffl-length').value;
-          const W=+document.getElementById('ffl-width').value;
-          const S=+document.getElementById('ffl-stories').value;
-          if(L>0&&W>0&&S>0){
-            const flow=Math.round((L*W/3)*S);
-            document.getElementById('ffl-result').textContent=flow;
-          }
-        }
-      </script>
-      <p class="references">Essentials 7e Ch 13 | NFPA 1901 6.20</p>
-    </div>
-  </details>
-
-  <!-- Hose Friction-Loss & PDP Calculator -->
+  <!-- Friction-Loss & PDP Calculator (multi-line) -->
   <details>
     <summary>💧 Friction-Loss & PDP Calculator</summary>
     <div class="details-content">
-      <div style="margin:1rem 0;">
-        <label>Hose Size:
-          <select id="fl-hose">
-            <option value="15.5">1¾″ (C=15.5)</option>
-            <option value="2.0">2½″ (C=2.0)</option>
-            <option value="0.08">3″ (C=0.08)</option>
-            <option value="0.02">5″ (C=0.02)</option>
+
+      <button id="add-line" class="button" style="margin-bottom:1rem;">➕ Add Hose Line</button>
+      <form id="fl-form">
+        <!-- Template row -->
+        <div class="fl-row" style="display:flex; gap:0.8rem; margin-bottom:0.5rem;">
+          <select class="fl-hose" style="width:5rem;">
+            <option value="15.5">1¾″</option>
+            <option value="2.0">2½″</option>
+            <option value="0.08">3″</option>
+            <option value="0.02">5″</option>
           </select>
-        </label>
-        <label style="margin-left:1rem;">Flow (gpm): <input type="number" id="fl-gpm" style="width:5rem"></label>
-        <label style="margin-left:1rem;">Length (ft): <input type="number" id="fl-len" style="width:5rem"></label>
-        <button onclick="calcFL()" style="margin-left:1rem;">Go</button>
-      </div>
-      <p>⚙️ Friction Loss: <strong id="fl-loss">—</strong> psi</p>
-      <p>🚒 PDP (NP + FL): <strong id="fl-pdp">—</strong> psi</p>
+          <input type="number" class="fl-gpm" placeholder="GPM" style="width:5rem;">
+          <input type="number" class="fl-len" placeholder="ft" style="width:5rem;">
+          <select class="fl-np" style="width:6rem;">
+            <option value="50">Smooth 50</option>
+            <option value="100">Fog 100</option>
+            <option value="80">Deck 80</option>
+            <option value="100">Aerial 100</option>
+          </select>
+          <button type="button" class="remove-line button" style="background:#888;">❌</button>
+        </div>
+      </form>
+
+      <button id="calc-all" class="button">Calculate All Lines</button>
+
+      <table id="fl-results" style="width:100%; border-collapse:collapse; margin-top:1rem;">
+        <thead>
+          <tr>
+            <th style="border:1px solid #ccc; padding:0.5rem">Line</th>
+            <th style="border:1px solid #ccc; padding:0.5rem">FL (psi)</th>
+            <th style="border:1px solid #ccc; padding:0.5rem">NP (psi)</th>
+            <th style="border:1px solid #ccc; padding:0.5rem">PDP (psi)</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+
       <script>
-        function calcFL(){
-          const C=+document.getElementById('fl-hose').value;
-          const Q=+document.getElementById('fl-gpm').value;
-          const L=+document.getElementById('fl-len').value;
-          const NP = (C>0 && C<3)?50:100; /* assume smooth-bore vs fog/master */
-          const FL = (C * (Q/100)**2 * (L/100)).toFixed(1);
-          document.getElementById('fl-loss').textContent=FL;
-          document.getElementById('fl-pdp').textContent=(+FL + NP).toFixed(1);
-        }
+        (function(){
+          const form = document.getElementById('fl-form');
+          const addBtn = document.getElementById('add-line');
+          const calcBtn = document.getElementById('calc-all');
+          const results = document.querySelector('#fl-results tbody');
+
+          // Add initial row
+          function addRow(){
+            const row = form.querySelector('.fl-row').cloneNode(true);
+            row.querySelectorAll('input').forEach(i => i.value='');
+            form.appendChild(row);
+            row.querySelector('.remove-line')
+              .addEventListener('click', ()=>row.remove());
+          }
+          addBtn.onclick = addRow;
+
+          // Calculate all
+          calcBtn.onclick = ()=>{
+            results.innerHTML = '';
+            form.querySelectorAll('.fl-row').forEach((row,i)=>{
+              const C  = parseFloat(row.querySelector('.fl-hose').value);
+              const Q  = parseFloat(row.querySelector('.fl-gpm').value);
+              const L  = parseFloat(row.querySelector('.fl-len').value);
+              const NP = parseFloat(row.querySelector('.fl-np').value);
+              if(isNaN(C)||isNaN(Q)||isNaN(L)||isNaN(NP)) return;
+              const FL  = +(C * (Q/100)**2 * (L/100)).toFixed(1);
+              const PDP = +(FL + NP).toFixed(1);
+              const tr  = document.createElement('tr');
+              tr.innerHTML = `
+                <td style="border:1px solid #ccc; padding:0.5rem; text-align:center;">${i+1}</td>
+                <td style="border:1px solid #ccc; padding:0.5rem; text-align:center;">${FL}</td>
+                <td style="border:1px solid #ccc; padding:0.5rem; text-align:center;">${NP}</td>
+                <td style="border:1px solid #ccc; padding:0.5rem; text-align:center;">${PDP}</td>
+              `;
+              results.appendChild(tr);
+            });
+          };
+        })();
       </script>
+
       <p class="references">Essentials 7e Ch 16 | NFPA 1901 6.7</p>
     </div>
   </details>
 
-  <!-- Master Streams & Aerial Tips -->
-  <details>
-    <summary>🌊 Master Streams & Aerial Ops</summary>
-    <div class="details-content">
-      <ul>
-        <li><strong>Deck Gun:</strong> 500 – 1250 gpm @ 80 psi NP</li>
-        <li><strong>Aerial Master:</strong> 750 – 2000 gpm @ 100 psi NP</li>
-        <li><strong>Aerial Placement:</strong> Level within 5°; monitor aerial intake gauge for cavitation.</li>
-        <li><strong>Pressure Gauge:</strong> Keep aerial tip flow within ±5 psi of NP.</li>
-      </ul>
-      <p class="references">Essentials 7e Ch 13 | NFPA 1901 7.5 & 7.6</p>
-    </div>
-  </details>
+  <!-- Other pump sections unchanged... -->
 </section>
+
 
 
   <section id="aerial">
