@@ -177,18 +177,38 @@
 <section id="hazmat">
   <h2>☣️ Hazardous Materials Operations</h2>
 
+  <!-- 0) Pre-loaded Common HazMats for Planner -->
+  <datalist id="hz-list">
+    <!-- UN/NA # – Chemical Name -->
+    <option value="1203 - Gasoline">
+    <option value="1202 - Diesel Fuel">
+    <option value="1075 - Propane">
+    <option value="1005 - Anhydrous Ammonia">
+    <option value="1017 - Chlorine">
+    <option value="1830 - Sulfuric Acid">
+    <option value="1987 - Alcohols, n.o.s. (Ethanol)">
+    <option value="1823 - Sodium Hydroxide Solution">
+    <option value="1791 - Hypochlorite Solution (Bleach)">
+    <option value="1993 - Flammable Liquid, n.o.s.">
+    <option value="1170 - Ethylene Oxide">
+    <option value="2014 - Hydrogen Peroxide">
+    <option value="1063 - Aniline">
+    <option value="1090 - Acetone">
+    <option value="1977 - Nitric Acid">
+  </datalist>
+
   <!-- 1) Hazard ID & Response Planner -->
   <details open>
     <summary>Hazard ID & Response Planner</summary>
     <div style="padding:1rem;border:1px solid #ddd;background:#f9f9f9;">
-      <label for="hz-input">UN/NA # or Chemical Name:</label>
-      <input type="text" id="hz-input" placeholder="e.g. 1203 or chlorine" style="width:12rem">
+      <label for="hz-input">UN/NA # or Name:</label>
+      <input type="text" id="hz-input" list="hz-list" placeholder="Type or select…" style="width:14rem">
       <button id="hz-plan">Plan Response</button>
 
       <div id="hz-plan-out" style="margin-top:1rem;white-space:pre-wrap;"></div>
     </div>
     <p class="references">
-      <strong>Sources:</strong> ERG (public domain), NFPA 472, NFPA 1991, HFD SOP 1000.01
+      <strong>Sources:</strong> ERG (public domain), NFPA 472, NFPA 1991, HFD SOP 1000.01 :contentReference[oaicite:0]{index=0}&#8203;:contentReference[oaicite:1]{index=1}
     </p>
   </details>
 
@@ -197,13 +217,13 @@
     <summary>Isolation Distance Calculator</summary>
     <div style="padding:1rem;border:1px solid #ddd;background:#f9f9f9;">
       <p>Select Scenario:</p>
-      <label><input type="radio" name="iso-type" value="yellow" checked> Small Spill (Yellow)</label><br>
-      <label><input type="radio" name="iso-type" value="orange"> Large Spill/Fire (Orange)</label><br>
-      <label><input type="radio" name="iso-type" value="red"> Fire (Red)</label><br>
+      <label><input type="radio" name="iso-type" value="yellow" checked> Small Spill</label><br>
+      <label><input type="radio" name="iso-type" value="orange"> Large Spill / Fire</label><br>
+      <label><input type="radio" name="iso-type" value="red"> Fire</label><br>
       <button id="iso-calc">Calculate</button>
       <p id="iso-out" style="font-weight:600;margin-top:0.5rem;"></p>
     </div>
-    <p class="references"><strong>Sources:</strong> ERG 2024 Table 1-2
+    <p class="references"><strong>Sources:</strong> ERG 2024 Table 1-2 :contentReference[oaicite:2]{index=2}&#8203;:contentReference[oaicite:3]{index=3}</p>
   </details>
 
   <!-- 3) PPE Level Selector -->
@@ -216,7 +236,7 @@
           <option value="no" selected>No</option>
         </select>
       </label><br>
-      <label>Routes of Exposure:
+      <label>Route of Exposure:
         <select id="ppe-route">
           <option value="inhalation">Inhalation</option>
           <option value="skin">Skin Contact</option>
@@ -226,7 +246,7 @@
       <button id="ppe-go">Recommend PPE</button>
       <p id="ppe-out" style="font-weight:600;margin-top:0.5rem;"></p>
     </div>
-    <p class="references"><strong>Sources:</strong> NFPA 1991; NFPA 1992; HFD SOP 1000.01 </p>
+    <p class="references"><strong>Sources:</strong> NFPA 1991; NFPA 1992; HFD SOP 1000.01 :contentReference[oaicite:4]{index=4}&#8203;:contentReference[oaicite:5]{index=5}</p>
   </details>
 
   <!-- 4) Decontamination Flow Calculator -->
@@ -245,109 +265,9 @@
       <button id="decon-go">Calculate Water</button>
       <p id="decon-out" style="font-weight:600;margin-top:0.5rem;"></p>
     </div>
-    <p class="references"><strong>Sources:</strong> NFPA 1991 §6.3; HFD SOP 1000.02
+    <p class="references"><strong>Sources:</strong> NFPA 1991 §6.3; HFD SOP 1000.02 :contentReference[oaicite:6]{index=6}&#8203;:contentReference[oaicite:7]{index=7}</p>
   </details>
 </section>
-
-<script>
-(() => {
-  // --- chemicals database ---
-  const chems = {
-    "1203": {
-      name: "Gasoline",
-      guide: 128,
-      isolation: { yellow:25, orange:100, red:400 },
-      ppe: { idlh:"Level A suit + SCBA", inhalation:"Level C + gloves", skin:"Level B + SCBA", both:"Level B + SCBA" },
-      mitigation: "Keep away from ignition; use foam blanket; ventilate area.",
-      deconPerVictim: 15,
-      disposal: "Notify environmental agency; recover run-off."
-    },
-    "1017": {
-      name: "Chlorine",
-      guide: 112,
-      isolation: { yellow:100, orange:800, red:800 },
-      ppe: { idlh:"Level A suit + SCBA", inhalation:"Level A + SCBA", skin:"Level B + SCBA", both:"Level A + SCBA" },
-      mitigation: "Flood with water spray; avoid skin contact.",
-      deconPerVictim: 20,
-      disposal: "Neutralize with soda ash; contain in DOT drums."
-    },
-    "1005": {
-      name: "Ammonia",
-      guide: 125,
-      isolation: { yellow:50, orange:800, red:800 },
-      ppe: { idlh:"Level A suit + SCBA", inhalation:"Level C + SCBA", skin:"Level B + SCBA", both:"Level B + SCBA" },
-      mitigation: "Dilute vapors with water fog; control runoff.",
-      deconPerVictim: 15,
-      disposal: "Apply alkaline buffer; collect for hazardous waste."
-    },
-    "1830": {
-      name: "Sulfuric Acid",
-      guide: 157,
-      isolation: { yellow:25, orange:100, red:400 },
-      ppe: { idlh:"Level A suit + SCBA", inhalation:"Level C + respirator", skin:"Level B + SCBA", both:"Level B + SCBA" },
-      mitigation: "Contain with soda ash; neutralize slowly.",
-      deconPerVictim: 15,
-      disposal: "Collect in acid-resistant containers; label as hazardous waste."
-    }
-  };
-
-  // 1) Planner
-  document.getElementById('hz-plan').onclick = () => {
-    const raw = document.getElementById('hz-input').value.trim().toLowerCase();
-    const key = Object.keys(chems).find(k =>
-      k === raw || chems[k].name.toLowerCase() === raw
-    );
-    const out = document.getElementById('hz-plan-out');
-    if (!key) {
-      out.textContent = "Chemical not in database—consult ERG dropdown or PDF.";
-      return;
-    }
-    const c = chems[key];
-    out.textContent =
-`Name: ${c.name}
-UN/NA: ${key}
-ERG Guide: ${c.guide}
-Isolation → Yellow: ${c.isolation.yellow} m • Orange: ${c.isolation.orange} m • Red: ${c.isolation.red} m
-PPE Recommendations: 
-  • IDLH: ${c.ppe.idlh} 
-  • Inhalation-only: ${c.ppe.inhalation}
-  • Skin-only: ${c.ppe.skin}
-  • Both routes: ${c.ppe.both}
-Mitigation: ${c.mitigation}
-Gross Decon Flow: ${c.deconPerVictim} GPM per victim
-Disposal: ${c.disposal}`;
-  };
-
-  // 2) Isolation Distance
-  document.getElementById('iso-calc').onclick = () => {
-    const sel = document.querySelector('input[name="iso-type"]:checked').value;
-    const d = { yellow:25, orange:100, red:400 }[sel];
-    document.getElementById('iso-out').textContent =
-      `Isolation distance: ${d} m`;
-  };
-
-  // 3) PPE Selector
-  document.getElementById('ppe-go').onclick = () => {
-    const idlh = document.getElementById('ppe-idlh').value === 'yes';
-    const route = document.getElementById('ppe-route').value;
-    let rec = '';
-    if (idlh) rec = 'Level A suit + SCBA';
-    else if (route==='inhalation') rec = 'Level C respirator + gloves';
-    else if (route==='skin') rec = 'Level B splash suit + SCBA';
-    else rec = 'Level B suit + SCBA';
-    document.getElementById('ppe-out').textContent = rec;
-  };
-
-  // 4) Decon Flow
-  document.getElementById('decon-go').onclick = () => {
-    const v = +document.getElementById('decon-vics').value || 1;
-    const lvl = document.getElementById('decon-level').value;
-    const rate = lvl==='A'?20: lvl==='B'?15:10;
-    document.getElementById('decon-out').textContent =
-      `Need ${v*rate} GPM total for ${v} victim(s) at Level ${lvl}`;
-  };
-})();
-</script>
 
 
 
