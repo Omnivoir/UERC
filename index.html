@@ -174,197 +174,92 @@
     </details>
   </section>
 
+<!-- ERG & HazMat Lookup Section -->
+<section id="erg-section">
+  <h2>📘 Emergency Response Guidebook (ERG) 2024</h2>
+  <a class="button" href="/assets/ERG2024-Eng-Web-a.pdf" target="_blank">
+    View full ERG PDF
+  </a>
+  <div class="pdf-container">
+    <iframe
+      src="/assets/ERG2024-Eng-Web-a.pdf#view=FitH"
+      title="ERG 2024 PDF"
+    ></iframe>
+  </div>
+</section>
+
 <section id="hazmat">
-  <h2>☣️ Hazardous Materials Operations</h2>
-
-  <!-- 0) Preloaded HazMat List -->
-  <datalist id="hz-list">
-    <option value="1001 - Acetylene, dissolved">
-    <option value="1005 - Anhydrous Ammonia">
-    <option value="1010 - Sulfur Dioxide, Refrigerated Liquid">
-    <option value="1017 - Chlorine">
-    <option value="1035 - Ethylene Oxide">
-    <option value="1060 - Ethanol, Anhydrous">
-    <option value="1075 - Liquefied Petroleum Gas (Propane)">
-    <option value="1086 - Acetaldehyde Solution">
-    <option value="1090 - Acetone">
-    <option value="1105 - Hexane">
-    <option value="1202 - Diesel Fuel">
-    <option value="1203 - Gasoline">
-    <option value="1204 - Heptane">
-    <option value="1219 - Isopropanol">
-    <option value="1223 - Kerosene">
-    <option value="1263 - Paint, Flammable">
-    <option value="1325 - Benzene">
-    <option value="1333 - Sulfuric Acid">
-    <option value="1402 - Hydrogen Peroxide, Aqueous">
-    <option value="1500 - Methyl Ethyl Ketone">
-    <option value="1791 - Hypochlorite Solutions">
-    <option value="1992 - Alcohols, n.o.s.">
-    <option value="1993 - Flammable Liquids, n.o.s.">
-    <option value="2014 - Organophosphorus Pesticides">
-    <option value="2067 - Metal Nitrates, Aqueous Solutions">
-    <option value="2219 - Organic Peroxide, Type D">
-    <option value="2491 - Herbicides, Liquid, Toxic">
-    <option value="2632 - Nitric Acid">
-    <option value="2902 - Infectious Substances, Affecting Humans">
-    <option value="2977 - Ammonium Nitrate Mixtures">
-    <option value="2978 - Ammonium Nitrate, Fertilizer Grade">
-    <option value="3077 - Environmentally Hazardous Substances, Solid, n.o.s.">
-    <option value="3082 - Environmentally Hazardous Substances, Liquid, n.o.s.">
-    <option value="3149 - Sodium Cyanide">
-    <option value="3171 - Sodium Hydroxide, Solid">
-    <option value="3257 - Elevated Temperature Liquid, n.o.s.">
-    <option value="3264 - Corrosive Liquid, Acidic, Inorganic, n.o.s.">
-    <option value="3266 - Corrosive Liquid, Basic, Inorganic, n.o.s.">
-    <option value="3507 - Radioactive Material, Type A, Excepted Package">
-    <option value="3535 - Luminizing Compound, Solid">
-  </datalist>
-
-  <!-- 1) Hazard ID & Response Planner -->
-  <details open>
-    <summary>Hazard ID & Response Planner</summary>
-    <div style="padding:1rem;border:1px solid #ddd;background:#f9f9f9;">
-      <label for="hz-input">UN/NA # or Name:</label><br>
-      <input type="text" id="hz-input" list="hz-list"
-             placeholder="Start typing… (e.g. 1203)" style="width:18rem;margin-top:0.5rem">
-      <button id="hz-plan" style="margin-left:0.5rem">Plan Response</button>
-      <div id="hz-plan-out" style="margin-top:1rem;white-space:pre-wrap;font-family:monospace;"></div>
-    </div>
-    <p class="references">
-      <strong>Sources:</strong> ERG 2024 (public domain), NFPA 472, NFPA 1991 :contentReference[oaicite:0]{index=0}&#8203;:contentReference[oaicite:1]{index=1}
-    </p>
-  </details>
-
-  <!-- 2) Isolation Distance Calculator -->
-  <details>
-    <summary>Isolation Distance Calculator</summary>
-    <div style="padding:1rem;border:1px solid #ddd;background:#f9f9f9;">
-      <p>Choose your scenario:</p>
-      <label><input type="radio" name="iso-type" value="yellow" checked> Small Spill (Yellow)</label><br>
-      <label><input type="radio" name="iso-type" value="orange"> Large Spill/Fire (Orange)</label><br>
-      <label><input type="radio" name="iso-type" value="red"> Fire (Red)</label><br>
-      <button id="iso-calc" style="margin-top:0.5rem">Calculate Isolation</button>
-      <p id="iso-out" style="font-weight:600;margin-top:0.5rem;"></p>
-    </div>
-    <p class="references">
-      <strong>Source:</strong> ERG 2024 Table 1-2 :contentReference[oaicite:2]{index=2}&#8203;:contentReference[oaicite:3]{index=3}
-    </p>
-  </details>
+  <h2>☣️ Hazardous Materials Lookup</h2>
+  <div style="padding:1rem;border:1px solid #ddd;background:#f9f9f9;">
+    <label for="hz-input">Enter UN/NA # or Name:</label><br>
+    <input
+      type="text"
+      id="hz-input"
+      placeholder="e.g. 1203 or Gasoline"
+      style="width:18rem;margin-top:0.5rem"
+    >
+    <button id="hz-go" style="margin-left:0.5rem">Lookup</button>
+    <pre id="hz-output" style="margin-top:1rem;white-space:pre-wrap;font-family:monospace;"></pre>
+  </div>
+  <p class="references">
+    <strong>Source:</strong> 2024 Emergency Response Guidebook (ERG)
+  </p>
 </section>
 
 <script>
-// ─── HazMat Section Script ─────────────────────────────────────────────────────
-console.log("🔬 HazMat script loaded");
-
-document.addEventListener("DOMContentLoaded", () => {
-  console.log("✅ HazMat DOM ready");
-
-  // Partial database—extend this object for every UN/NA in the datalist
-  const chems = {
-    "1001": {
-      name: "Acetylene, dissolved",
-      guide: "116",
-      isolation: { yellow: "15–30", orange: "800", red: "800" },
-      ppe: {
-        idlh: "SCBA + Level A suit",
-        inhalation: "SCBA + splash suit",
-        skin: "Chem-resistant suit",
-        both: "SCBA + chem suit"
-      },
-      mitigation: "Eliminate ignition; vent outdoors; use dry chem extinguisher.",
-      deconPerVictim: 50,
-      disposal: "Vent cylinders in well-ventilated area; return to supplier."
-    },
+  // --- ERG INDEX: populate with UN/NA keys and ERG data ---
+  const ergIndex = {
     "1005": {
       name: "Anhydrous Ammonia",
-      guide: "133",
+      guide: "125",
       isolation: { yellow: "25–75", orange: "800", red: "800" },
-      ppe: {
-        idlh: "SCBA + Level A",
-        inhalation: "SCBA + jacket",
-        skin: "Nitrile suit",
-        both: "SCBA + nitrile"
-      },
-      mitigation: "Shut off valve; water spray to disperse vapor.",
-      deconPerVictim: 50,
-      disposal: "Notify hazmat team; collect runoff."
+      protectiveActions: "Shut off valve; water spray to disperse vapor; isolate downwind per Table 1.",
+      firstAid: "Move victim to fresh air; treat for inhalation."
     },
     "1017": {
       name: "Chlorine",
       guide: "124",
       isolation: { yellow: "30–50", orange: "800", red: "800" },
-      ppe: {
-        idlh: "SCBA + Level A",
-        inhalation: "SCBA + splash suit",
-        skin: "Chem suit",
-        both: "SCBA + chem suit"
-      },
-      mitigation: "Water spray curtain; avoid breathing vapor.",
-      deconPerVictim: 50,
-      disposal: "Contain runoff; notify environmental agency."
+      protectiveActions: "Water spray curtain; avoid breathing vapor; isolate downwind per Table 1.",
+      firstAid: "Flush eyes/skin with water; move to fresh air."
     },
     "1203": {
       name: "Gasoline",
       guide: "128",
       isolation: { yellow: "25–75", orange: "800", red: "800" },
-      ppe: {
-        idlh: "SCBA + Level A",
-        inhalation: "SCBA + splash suit",
-        skin: "Chem suit",
-        both: "SCBA + chem suit"
-      },
-      mitigation: "Eliminate ignition; dike with foam; use AFFF.",
-      deconPerVictim: 50,
-      disposal: "Absorb with inert material; dispose as flammable waste."
-    },
-    // …add remaining UN/NA entries here…
+      protectiveActions: "Eliminate ignition; dike with foam; use AFFF; isolate per Table 1.",
+      firstAid: "Remove contaminated clothing; flush skin with water."
+    }
+    // …add additional UN/NA entries here…
   };
 
-  // Plan Response
-  document.getElementById("hz-plan").addEventListener("click", () => {
-    console.log("🔘 Plan Response clicked");
-    const raw = document.getElementById("hz-input").value.trim();
-    const key = raw.includes(" - ") ? raw.split(" - ")[0] : raw;
-    const out = document.getElementById("hz-plan-out");
-    const c = chems[key];
-    if (!c) {
-      out.textContent = "⚠️ Chemical not in database—consult the full ERG.";
+  document.getElementById('hz-go').addEventListener('click', () => {
+    const raw = document.getElementById('hz-input').value.trim();
+    const key = raw.includes(' ') && raw[0].match(/\d/) ? raw.split(' ')[0] : raw;
+    const entry = ergIndex[key];
+    const out = document.getElementById('hz-output');
+    if (!entry) {
+      out.textContent = '⚠️ UN/NA not found. Please check your entry.';
       return;
     }
     out.textContent =
-`Name: ${c.name}
+`Name: ${entry.name}
 UN/NA: ${key}
-ERG Guide: ${c.guide}
+ERG Guide: ${entry.guide}
 
-Isolation → Small Spill (Yellow): ${c.isolation.yellow} m
-          Large Spill/Fire (Orange & Red): ${c.isolation.orange} m
+Initial Isolation Distances:
+ • Small spill (Yellow): ${entry.isolation.yellow} m
+ • Large spill (Orange): ${entry.isolation.orange} m
+ • Fire (Red):             ${entry.isolation.red} m
 
-PPE Recommendations:
- • IDLH:      ${c.ppe.idlh}
- • Inhalation:${c.ppe.inhalation}
- • Skin-only: ${c.ppe.skin}
- • Both:      ${c.ppe.both}
+Protective Actions:
+  ${entry.protectiveActions}
 
-Mitigation Tactics:
-  ${c.mitigation}
-
-Gross Decon Rate:
-  ${c.deconPerVictim} GPM/victim
-
-Disposal:
-  ${c.disposal}`;
+First Aid:
+  ${entry.firstAid}`;
   });
-
-  // Isolation Calculator
-  document.getElementById("iso-calc").addEventListener("click", () => {
-    console.log("🔘 Isolation Calculate clicked");
-    const t = document.querySelector('input[name="iso-type"]:checked').value;
-    const dist = { yellow: "25–75 m", orange: "800 m", red: "800 m" }[t];
-    document.getElementById("iso-out").textContent = `Recommended Isolation: ${dist}`;
-  });
-});
 </script>
+
 
 
 
