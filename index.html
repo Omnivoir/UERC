@@ -282,14 +282,75 @@
 <section id="pump-ops">
   <h2>🚒 Pump Operations</h2>
 
-  <!-- 1) Friction-Loss & PDP Calculator -->
+  <!-- QUICK REFERENCE CHART -->
+  <table style="width:100%;border-collapse:collapse;margin-bottom:1rem;">
+    <thead>
+      <tr>
+        <th style="border:1px solid #ccc;padding:0.5rem">Device</th>
+        <th style="border:1px solid:#ccc;padding:0.5rem">Coef C<br>(ψ/100 ft @ 100 gpm)</th>
+        <th style="border:1px solid:#ccc;padding:0.5rem">Nozzle NP (ψ)</th>
+        <th style="border:1px solid:#ccc;padding:0.5rem">Appliance FL* (ψ)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="border:1px solid:#ccc;padding:0.5rem">1¾″ Attack Hose</td>
+        <td style="border:1px solid:#ccc;padding:0.5rem;text-align:center;">15.5</td>
+        <td style="border:1px solid:#ccc;padding:0.5rem;text-align:center;">50 / 100</td>
+        <td style="border:1px solid:#ccc;padding:0.5rem;">
+          Siamese (2.5″): 10<br>
+          Gated wye (2.5″): 10<br>
+          1.5″ Ball Valve: 10<br>
+          Strainer: 5
+        </td>
+      </tr>
+      <tr>
+        <td style="border:1px solid:#ccc;padding:0.5rem">2½″ Supply Hose</td>
+        <td style="border:1px solid:#ccc;padding:0.5rem;text-align:center;">2.0</td>
+        <td style="border:1px solid:#ccc;padding:0.5rem;text-align:center;">50 / 100</td>
+        <td style="border:1px solid:#ccc;padding:0.5rem;"></td>
+      </tr>
+      <tr>
+        <td style="border:1px solid:#ccc;padding:0.5rem">3″ Large-Dia Hose</td>
+        <td style="border:1px solid:#ccc;padding:0.5rem;text-align:center;">0.08</td>
+        <td style="border:1px solid:#ccc;padding:0.5rem;text-align:center;">50 / 100</td>
+        <td style="border:1px solid:#ccc;padding:0.5rem;"></td>
+      </tr>
+      <tr>
+        <td style="border:1px solid:#ccc;padding:0.5rem">5″ Supply Hose</td>
+        <td style="border:1px solid:#ccc;padding:0.5rem;text-align:center;">0.02</td>
+        <td style="border:1px solid:#ccc;padding:0.5rem;text-align:center;">—</td>
+        <td style="border:1px solid:#ccc;padding:0.5rem;"></td>
+      </tr>
+      <tr>
+        <td style="border:1px solid:#ccc;padding:0.5rem">Deck Gun Monitor</td>
+        <td style="border:1px solid:#ccc;padding:0.5rem;text-align:center;">—</td>
+        <td style="border:1px solid:#ccc;padding:0.5rem;text-align:center;">80</td>
+        <td style="border:1px solid:#ccc;padding:0.5rem;"></td>
+      </tr>
+      <tr>
+        <td style="border:1px solid:#ccc;padding:0.5rem">Aerial Master Stream</td>
+        <td style="border:1px solid:#ccc;padding:0.5rem;text-align:center;">—</td>
+        <td style="border:1px solid:#ccc;padding:0.5rem;text-align:center;">100</td>
+        <td style="border:1px solid:#ccc;padding:0.5rem;"></td>
+      </tr>
+    </tbody>
+    <tfoot>
+      <tr>
+        <td colspan="4" style="border:1px solid:#ccc;padding:0.5rem;font-size:0.85rem;">
+          *Appliance FL values are approximate—always verify with your pump manual.
+        </td>
+      </tr>
+    </tfoot>
+  </table>
+
+  <!-- 1) Friction-Loss & PDP -->
   <details>
     <summary>💧 Friction-Loss & PDP Calculator</summary>
-    <div style="padding:1rem; background:#f9f9f9; border:1px solid #ddd; border-radius:4px;">
+    <div style="padding:1rem;background:#f9f9f9;border:1px solid:#ddd;border-radius:4px;">
 
-      <!-- Input rows -->
-      <form id="fl-form" style="display:flex; flex-direction:column; gap:0.5rem; margin-bottom:1rem;">
-        <div class="fl-row" style="display:flex; gap:0.5rem;">
+      <form id="fl-form" style="display:flex;flex-direction:column;gap:0.5rem;margin-bottom:1rem;">
+        <div class="fl-row" style="display:flex;gap:0.5rem;">
           <select class="fl-hose" title="Hose size">
             <option value="15.5">1¾″</option>
             <option value="2.0">2½″</option>
@@ -297,7 +358,7 @@
             <option value="0.02">5″</option>
           </select>
           <input type="number" class="fl-gpm" placeholder="GPM" title="Flow (gpm)" />
-          <input type="number" class="fl-len" placeholder="Length (ft)" title="Hose length (ft)" />
+          <input type="number" class="fl-len" placeholder="Length (ft)" title="Length (ft)" />
           <select class="fl-np" title="Nozzle pressure">
             <option value="50">Smooth 50</option>
             <option value="100">Fog 100</option>
@@ -308,57 +369,53 @@
         </div>
       </form>
 
-      <button id="add-line" style="margin-bottom:1rem;">+ Add Section</button>
-      <button id="calc-fl" style="margin-left:0.5rem;">Calculate FL & PDP</button>
+      <button id="add-line" style="margin-right:0.5rem;">+ Add Section</button>
+      <button id="calc-fl">Calculate FL & PDP</button>
 
-      <table id="fl-results" style="width:100%; border-collapse:collapse; margin-top:1rem;">
+      <table id="fl-results" style="width:100%;border-collapse:collapse;margin-top:1rem;">
         <thead>
           <tr>
-            <th style="border:1px solid #ccc;padding:0.5rem;">#</th>
-            <th style="border:1px solid #ccc;padding:0.5rem;">FL (psi)</th>
-            <th style="border:1px solid #ccc;padding:0.5rem;">NP (psi)</th>
-            <th style="border:1px solid #ccc;padding:0.5rem;">PDP (psi)</th>
+            <th style="border:1px solid:#ccc;padding:0.5rem;">#</th>
+            <th style="border:1px solid:#ccc;padding:0.5rem;">FL (ψ)</th>
+            <th style="border:1px solid:#ccc;padding:0.5rem;">NP (ψ)</th>
+            <th style="border:1px solid:#ccc;padding:0.5rem;">PDP (ψ)</th>
           </tr>
         </thead>
         <tbody></tbody>
       </table>
-
     </div>
   </details>
 
-  <!-- 2) Fire-Flow Calculator -->
+  <!-- 2) Fire-Flow (unchanged) -->
   <details>
     <summary>🔥 Fire-Flow Calculator</summary>
-    <div style="padding:1rem; background:#f9f9f9; border:1px solid #ddd; border-radius:4px;">
-
-      <p>Use <em>FF = (L × W) / 3 × Floors</em> to estimate required GPM.</p>
-      <div style="display:flex; gap:0.5rem; flex-wrap:wrap; align-items:center;">
-        <input type="number" id="ff-length" placeholder="Length (ft)" style="width:5rem;" />
-        <input type="number" id="ff-width"  placeholder="Width (ft)"  style="width:5rem;" />
-        <input type="number" id="ff-floors" placeholder="Floors"    style="width:4rem;" />
+    <div style="padding:1rem;background:#f9f9f9;border:1px solid:#ddd;border-radius:4px;">
+      <p>FF = (Length × Width) ÷ 3 × Floors</p>
+      <div style="display:flex;gap:0.5rem;align-items:center;">
+        <input type="number" id="ff-length" placeholder="Length (ft)" style="width:5rem;">
+        <input type="number" id="ff-width"  placeholder="Width (ft)"  style="width:5rem;">
+        <input type="number" id="ff-floors" placeholder="Floors"    style="width:4rem;">
         <button id="calc-ff">Calc FF</button>
       </div>
       <p id="ff-output" style="margin-top:1rem;font-weight:600;"></p>
-
     </div>
   </details>
 
   <p style="margin-top:1rem;font-size:0.9rem;color:#555;">
     <strong>Refs:</strong><br>
-    – Pumping & Apparatus Driver/Operator NFPA Essentials Ch 3–4<br>
-    – Fireground Driver/Operator Essentials 7e Ch 16<br>
-    – Company Officer 6e Ch 10
+    Pump & Apparatus Driver/Operator NFPA Essentials Ch 3–4<br>
+    Fireground Driver/Operator Essentials 7e Ch 16<br>
+    Company Officer 6e Ch 10
   </p>
 
   <script>
   (function(){
-    // --- Friction-Loss & PDP ---
-    const form = document.getElementById('fl-form'),
+    // FRIC-LOSS
+    const form   = document.getElementById('fl-form'),
           addBtn = document.getElementById('add-line'),
-          calcBtn = document.getElementById('calc-fl'),
+          calcBtn= document.getElementById('calc-fl'),
           tbody  = document.querySelector('#fl-results tbody');
 
-    // Add & Remove rows
     function bindRemove(btn){
       btn.onclick = ()=> btn.closest('.fl-row').remove();
     }
@@ -369,8 +426,6 @@
       form.appendChild(row);
       bindRemove(row.querySelector('.remove-line'));
     };
-
-    // Calculate
     calcBtn.onclick = ()=>{
       tbody.innerHTML = '';
       form.querySelectorAll('.fl-row').forEach((r,i)=>{
@@ -379,34 +434,36 @@
               L  = parseFloat(r.querySelector('.fl-len').value),
               NP = parseFloat(r.querySelector('.fl-np').value);
         if([C,Q,L,NP].some(x=>isNaN(x))) return;
-        const FL  = +(C * (Q/100)**2 * L).toFixed(1),
+        // Corrected: length ÷ 100
+        const FL  = +(C * (Q/100)**2 * (L/100)).toFixed(1),
               PDP = +(FL + NP).toFixed(1);
         tbody.insertAdjacentHTML('beforeend', `
           <tr>
-            <td style="border:1px solid #ccc;padding:0.5rem;text-align:center;">${i+1}</td>
-            <td style="border:1px solid #ccc;padding:0.5rem;text-align:center;">${FL}</td>
-            <td style="border:1px solid #ccc;padding:0.5rem;text-align:center;">${NP}</td>
-            <td style="border:1px solid #ccc;padding:0.5rem;text-align:center;">${PDP}</td>
+            <td style="border:1px solid:#ccc;padding:0.5rem;text-align:center;">${i+1}</td>
+            <td style="border:1px solid:#ccc;padding:0.5rem;text-align:center;">${FL}</td>
+            <td style="border:1px solid:#ccc;padding:0.5rem;text-align:center;">${NP}</td>
+            <td style="border:1px solid:#ccc;padding:0.5rem;text-align:center;">${PDP}</td>
           </tr>
         `);
       });
     };
 
-    // --- Fire-Flow ---
+    // FIRE-FLOW (unchanged)
     document.getElementById('calc-ff').onclick = ()=>{
       const L = parseFloat(document.getElementById('ff-length').value),
-            W = parseFloat(document.getElementById('ff-width' ).value),
+            W = parseFloat(document.getElementById('ff-width').value),
             F = parseInt  (document.getElementById('ff-floors').value,10);
       if([L,W,F].some(x=>isNaN(x)||x<=0)){
         alert('Enter valid Length, Width and Floors.');
         return;
       }
-      const ff = Math.ceil((L * W) / 3 * F);
+      const ff = Math.ceil((L * W)/3 * F);
       document.getElementById('ff-output').textContent = `Required Fire Flow: ${ff} GPM`;
     };
   })();
   </script>
 </section>
+
 
 
   <section id="aerial">
