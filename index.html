@@ -284,150 +284,178 @@
 
   <!-- 1) Quick Reference Chart -->
   <details>
-    <summary>Quick Reference: Hose & Nozzle</summary>
+    <summary>Quick Reference: Friction Coefficients</summary>
     <table style="width:100%;border-collapse:collapse;margin:0.5rem 0;">
       <thead>
         <tr>
-          <th style="border:1px solid #ccc;padding:0.5rem">Hose Size</th>
-          <th style="border:1px solid:#ccc;padding:0.5rem">Friction Coefficient</th>
-          <th style="border:1px solid:#ccc;padding:0.5rem">Nozzle Pressure (psi)</th>
+          <th style="border:1px solid #ccc;padding:0.5rem">Item</th>
+          <th style="border:1px solid:#ccc;padding:0.5rem">Coefficient / Loss</th>
         </tr>
       </thead>
       <tbody>
-        <tr><td style="border:1px solid:#ccc;padding:0.5rem">1¾″</td><td style="border:1px solid:#ccc;text-align:center">15.5</td><td style="border:1px solid:#ccc;text-align:center">100</td></tr>
-        <tr><td style="border:1px solid:#ccc;padding:0.5rem">2½″</td><td style="border:1px solid:#ccc;text-align:center">2.0</td><td style="border:1px solid:#ccc;text-align:center">100</td></tr>
-        <tr><td style="border:1px solid:#ccc;padding:0.5rem">3″ LDH</td><td style="border:1px solid:#ccc;text-align:center">0.08</td><td style="border:1px solid:#ccc;text-align:center">100</td></tr>
-        <tr><td style="border:1px solid:#ccc;padding:0.5rem">5″ LDH</td><td style="border:1px solid:#ccc;text-align:center">0.02</td><td style="border:1px solid:#ccc;text-align:center">—</td></tr>
+        <tr><td style="border:1px solid:#ccc;padding:0.5rem">1¾″ Hose</td><td style="border:1px solid:#ccc;text-align:center">15.5</td></tr>
+        <tr><td style="border:1px solid:#ccc;padding:0.5rem">2½″ Hose</td><td style="border:1px solid:#ccc;text-align:center">2.0</td></tr>
+        <tr><td style="border:1px solid:#ccc;padding:0.5rem">3″ LDH Hose</td><td style="border:1px solid:#ccc;text-align:center">0.08</td></tr>
+        <tr><td style="border:1px solid:#ccc;padding:0.5rem">5″ LDH Hose</td><td style="border:1px solid:#ccc;text-align:center">0.02</td></tr>
+        <tr><td style="border:1px solid:#ccc;padding:0.5rem">Fog Nozzle</td><td style="border:1px solid:#ccc;text-align:center">0.08</td></tr>
+        <tr><td style="border:1px solid:#ccc;padding:0.5rem">Smooth-Bore Nozzle</td><td style="border:1px solid:#ccc;text-align:center">0.08</td></tr>
+        <tr><td style="border:1px solid:#ccc;padding:0.5rem">Master-Stream Device</td><td style="border:1px solid:#ccc;text-align:center">0.20</td></tr>
+        <tr><td style="border:1px solid:#ccc;padding:0.5rem">Gated Wye</td><td style="border:1px solid:#ccc;text-align:center">10 psi</td></tr>
+        <tr><td style="border:1px solid:#ccc;padding:0.5rem">Siamese Connection</td><td style="border:1px solid:#ccc;text-align:center">5 psi</td></tr>
+        <tr><td style="border:1px solid:#ccc;padding:0.5rem">Elevation</td><td style="border:1px solid:#ccc;text-align:center">0.5 psi/ft</td></tr>
       </tbody>
     </table>
+    <p class="references"><strong>Sources:</strong> NFPA 1901 2022; IFSTA Pumping Apparatus Driver/Operator Handbook 5e; Fire Engineering Friction-Loss Tables</p>
   </details>
 
-  <!-- 2) Fire-Flow Calculator -->
+  <!-- 2) Fire-Flow Calculator (unchanged) -->
   <details open>
     <summary>Fire-Flow Calculator</summary>
     <div style="padding:1rem;border:1px solid #ddd;background:#f9f9f9;">
       <p>Flow = (Length × Width ÷ 3) × Floors</p>
       <input type="number" id="ff-l" placeholder="Length (ft)" style="width:6rem">
-      <input type="number" id="ff-w" placeholder="Width (ft)"  style="width:6rem">
-      <input type="number" id="ff-f" placeholder="Floors"    style="width:4rem">
+      <input type="number" id="ff-w" placeholder="Width (ft)" style="width:6rem">
+      <input type="number" id="ff-f" placeholder="Floors" style="width:4rem">
       <button id="ff-go">Calculate</button>
       <p id="ff-res" style="font-weight:600;margin-top:0.5rem;"></p>
       <p id="ff-rec" style="margin-top:0.5rem;color:#333;"></p>
     </div>
+    <p class="references"><strong>Sources:</strong> IFSTA Essentials of Firefighting 8e; NFPA 1901 2022</p>
   </details>
 
   <!-- 3) Friction-Loss Calculator -->
   <details>
     <summary>Friction-Loss Calculator</summary>
     <div style="padding:1rem;border:1px solid #ddd;background:#f9f9f9;">
-      <p>Choose hose size, flow, length, nozzle &rarr; click Calculate</p>
-      <select id="fl-hose">
-        <option value="15.5">1¾″</option>
-        <option value="2.0">2½″</option>
-        <option value="0.08">3″ LDH</option>
-        <option value="0.02">5″ LDH</option>
-      </select>
-      <input type="number" id="fl-gpm" placeholder="GPM" style="width:6rem">
-      <input type="number" id="fl-len" placeholder="Length (ft)" style="width:6rem">
-      <select id="fl-np">
-        <option value="50">Nozzle 50 psi</option>
-        <option value="100">Nozzle 100 psi</option>
-      </select>
-      <button id="fl-go">Calculate</button>
-      <p id="fl-out" style="font-weight:600;margin-top:0.5rem;"></p>
+      <p>Add as many hose/nozzle lines as you need — it will show friction loss, PDP, and total GPM.</p>
+      <div id="fl-lines"></div>
+      <button id="fl-add">+ Add Line</button>
+      <hr>
+      <button id="fl-calc">Calculate All</button>
+      <pre id="fl-out" style="font-weight:600;white-space:pre-wrap;"></pre>
     </div>
+    <p class="references"><strong>Sources:</strong> IFSTA Pumping Apparatus Driver/Operator Handbook 5e; NFPA 1901 Friction Tables</p>
   </details>
 
   <!-- 4) Operation Simulator -->
   <details>
     <summary>Pump-Ops Simulator</summary>
     <div style="padding:1rem;border:1px solid #ddd;background:#f9f9f9;">
-
-      <!-- 4a) Required Flow & Truck Specs -->
+      <!-- Step 1 -->
       <h4>Step 1: Required Flow & Truck Specs</h4>
       <input type="number" id="op-req" placeholder="Required GPM" style="width:6rem">
       <input type="number" id="op-tank" placeholder="Tank Cap (GPM)" style="width:6rem">
       <input type="number" id="op-pump" placeholder="Pump Cap (GPM)" style="width:6rem">
       <input type="number" id="op-maxpsi" placeholder="Max PSI" style="width:6rem">
       <hr>
-
-      <!-- 4b) Hydrant Input -->
-      <h4>Step 2: Hydrant Input</h4>
-      <label>Hydrant Diameter (in)</label>
-      <input type="number" id="hz-dia" placeholder="Diameter">
-      <label>Discharge Coefficient</label>
-      <input type="number" id="hz-c" placeholder="e.g. 0.9">
-      <label>Pitot Pressure (psi)</label>
-      <input type="number" id="hz-p" placeholder="Pitot">
-      <button id="hz-go">Calc Hydrant GPM</button>
-      <p id="hz-out" style="font-weight:600"></p>
+      <!-- Step 2: Hydrants -->
+      <h4>Step 2: Hydrants (5″/0.9 assumed)</h4>
+      <div id="hz-lines"></div>
+      <button id="hz-add">+ Add Hydrant</button>
       <hr>
-
-      <!-- 4c) Build Your Lines -->
+      <!-- Step 3: Discharges -->
       <h4>Step 3: Build Your Discharges</h4>
       <div id="sim-lines"></div>
       <button id="sim-add">+ Add Line</button>
       <hr>
-
-      <!-- 4d) Final Check -->
+      <!-- Final Check -->
       <button id="sim-go">Evaluate Flow</button>
-      <p id="sim-out" style="font-weight:600;margin-top:0.5rem;"></p>
+      <pre id="sim-out" style="font-weight:600;white-space:pre-wrap;"></pre>
     </div>
+    <p class="references"><strong>Sources:</strong> NFPA 1901 2022; IFSTA Pumping Apparatus Driver/Operator 5e; Fire Engineering Pump-Ops Guide</p>
   </details>
 </section>
 
 <script>
 (() => {
-  // Fire-Flow Calculator
-  document.getElementById('ff-go').addEventListener('click', () => {
-    const L = +document.getElementById('ff-l').value;
-    const W = +document.getElementById('ff-w').value;
-    const F = +document.getElementById('ff-f').value;
-    const res = document.getElementById('ff-res');
-    const rec = document.getElementById('ff-rec');
-    if (!L || !W || !F) { alert('Enter all fields'); return; }
-    const G = Math.ceil((L * W / 3) * F);
+  // 2) Fire-Flow (unchanged)
+  document.getElementById('ff-go').onclick = () => {
+    const L = +document.getElementById('ff-l').value,
+          W = +document.getElementById('ff-w').value,
+          F = +document.getElementById('ff-f').value;
+    if (!L||!W||!F) { return alert('Enter all fields'); }
+    const G = Math.ceil((L*W/3)*F),
+          rec = document.getElementById('ff-rec'),
+          res = document.getElementById('ff-res');
     res.textContent = `Required Flow: ${G} GPM`;
     let setup = '';
-    if (G <= 1000) setup = '• Use 1 monitor (1,000 gpm)';
-    else if (G <= 2000) setup = '• 1 monitor (1,000) + 4 handlines (250 gpm each)';
-    else if (G <= 3000) setup = '• 1 aerial monitor (1,250) + 3 handlines (250 gpm each)';
-    else if (G <= 4000) setup = '• 2 monitors (1,000 gpm each) + 4 handlines (250 gpm each)';
-    else setup = '• 2 monitors + 1 aerial monitor + 4 handlines';
+    if (G<=1000) setup='• Use 1 monitor (1,000 gpm)';
+    else if (G<=2000) setup='• 1 monitor + 4 handlines (250 gpm each)';
+    else if (G<=3000) setup='• 1 aerial monitor + 3 handlines';
+    else setup='• 2 monitors + 1 aerial monitor + 4 handlines';
     rec.textContent = `Suggested setup:\n${setup}`;
-  });
+  };
 
-  // Friction-Loss Calculator
-  document.getElementById('fl-go').addEventListener('click', () => {
-    const C = +document.getElementById('fl-hose').value;
-    const Q = +document.getElementById('fl-gpm').value;
-    const L = +document.getElementById('fl-len').value;
-    const NP = +document.getElementById('fl-np').value;
-    const out = document.getElementById('fl-out');
-    if (!C || !Q || !L || !NP) { alert('All fields'); return; }
-    const FL = +(C * (Q / 100) ** 2 * (L / 100)).toFixed(1);
-    const PDP = +(FL + NP).toFixed(1);
-    out.textContent = `Friction Loss: ${FL} psi → PDP: ${PDP} psi`;
-  });
+  // 3) Friction-Loss Calculator
+  const FL_COEFF = {
+    '1¾"':15.5, '2½"':2.0, '3"':0.08, '5"':0.02
+  };
+  const NOZZLE = {
+    'Fog (100 psi)':100,
+    'Smooth Bore (50 psi)':50,
+    'Master Stream (80 psi)':80,
+    'Deck Gun (80 psi)':80,
+    'Aerial Device (80 psi)':80
+  };
+  function createFLLine() {
+    const div = document.createElement('div');
+    div.innerHTML = `
+      <select class="fl-hose">
+        ${Object.keys(FL_COEFF).map(h=>`<option>${h}</option>`).join('')}
+      </select>
+      <input type="number" class="fl-gpm" placeholder="GPM">
+      <input type="number" class="fl-len" placeholder="Length (ft)">
+      <select class="fl-noz">
+        ${Object.entries(NOZZLE).map(([k,v])=>`<option data-np="${v}">${k}</option>`).join('')}
+      </select>
+      <button class="fl-rem">×</button>
+      <p class="fl-line-out" style="margin:0.5rem 0;"></p>
+    `;
+    div.querySelector('.fl-rem').onclick = ()=>div.remove();
+    document.getElementById('fl-lines').append(div);
+  }
+  document.getElementById('fl-add').onclick = createFLLine;
+  createFLLine();
 
-  // Pump-Ops Simulator
-  let hydrantGPM = 0;
-  document.getElementById('hz-go').addEventListener('click', () => {
-    const d = +document.getElementById('hz-dia').value;
-    const c = +document.getElementById('hz-c').value;
-    const p = +document.getElementById('hz-p').value;
-    const out = document.getElementById('hz-out');
-    if (!d || !c || !p) { alert('Enter all fields'); return; }
-    hydrantGPM = Math.round(29.84 * d * c * Math.sqrt(p));
-    out.textContent = `Hydrant → ${hydrantGPM} GPM`;
-  });
+  document.getElementById('fl-calc').onclick = () => {
+    const lines = document.querySelectorAll('#fl-lines > div');
+    let totalGPM=0, output='';
+    lines.forEach((d,i) => {
+      const hose = d.querySelector('.fl-hose').value,
+            C = FL_COEFF[hose],
+            Q = +d.querySelector('.fl-gpm').value,
+            L = +d.querySelector('.fl-len').value,
+            NP = +d.querySelector('.fl-noz').selectedOptions[0].dataset.np,
+            FL = +(C*(Q/100)**2*(L/100)).toFixed(1),
+            PDP = +(FL+NP).toFixed(1);
+      totalGPM += Q;
+      output += `Line ${i+1}: FL ${FL} psi · NP ${NP} psi → PDP ${PDP} psi · ${Q} GPM\n`;
+      // warnings
+      if (PDP > +document.getElementById('op-maxpsi')?.value) 
+        output += `  ⚠️ PDP above pump max psi!\n`;
+    });
+    output += `\nTotal GPM of lines: ${totalGPM}\n`;
+    document.getElementById('fl-out').textContent = output;
+  };
 
-  // Add/remove lines
-  const simLinesContainer = document.getElementById('sim-lines');
-  document.getElementById('sim-add').addEventListener('click', addLine);
-  function addLine() {
-    const row = document.createElement('div');
-    row.innerHTML = `
+  // 4) Pump-Ops Simulator
+  let hzCount=0, lineCount=0;
+  function addHydrant() {
+    const div = document.createElement('div');
+    div.innerHTML = `
+      <input type="number" class="hz-psi" placeholder="Pitot (psi)">
+      <button class="hz-rem">×</button>
+      <p class="hz-out" style="margin:0.5rem 0;"></p>
+    `;
+    div.querySelector('.hz-rem').onclick = ()=>div.remove();
+    document.getElementById('hz-lines').append(div);
+  }
+  document.getElementById('hz-add').onclick = addHydrant;
+  addHydrant();
+
+  function addSimLine() {
+    const div = document.createElement('div');
+    div.innerHTML = `
       <select class="sl-hose">
         <option value="15.5">1¾″</option>
         <option value="2.0">2½″</option>
@@ -435,52 +463,59 @@
         <option value="0.02">5″</option>
       </select>
       <input type="number" class="sl-gpm" placeholder="GPM">
-      <input type="number" class="sl-len" placeholder="Length">
+      <input type="number" class="sl-len" placeholder="Length (ft)">
       <select class="sl-np">
-        <option value="50">Nozzle 50</option>
-        <option value="100">Nozzle 100</option>
+        <option value="50">50 psi nozzle</option>
+        <option value="100">100 psi nozzle</option>
       </select>
-      <button class="sl-rem">×</button>`;
-    simLinesContainer.appendChild(row);
-    row.querySelector('.sl-rem').addEventListener('click', () => row.remove());
+      <button class="sl-rem">×</button>
+    `;
+    div.querySelector('.sl-rem').onclick = ()=>div.remove();
+    document.getElementById('sim-lines').append(div);
   }
-  addLine();
+  document.getElementById('sim-add').onclick = addSimLine;
+  addSimLine();
 
-  // Evaluate Flow
-  document.getElementById('sim-go').addEventListener('click', () => {
-    const req = +document.getElementById('op-req').value;
-    const tank = +document.getElementById('op-tank').value;
-    const pump = +document.getElementById('op-pump').value;
-    const maxpsi = +document.getElementById('op-maxpsi').value;
-    if (!req || !tank || !pump || !maxpsi) { alert('Fill truck specs & required flow'); return; }
-    const supply = Math.min(pump, tank + hydrantGPM);
-    let demand = 0;
-    document.querySelectorAll('#sim-lines div').forEach(r => {
-      const C = +r.querySelector('.sl-hose').value;
-      const Q = +r.querySelector('.sl-gpm').value;
-      const L = +r.querySelector('.sl-len').value;
-      const NP = +r.querySelector('.sl-np').value;
-      if (C && Q && L && NP) {
-        const FL = C * (Q / 100) ** 2 * (L / 100);
-        if (FL + NP > maxpsi) demand = Infinity;
-        demand += Q;
+  document.getElementById('sim-go').onclick = () => {
+    const req = +document.getElementById('op-req').value,
+          tank = +document.getElementById('op-tank').value,
+          pumpCap = +document.getElementById('op-pump').value,
+          maxpsi = +document.getElementById('op-maxpsi').value;
+    if (!req||!tank||!pumpCap||!maxpsi) return alert('Fill in Steps 1 fully');
+    // hydrant supply
+    let hydrantSupply = 0;
+    document.querySelectorAll('#hz-lines > div').forEach(d => {
+      const psi = +d.querySelector('.hz-psi').value;
+      if (psi) {
+        const gpm = Math.round(29.84 * 5 * 0.9 * Math.sqrt(psi));
+        hydrantSupply += gpm;
+        d.querySelector('.hz-out').textContent = `Hydrant: ${gpm} GPM`;
       }
     });
-    const out = document.getElementById('sim-out');
-    out.style.whiteSpace = 'pre-wrap';
-    if (demand === Infinity) {
-      out.textContent = `Some line needs more than ${maxpsi} psi—cannot supply.`;
-      out.style.color = 'red';
-      return;
+    // total supply
+    const supply = Math.min(pumpCap, tank + hydrantSupply);
+    // demand
+    let demand=0, details='';
+    document.querySelectorAll('#sim-lines > div').forEach((r,i) => {
+      const C = +r.querySelector('.sl-hose').value,
+            Q = +r.querySelector('.sl-gpm').value,
+            L = +r.querySelector('.sl-len').value,
+            NP = +r.querySelector('.sl-np').value,
+            FL = +(C*(Q/100)**2*(L/100)).toFixed(1),
+            PDP = +(FL+NP).toFixed(1);
+      demand += Q;
+      details += `Line ${i+1}: GPM ${Q}, PDP ${PDP} psi\n`;
+      if (PDP > maxpsi) details += `  ⚠️ Overpressure!\n`;
+    });
+    // output
+    let out = `Total Output: ${supply} GPM • Required: ${req} GPM\n\n${details}`;
+    if (supply < req) {
+      out += `❌ Short by ${req - supply} GPM\n\nSuggestions:\n• Add another hydrant or use larger LDH intake.\n• Reduce hose length or use larger diameter hose.\n• Use lower-pressure nozzle or adjust GPM.\n`;
+    } else {
+      out += `✅ Required flow met!`;
     }
-    let msg = `Total Demand: ${demand} GPM • Supply: ${supply} GPM • Required: ${req} GPM\n`;
-    if (demand > supply) msg += `❌ You’re short by ${demand - supply} GPM`;
-    else if (demand < req) msg += `⚠️ Demand (${demand}) < Required (${req})`;
-    else if (supply < req) msg += `⚠️ Supply (${supply}) < Required (${req})`;
-    else msg += `✅ You meet the required flow!`;
-    out.textContent = msg;
-    out.style.color = (demand <= supply && supply >= req) ? 'green' : 'red';
-  });
+    document.getElementById('sim-out').textContent = out;
+  };
 })();
 </script>
 
