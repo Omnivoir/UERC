@@ -174,81 +174,29 @@
     </details>
   </section>
 
-<!-- ─── HazMat Lookup Using ERG.zip + pdf.js & JSZip ───────────────────────── -->
-<!-- 1) Load JSZip and PDF.js from CDNs -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.7.1/jszip.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.9.179/pdf.min.js"></script>
-
-<section id="hazmat">
-  <h2>☣️ Hazardous Materials Response Plan</h2>
-  <div style="padding:1rem; border:1px solid #ddd; background:#f9f9f9;">
-    <label for="hz-input">UN/NA # or Name:</label><br>
-    <input type="text" id="hz-input" placeholder="e.g. 1203 or Gasoline"
-           style="width:18rem; margin-top:0.5rem;">
-    <button id="hz-go" style="margin-left:0.5rem;">Lookup</button>
-    <pre id="hz-output" style="margin-top:1rem; white-space:pre-wrap;"></pre>
-  </div>
-  <p class="references"><strong>Source:</strong> ERG 2024 (unzipped client-side)</p>
+<!-- === HazMat Primer === -->
+<section id="hazmat-info" style="background:#f8faff;border:1px solid #ccddee;padding:2rem;margin-top:2rem;border-radius:8px;">
+  <h2>☣️ How to Use the Emergency Response Guidebook (ERG)</h2>
+  <p>The ERG is your go‐to for the first 30 minutes of a hazmat incident. Here’s a quick workflow:</p>
+  <ol>
+    <li><strong>Identify the material</strong> by UN/NA number, placard or shipping name.</li>
+    <li><strong>Look up</strong> that number or name in the <code>Yellow Pages</code> (ID index) to find the ERG guide number.</li>
+    <li>Open the corresponding <strong>orange guide</strong> for initial fire/leak actions.</li>
+    <li>Flip to <strong>Table 1</strong> (green section) for isolation and protective distances when <em>no fire</em> is involved.</li>
+    <li>If there <em>is</em> a fire, use the orange guide’s evacuation distances and still consult Table 1 for any residual release zones.</li>
+  </ol>
 </section>
 
-<script>
-document.addEventListener('DOMContentLoaded', async () => {
-  // 1) A tiny mapping UN/NA → guide page
-  const ergIndex = {
-    "1005": { name:"Anhydrous Ammonia", guide:125 },
-    "1017": { name:"Chlorine",          guide:124 },
-    "1203": { name:"Gasoline",         guide:128 }
-    // ← add more UN/NA → {name,guide} here
-  };
-
-  // 2) Load & unzip ERG.zip → ArrayBuffer of the PDF
-  const zipBlob = await fetch('pdfs/ERG.zip').then(r=>r.blob());
-  const zip     = await JSZip.loadAsync(zipBlob);
-  const pdfName = Object.keys(zip.files).find(n=>/\.pdf$/i.test(n));
-  const pdfData = await zip.file(pdfName).async('arraybuffer');
-
-  // 3) Initialize pdf.js
-  const loadingTask = pdfjsLib.getDocument({ data: pdfData });
-  const pdf        = await loadingTask.promise;
-
-  // 4) Wire up the lookup button
-  const input  = document.getElementById('hz-input');
-  const button = document.getElementById('hz-go');
-  const output = document.getElementById('hz-output');
-
-  button.addEventListener('click', async () => {
-    const raw = input.value.trim();
-    if (!raw) {
-      output.textContent = '⚠️ Please enter a UN/NA number or chemical name.';
-      return;
-    }
-    // try matching number first
-    const key = raw.split(/\s*-\s*/)[0];
-    let entry = ergIndex[key];
-    // then exact name match
-    if (!entry) {
-      entry = Object.values(ergIndex).find(e => 
-        e.name.toLowerCase() === raw.toLowerCase()
-      );
-    }
-    if (!entry) {
-      output.textContent = `⚠️ No ERG entry for “${raw}”.`;
-      return;
-    }
-
-    // 5) Fetch that guide page
-    const page = await pdf.getPage(entry.guide);
-    const txt  = await page.getTextContent();
-    const lines = txt.items.map(i => i.str).join(' ');
-
-    // 6) Show the raw text of that Orange-Guide page
-    output.textContent =
-`=== ${entry.name} (UN/${key}) — Guide ${entry.guide} ===
-
-${lines}`;
-  });
-});
-</script>
+<!-- === ERG Embed === -->
+<section id="ergembed">
+  <h2>📘 Emergency Response Guidebook 2024</h2>
+  <div class="pdf-container">
+    <iframe
+      src="ERG2024-Eng-Web-a.pdf"
+      class="pdf-embed"
+      title="Emergency Response Guidebook 2024"></iframe>
+  </div>
+</section>
 
 
 
