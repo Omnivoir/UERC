@@ -188,26 +188,47 @@
   </div>
 </section>
 
+<!-- 1️⃣ Embed the ERG PDF in an HTML “window” -->
+<section id="erg-section">
+  <h2>📘 Emergency Response Guidebook (ERG) 2024</h2>
+  <!-- A link so people can open the PDF full-screen -->
+  <a class="button" href="pdfs/ERG2024-Eng-Web-a.pdf" target="_blank">
+    View full ERG PDF
+  </a>
+  <!-- The iframe is our “window” into the PDF -->
+  <div class="pdf-container" style="width:100%; height:600px; margin-top:1rem;">
+    <iframe
+      id="erg-frame"
+      src="pdfs/ERG2024-Eng-Web-a.pdf#view=FitH"
+      title="ERG 2024 PDF"
+      style="width:100%; height:100%; border:none;"
+    ></iframe>
+  </div>
+</section>
+
+<!-- 2️⃣ HazMat lookup form -->
 <section id="hazmat">
   <h2>☣️ Hazardous Materials Lookup</h2>
-  <div style="padding:1rem;border:1px solid #ddd;background:#f9f9f9;">
+  <div style="padding:1rem; border:1px solid #ddd; background:#f9f9f9;">
     <label for="hz-input">Enter UN/NA # or Name:</label><br>
     <input
       type="text"
       id="hz-input"
       placeholder="e.g. 1203 or Gasoline"
-      style="width:18rem;margin-top:0.5rem"
+      style="width:18rem; margin-top:0.5rem;"
     >
-    <button id="hz-go" style="margin-left:0.5rem">Lookup</button>
-    <pre id="hz-output" style="margin-top:1rem;white-space:pre-wrap;font-family:monospace;"></pre>
+    <button id="hz-go" style="margin-left:0.5rem;">Lookup</button>
+    <!-- Where we’ll display the text results -->
+    <pre id="hz-output" style="margin-top:1rem; white-space:pre-wrap; font-family:monospace;"></pre>
   </div>
   <p class="references">
-    <strong>Source:</strong> 2024 Emergency Response Guidebook (ERG)
+    <strong>Source:</strong> ERG 2024 PDF
   </p>
 </section>
 
+<!-- 3️⃣ JavaScript to hook them up -->
 <script>
-  // --- ERG INDEX: populate with UN/NA keys and ERG data ---
+  // A tiny “database” of ERG entries by UN/NA number
   const ergIndex = {
     "1005": {
       name: "Anhydrous Ammonia",
@@ -230,107 +251,46 @@
       protectiveActions: "Eliminate ignition; dike with foam; use AFFF; isolate per Table 1.",
       firstAid: "Remove contaminated clothing; flush skin with water."
     }
-    // …add additional UN/NA entries here…
+    // ← Add more UN/NA entries here as needed
   };
 
+  // When you click “Lookup”…
   document.getElementById('hz-go').addEventListener('click', () => {
     const raw = document.getElementById('hz-input').value.trim();
-    const key = raw.includes(' ') && raw[0].match(/\d/) ? raw.split(' ')[0] : raw;
-    const entry = ergIndex[key];
+    // If they typed “1203 - Gasoline” we just want the “1203”
+    const key = raw.split(/\s*-\s*/)[0];
+    const e = ergIndex[key];
     const out = document.getElementById('hz-output');
-    if (!entry) {
+
+    if (!e) {
       out.textContent = '⚠️ UN/NA not found. Please check your entry.';
       return;
     }
+
+    // 1) Show the text details
     out.textContent =
-`Name: ${entry.name}
+`Name: ${e.name}
 UN/NA: ${key}
-ERG Guide: ${entry.guide}
+ERG Guide: ${e.guide}
 
 Initial Isolation Distances:
- • Small spill (Yellow): ${entry.isolation.yellow} m
- • Large spill (Orange): ${entry.isolation.orange} m
- • Fire (Red):             ${entry.isolation.red} m
+ • Small spill (Yellow): ${e.isolation.yellow} m
+ • Large spill (Orange): ${e.isolation.orange} m
+ • Fire (Red):            ${e.isolation.red} m
 
 Protective Actions:
-  ${entry.protectiveActions}
+  ${e.protectiveActions}
 
 First Aid:
-  ${entry.firstAid}`;
+  ${e.firstAid}`;
+
+    // 2) Jump the PDF iframe to that page
+    //    “#page=” is a standard PDF fragment that tells the browser which page to open
+    document.getElementById('erg-frame').src =
+      `pdfs/ERG2024-Eng-Web-a.pdf#page=${e.guide}`;
   });
 </script>
 
-
-
-
-  <section id="ems">
-    <h2>🚑 Emergency Medical Services</h2>
-    <details>
-      <summary>Adult Cardiac Arrest</summary>
-      <div class="details-content">
-        <ul>
-          <li>High‑quality CPR: 100–120 cpm, 5–6 cm depth, full chest recoil.</li>
-          <li>Rotate compressors every 2 min; pause pauses < 10 s.</li>
-          <li>AED: shock every 2 min; follow one‑shock protocol.</li>
-          <li>Post‑ROSC: maintain SBP > 90 mmHg, SpO₂ 94–99%.</li>
-        </ul>
-        <div class="callout">
-          <strong>AHA 2020 Guidelines:</strong> Compression fraction > 60%; minimize interruptions; integrate advanced airway management only if CPR quality maintained.
-        </div>
-        <p class="references">
-          SOP 1300.1 | AHA 2020 Adult CA | Essentials 7e Ch 20 | NFPA 1917 8.4.2
-        </p>
-      </div>
-    </details>
-    <details>
-      <summary>Stroke Assessment & Transport</summary>
-      <div class="details-content">
-        <ul>
-          <li>FAST exam; assess facial droop, arm drift, speech.</li>
-          <li>Check glucose; correct hypo‑/hyperglycemia.</li>
-          <li>Pre‑notify stroke center: include last‑known‑well & NIHSS score.</li>
-        </ul>
-        <div class="callout">
-          <strong>KBEMS Stroke Protocol 2024:</strong> Door‑to‑needle goal < 60 min; CT<sup>+</sup> stroke center transport if within 20 min.
-        </div>
-        <p class="references">
-          SOP 1300.3 | KBEMS 2024 Stroke | Essentials 7e Ch 18 | NFPA 1917 8.6.1
-        </p>
-      </div>
-    </details>
-    <details>
-      <summary>Pediatric Care</summary>
-      <div class="details-content">
-        <ul>
-          <li>Use Broselow tape; weight‑based drug dosing & equipment sizing.</li>
-          <li>CPR: depth one‑third AP diameter, 100–120 cpm.</li>
-          <li>Defib energy: 2 J/kg escalating to 4 J/kg.</li>
-        </ul>
-        <div class="callout">
-          <strong>PALS 2023:</strong> IO access if IV > 90 s; epinephrine 0.01 mg/kg every 3–5 min.
-        </div>
-        <p class="references">
-          SOP 1300.9 | PALS 2023 | Essentials 7e Ch 22 | NFPA 1901
-        </p>
-      </div>
-    </details>
-    <details>
-      <summary>Airway Management</summary>
-      <div class="details-content">
-        <ul>
-          <li>OPA/NPA adjuncts; two‑person BVM with 100% O₂.</li>
-          <li>ETCO₂: target 35–45 mmHg; confirm every 5 min.</li>
-          <li>RSI meds per local protocol: etomidate, succinylcholine.</li>
-        </ul>
-        <div class="callout">
-          <strong>NFPA 1917 8.2:</strong> Mandatory continuous capnography for all intubations; document waveform.
-        </div>
-        <p class="references">
-          SOP 1300.8 | Essentials 7e Ch 17 | NFPA 1917 8.2 | NREMT Airway Sheet
-        </p>
-      </div>
-    </details>
-  </section>
 
 <section id="pump-ops">
   <h2>🚒 Pump Operations</h2>
