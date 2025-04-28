@@ -282,112 +282,68 @@
 <section id="pump-ops">
   <h2>🚒 Pump Operations</h2>
 
-  <!-- QUICK REFERENCE CHART -->
-  <table style="width:100%;border-collapse:collapse;margin-bottom:1rem;">
-    <thead>
-      <tr>
-        <th style="border:1px solid #ccc;padding:0.5rem">Device</th>
-        <th style="border:1px solid:#ccc;padding:0.5rem">Coef C<br>(ψ/100 ft @ 100 gpm)</th>
-        <th style="border:1px solid:#ccc;padding:0.5rem">Nozzle NP (ψ)</th>
-        <th style="border:1px solid:#ccc;padding:0.5rem">Appliance FL* (ψ)</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td style="border:1px solid:#ccc;padding:0.5rem">1¾″ Attack Hose</td>
-        <td style="border:1px solid:#ccc;padding:0.5rem;text-align:center;">15.5</td>
-        <td style="border:1px solid:#ccc;padding:0.5rem;text-align:center;">50 / 100</td>
-        <td style="border:1px solid:#ccc;padding:0.5rem;">
-          Siamese (2.5″): 10<br>
-          Gated wye (2.5″): 10<br>
-          1.5″ Ball Valve: 10<br>
-          Strainer: 5
-        </td>
-      </tr>
-      <tr>
-        <td style="border:1px solid:#ccc;padding:0.5rem">2½″ Supply Hose</td>
-        <td style="border:1px solid:#ccc;padding:0.5rem;text-align:center;">2.0</td>
-        <td style="border:1px solid:#ccc;padding:0.5rem;text-align:center;">50 / 100</td>
-        <td style="border:1px solid:#ccc;padding:0.5rem;"></td>
-      </tr>
-      <tr>
-        <td style="border:1px solid:#ccc;padding:0.5rem">3″ Large-Dia Hose</td>
-        <td style="border:1px solid:#ccc;padding:0.5rem;text-align:center;">0.08</td>
-        <td style="border:1px solid:#ccc;padding:0.5rem;text-align:center;">50 / 100</td>
-        <td style="border:1px solid:#ccc;padding:0.5rem;"></td>
-      </tr>
-      <tr>
-        <td style="border:1px solid:#ccc;padding:0.5rem">5″ Supply Hose</td>
-        <td style="border:1px solid:#ccc;padding:0.5rem;text-align:center;">0.02</td>
-        <td style="border:1px solid:#ccc;padding:0.5rem;text-align:center;">—</td>
-        <td style="border:1px solid:#ccc;padding:0.5rem;"></td>
-      </tr>
-      <tr>
-        <td style="border:1px solid:#ccc;padding:0.5rem">Deck Gun Monitor</td>
-        <td style="border:1px solid:#ccc;padding:0.5rem;text-align:center;">—</td>
-        <td style="border:1px solid:#ccc;padding:0.5rem;text-align:center;">80</td>
-        <td style="border:1px solid:#ccc;padding:0.5rem;"></td>
-      </tr>
-      <tr>
-        <td style="border:1px solid:#ccc;padding:0.5rem">Aerial Master Stream</td>
-        <td style="border:1px solid:#ccc;padding:0.5rem;text-align:center;">—</td>
-        <td style="border:1px solid:#ccc;padding:0.5rem;text-align:center;">100</td>
-        <td style="border:1px solid:#ccc;padding:0.5rem;"></td>
-      </tr>
-    </tbody>
-    <tfoot>
-      <tr>
-        <td colspan="4" style="border:1px solid:#ccc;padding:0.5rem;font-size:0.85rem;">
-          *Appliance FL values are approximate—always verify with your pump manual.
-        </td>
-      </tr>
-    </tfoot>
-  </table>
-
-  <!-- 1) Friction-Loss & PDP -->
+  <!-- 0) Quick-Ref Chart hidden until opened -->
   <details>
-    <summary>💧 Friction-Loss & PDP Calculator</summary>
-    <div style="padding:1rem;background:#f9f9f9;border:1px solid:#ddd;border-radius:4px;">
-
-      <form id="fl-form" style="display:flex;flex-direction:column;gap:0.5rem;margin-bottom:1rem;">
-        <div class="fl-row" style="display:flex;gap:0.5rem;">
-          <select class="fl-hose" title="Hose size">
-            <option value="15.5">1¾″</option>
-            <option value="2.0">2½″</option>
-            <option value="0.08">3″</option>
-            <option value="0.02">5″</option>
-          </select>
-          <input type="number" class="fl-gpm" placeholder="GPM" title="Flow (gpm)" />
-          <input type="number" class="fl-len" placeholder="Length (ft)" title="Length (ft)" />
-          <select class="fl-np" title="Nozzle pressure">
-            <option value="50">Smooth 50</option>
-            <option value="100">Fog 100</option>
-            <option value="80">Deck 80</option>
-            <option value="100">Aerial 100</option>
-          </select>
-          <button type="button" class="remove-line" style="background:#e74c3c;color:#fff;border:none;padding:0 .5rem;">×</button>
-        </div>
-      </form>
-
-      <button id="add-line" style="margin-right:0.5rem;">+ Add Section</button>
-      <button id="calc-fl">Calculate FL & PDP</button>
-
-      <table id="fl-results" style="width:100%;border-collapse:collapse;margin-top:1rem;">
-        <thead>
-          <tr>
-            <th style="border:1px solid:#ccc;padding:0.5rem;">#</th>
-            <th style="border:1px solid:#ccc;padding:0.5rem;">FL (ψ)</th>
-            <th style="border:1px solid:#ccc;padding:0.5rem;">NP (ψ)</th>
-            <th style="border:1px solid:#ccc;padding:0.5rem;">PDP (ψ)</th>
-          </tr>
-        </thead>
-        <tbody></tbody>
-      </table>
-    </div>
+    <summary>📋 Quick Reference Chart (hose & appliance)</summary>
+    <table style="width:100%;border-collapse:collapse;margin-top:0.5rem;">
+      <thead>
+        <tr>
+          <th style="border:1px solid #ccc;padding:0.5rem">Device</th>
+          <th style="border:1px solid:#ccc;padding:0.5rem">C<br>(ψ/100ft@100gpm)</th>
+          <th style="border:1px solid:#ccc;padding:0.5rem">Nozzle NP (ψ)</th>
+          <th style="border:1px solid:#ccc;padding:0.5rem">Appliance FL*</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style="border:1px solid:#ccc;padding:0.5rem">1¾″ Hose</td>
+          <td style="border:1px solid:#ccc;text-align:center;">15.5</td>
+          <td style="border:1px solid:#ccc;text-align:center;">50 / 100</td>
+          <td style="border:1px solid:#ccc;padding:0.5rem;">Siamese:10, Wye:10, Valve:10, Strainer:5</td>
+        </tr>
+        <tr>
+          <td style="border:1px solid:#ccc;padding:0.5rem">2½″ Hose</td>
+          <td style="border:1px solid:#ccc;text-align:center;">2.0</td>
+          <td style="border:1px solid:#ccc;text-align:center;">50 / 100</td>
+          <td style="border:1px solid:#ccc;padding:0.5rem;"></td>
+        </tr>
+        <tr>
+          <td style="border:1px solid:#ccc;padding:0.5rem">3″ LDH</td>
+          <td style="border:1px solid:#ccc;text-align:center;">0.08</td>
+          <td style="border:1px solid:#ccc;text-align:center;">50 / 100</td>
+          <td style="border:1px solid:#ccc;padding:0.5rem;"></td>
+        </tr>
+        <tr>
+          <td style="border:1px solid:#ccc;padding:0.5rem">5″ LDH</td>
+          <td style="border:1px solid:#ccc;text-align:center;">0.02</td>
+          <td style="border:1px solid:#ccc;text-align:center;">—</td>
+          <td style="border:1px solid:#ccc;padding:0.5rem;"></td>
+        </tr>
+        <tr>
+          <td style="border:1px solid:#ccc;padding:0.5rem">Deck Gun</td>
+          <td style="border:1px solid:#ccc;text-align:center;">—</td>
+          <td style="border:1px solid:#ccc;text-align:center;">80</td>
+          <td style="border:1px solid:#ccc;padding:0.5rem;"></td>
+        </tr>
+        <tr>
+          <td style="border:1px solid:#ccc;padding:0.5rem">Aerial</td>
+          <td style="border:1px solid:#ccc;text-align:center;">—</td>
+          <td style="border:1px solid:#ccc;text-align:center;">100</td>
+          <td style="border:1px solid:#ccc;padding:0.5rem;"></td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td colspan="4" style="border:1px solid:#ccc;padding:0.5rem;font-size:0.85rem;">
+            *Approximate appliance friction loss; verify with your pump manual.
+          </td>
+        </tr>
+      </tfoot>
+    </table>
   </details>
 
-  <!-- 2) Fire-Flow (unchanged) -->
-  <details>
+  <!-- 1) Fire-Flow Calculator -->
+  <details open>
     <summary>🔥 Fire-Flow Calculator</summary>
     <div style="padding:1rem;background:#f9f9f9;border:1px solid:#ddd;border-radius:4px;">
       <p>FF = (Length × Width) ÷ 3 × Floors</p>
@@ -398,71 +354,278 @@
         <button id="calc-ff">Calc FF</button>
       </div>
       <p id="ff-output" style="margin-top:1rem;font-weight:600;"></p>
+      <div id="ff-suggestions" style="margin-top:0.5rem;color:#333;"></div>
+    </div>
+  </details>
+
+  <!-- 2) Friction-Loss & PDP w/ Hydrants -->
+  <details>
+    <summary>💧 Friction-Loss & PDP Calculator</summary>
+    <div style="padding:1rem;background:#f9f9f9;border:1px solid:#ddd;border-radius:4px;">
+
+      <!-- Controls -->
+      <div style="margin-bottom:0.5rem;">
+        <button id="add-line">+ Engine Hose</button>
+        <button id="add-hydrant" style="margin-left:0.5rem;">+ Hydrant</button>
+      </div>
+
+      <!-- Engine hoses -->
+      <form id="fl-form" style="display:flex;flex-direction:column;gap:0.5rem;">
+        <div class="fl-row" style="display:flex;gap:0.5rem;">
+          <select class="fl-hose">
+            <option value="15.5">1¾″</option>
+            <option value="2.0">2½″</option>
+            <option value="0.08">3″</option>
+            <option value="0.02">5″</option>
+          </select>
+          <input type="number" class="fl-gpm" placeholder="GPM">
+          <input type="number" class="fl-len" placeholder="Length">
+          <select class="fl-np">
+            <option value="50">Smooth 50</option>
+            <option value="100">Fog 100</option>
+            <option value="80">Deck 80</option>
+            <option value="100">Aerial 100</option>
+          </select>
+          <button type="button" class="remove-line">×</button>
+        </div>
+      </form>
+
+      <!-- Hydrant groups -->
+      <div id="hydrant-container" style="margin-top:1rem;"></div>
+
+      <!-- Calculate & results -->
+      <div style="margin-top:1rem;">
+        <button id="calc-fl">Calculate All</button>
+        <p id="fl-summary" style="font-weight:600;margin-top:0.5rem;"></p>
+      </div>
+      <table id="fl-results" style="width:100%;border-collapse:collapse;margin-top:0.5rem;">
+        <thead>
+          <tr>
+            <th style="border:1px solid:#ccc;padding:0.5rem">#</th>
+            <th style="border:1px solid:#ccc;padding:0.5rem">FL (ψ)</th>
+            <th style="border:1px solid:#ccc;padding:0.5rem">NP (ψ)</th>
+            <th style="border:1px solid:#ccc;padding:0.5rem">PDP (ψ)</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
     </div>
   </details>
 
   <p style="margin-top:1rem;font-size:0.9rem;color:#555;">
     <strong>Refs:</strong><br>
-    Pump & Apparatus Driver/Operator NFPA Essentials Ch 3–4<br>
-    Fireground Driver/Operator Essentials 7e Ch 16<br>
-    Company Officer 6e Ch 10
+    NFPA Driver/Operator Essentials Ch 3–4 • Fire­ground Essentials 7e Ch 16 • Company Officer 6e Ch 10
   </p>
-
-  <script>
-  (function(){
-    // FRIC-LOSS
-    const form   = document.getElementById('fl-form'),
-          addBtn = document.getElementById('add-line'),
-          calcBtn= document.getElementById('calc-fl'),
-          tbody  = document.querySelector('#fl-results tbody');
-
-    function bindRemove(btn){
-      btn.onclick = ()=> btn.closest('.fl-row').remove();
-    }
-    form.querySelectorAll('.remove-line').forEach(bindRemove);
-    addBtn.onclick = ()=>{
-      const row = form.querySelector('.fl-row').cloneNode(true);
-      row.querySelectorAll('input').forEach(i=>i.value='');
-      form.appendChild(row);
-      bindRemove(row.querySelector('.remove-line'));
-    };
-    calcBtn.onclick = ()=>{
-      tbody.innerHTML = '';
-      form.querySelectorAll('.fl-row').forEach((r,i)=>{
-        const C  = parseFloat(r.querySelector('.fl-hose').value),
-              Q  = parseFloat(r.querySelector('.fl-gpm').value),
-              L  = parseFloat(r.querySelector('.fl-len').value),
-              NP = parseFloat(r.querySelector('.fl-np').value);
-        if([C,Q,L,NP].some(x=>isNaN(x))) return;
-        // Corrected: length ÷ 100
-        const FL  = +(C * (Q/100)**2 * (L/100)).toFixed(1),
-              PDP = +(FL + NP).toFixed(1);
-        tbody.insertAdjacentHTML('beforeend', `
-          <tr>
-            <td style="border:1px solid:#ccc;padding:0.5rem;text-align:center;">${i+1}</td>
-            <td style="border:1px solid:#ccc;padding:0.5rem;text-align:center;">${FL}</td>
-            <td style="border:1px solid:#ccc;padding:0.5rem;text-align:center;">${NP}</td>
-            <td style="border:1px solid:#ccc;padding:0.5rem;text-align:center;">${PDP}</td>
-          </tr>
-        `);
-      });
-    };
-
-    // FIRE-FLOW (unchanged)
-    document.getElementById('calc-ff').onclick = ()=>{
-      const L = parseFloat(document.getElementById('ff-length').value),
-            W = parseFloat(document.getElementById('ff-width').value),
-            F = parseInt  (document.getElementById('ff-floors').value,10);
-      if([L,W,F].some(x=>isNaN(x)||x<=0)){
-        alert('Enter valid Length, Width and Floors.');
-        return;
-      }
-      const ff = Math.ceil((L * W)/3 * F);
-      document.getElementById('ff-output').textContent = `Required Fire Flow: ${ff} GPM`;
-    };
-  })();
-  </script>
 </section>
+
+<script>
+(function(){
+  // — Fire-Flow + Suggestions —
+  document.getElementById('calc-ff').onclick = ()=>{
+    const L = parseFloat(document.getElementById('ff-length').value),
+          W = parseFloat(document.getElementById('ff-width').value),
+          F = parseInt  (document.getElementById('ff-floors').value,10),
+          out= document.getElementById('ff-output'),
+          sug= document.getElementById('ff-suggestions');
+    if([L,W,F].some(x=>isNaN(x)||x<=0)){
+      alert('Enter valid Length, Width and Floors.');
+      return;
+    }
+    const ff = Math.ceil((L * W)/3 * F);
+    out.textContent = `Required Fire Flow: ${ff} GPM`;
+
+    // Recommend resources to achieve ff
+    const hydrantsNeeded = Math.ceil(ff/1500),
+          perLineQ      = Math.ceil(ff/hydrantsNeeded),
+          rec = [];
+    rec.push(`• Use ${hydrantsNeeded} hydrant${hydrantsNeeded>1?'s':''} feeding 5″ LDH.`);
+    for(let i=1;i<=hydrantsNeeded;i++){
+      rec.push(`• Hydrant #${i}: ~${perLineQ} GPM supply → Engine intake.`);
+    }
+    rec.push(`• On pump, split into ${hydrantsNeeded} discharges of ~${perLineQ} GPM.`);
+    sug.innerHTML = `<strong>Possible setup:</strong><br>${rec.join('<br>')}`;
+  };
+
+  // — Friction Loss + Hydrant Logic —
+  const form    = document.getElementById('fl-form'),
+        hydCt   = document.getElementById('hydrant-container'),
+        addLine = document.getElementById('add-line'),
+        addHyd  = document.getElementById('add-hydrant'),
+        calcFL  = document.getElementById('calc-fl'),
+        tbody   = document.querySelector('#fl-results tbody'),
+        summary = document.getElementById('fl-summary');
+
+  // bind remove for hose rows
+  function bindRemove(btn){ btn.onclick = ()=> btn.closest('.fl-row').remove(); }
+  form.querySelectorAll('.remove-line').forEach(bindRemove);
+
+  // add an engine hose
+  addLine.onclick = ()=>{
+    const r = form.querySelector('.fl-row').cloneNode(true);
+    r.querySelectorAll('input').forEach(i=>i.value='');
+    form.appendChild(r);
+    bindRemove(r.querySelector('.remove-line'));
+  };
+
+  // add a hydrant group
+  addHyd.onclick = ()=>{
+    const grp = document.createElement('div');
+    grp.className='hydrant-group';
+    grp.style='border:1px solid #bbb;padding:0.5rem;margin-top:0.5rem;';
+    grp.innerHTML = `
+      <div style="display:flex;gap:0.5rem;align-items:center;">
+        <label>Mode:</label>
+        <select class="hyd-mode">
+          <option value="preset">Preset</option>
+          <option value="custom">Custom</option>
+        </select>
+        <select class="hyd-color">
+          <option value="500">Red (500 gpm)</option>
+          <option value="750">Orange (750 gpm)</option>
+          <option value="1250">Green (1250 gpm)</option>
+          <option value="1500">Blue (1500 gpm)</option>
+        </select>
+        <div class="hyd-custom" style="display:none;gap:0.5rem;">
+          <input type="number" class="hyd-dia" placeholder="Dia (in)" style="width:4rem;">
+          <input type="number" class="hyd-coef" placeholder="Coef" style="width:4rem;">
+          <input type="number" class="hyd-pitot" placeholder="Pitot (psi)" style="width:4rem;">
+          <button class="calc-hyd">Calc</button>
+          <span class="hyd-flow">0 gpm</span>
+        </div>
+        <button class="remove-hyd" style="margin-left:auto;">×</button>
+      </div>
+      <div class="hydrant-lines" style="margin-top:0.5rem;"></div>
+      <button class="add-hose-hyd" style="margin-top:0.5rem;">+ Hose (max 3)</button>
+      <div class="hyd-summary" style="margin-top:0.5rem;font-weight:600;"></div>
+    `;
+    hydCt.appendChild(grp);
+
+    // remove hydrant
+    grp.querySelector('.remove-hyd').onclick = ()=> grp.remove();
+
+    // mode switch
+    const modeSel   = grp.querySelector('.hyd-mode'),
+          presetSel = grp.querySelector('.hyd-color'),
+          customDiv = grp.querySelector('.hyd-custom'),
+          calcBtn   = grp.querySelector('.calc-hyd'),
+          flowSpan  = grp.querySelector('.hyd-flow'),
+          linesDiv  = grp.querySelector('.hydrant-lines'),
+          addHose   = grp.querySelector('.add-hose-hyd'),
+          summaryDiv= grp.querySelector('.hyd-summary');
+
+    modeSel.onchange = ()=>{
+      if(modeSel.value==='custom'){
+        presetSel.style.display='none';
+        customDiv.style.display='flex';
+      } else {
+        presetSel.style.display='';
+        customDiv.style.display='none';
+        flowSpan.textContent = `${parseInt(presetSel.value,10)} gpm`;
+        updateAll();
+      }
+    };
+    presetSel.onchange = ()=> updateAll();
+
+    // calc custom
+    calcBtn.onclick = ()=>{
+      const d= parseFloat(grp.querySelector('.hyd-dia').value),
+            c= parseFloat(grp.querySelector('.hyd-coef').value),
+            p= parseFloat(grp.querySelector('.hyd-pitot').value);
+      if([d,c,p].some(x=>isNaN(x)||x<=0)){ alert('Enter valid dia/co/pitot');return; }
+      const gpm = Math.round(29.84 * d * c * Math.sqrt(p));
+      flowSpan.textContent = `${gpm} gpm`;
+      updateAll();
+    };
+
+    // add 1 hose row to hydrant
+    function addHydRow(){
+      if(linesDiv.querySelectorAll('.fl-row').length>=3) return;
+      const r = form.querySelector('.fl-row').cloneNode(true);
+      r.querySelectorAll('input').forEach(i=>i.value='');
+      linesDiv.appendChild(r);
+      bindRemove(r.querySelector('.remove-line'));
+      if(linesDiv.querySelectorAll('.fl-row').length>=3) addHose.disabled=true;
+      updateAll();
+    }
+    grp.querySelector('.add-hose-hyd').onclick = addHydRow;
+    addHydRow(); // start with one
+
+  };
+
+  // main calculate
+  calcFL.onclick = ()=>{
+    tbody.innerHTML=''; 
+    let idx=0,
+        engineQ=0,
+        totalSupply=0,
+        totalHydDemand=0;
+
+    // 1) engine hoses
+    form.querySelectorAll('.fl-row').forEach(r=>{
+      const C  = parseFloat(r.querySelector('.fl-hose').value),
+            Q  = parseFloat(r.querySelector('.fl-gpm').value),
+            L  = parseFloat(r.querySelector('.fl-len').value),
+            NP = parseFloat(r.querySelector('.fl-np').value);
+      if([C,Q,L,NP].some(x=>isNaN(x))) return;
+      idx++; engineQ+=Q;
+      const FL  = +(C*(Q/100)**2*(L/100)).toFixed(1),
+            PDP = +(FL+NP).toFixed(1);
+      tbody.insertAdjacentHTML('beforeend',`
+        <tr>
+          <td style="border:1px solid:#ccc;padding:0.5rem;text-align:center;">${idx}</td>
+          <td style="border:1px solid:#ccc;padding:0.5rem;text-align:center;">${FL}</td>
+          <td style="border:1px solid:#ccc;padding:0.5rem;text-align:center;">${NP}</td>
+          <td style="border:1px solid:#ccc;padding:0.5rem;text-align:center;">${PDP}</td>
+        </tr>`);
+    });
+
+    // 2) hydrant groups
+    hydCt.querySelectorAll('.hydrant-group').forEach((grp,i)=>{
+      // supply
+      const mode  = grp.querySelector('.hyd-mode').value,
+            supply= mode==='preset'
+                    ? parseInt(grp.querySelector('.hyd-color').value,10)
+                    : parseInt(grp.querySelector('.hyd-flow').textContent,10);
+      totalSupply += supply;
+
+      // demand
+      let demand=0;
+      grp.querySelectorAll('.fl-row').forEach(r=>{
+        const Q = parseFloat(r.querySelector('.fl-gpm').value);
+        if(!isNaN(Q)) demand+=Q;
+      });
+      totalHydDemand += demand;
+
+      // group summary
+      const sumDiv = grp.querySelector('.hyd-summary');
+      if(demand> supply){
+        sumDiv.textContent = `Hydrant #${i+1}: Demand ${demand} > Supply ${supply} gpm ⚠️`;
+        sumDiv.style.color = 'red';
+      } else {
+        sumDiv.textContent = `Hydrant #${i+1}: Demand ${demand} / Supply ${supply} gpm ✅`;
+        sumDiv.style.color = 'green';
+      }
+    });
+
+    // overall summary
+    let text = `Engine Demand: ${engineQ} gpm. Hydrant Supply: ${totalSupply} gpm.`;
+    if(engineQ > totalSupply){
+      text += ` ⚠️ Supply short by ${engineQ - totalSupply} gpm.`;
+      summary.style.color = 'red';
+    } else {
+      text += ` ✅ Supply adequate.`;
+      summary.style.color = 'green';
+    }
+    summary.textContent = text;
+  };
+
+  // also update on any preset changes
+  function updateAll(){ calcFL.click(); }
+  hydCt.addEventListener('change', updateAll);
+  hydCt.addEventListener('click', updateAll);
+})();
+</script>
+
 
 
 
