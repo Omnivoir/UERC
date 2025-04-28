@@ -378,35 +378,54 @@
 
 <script>
 (() => {
-  // 2) Fire-Flow
-  document.getElementById('ff-go').onclick = () => {
-    const L=+ff-l.value, W=+ff-w.value, F=+ff-f.value, res=ff-res, rec=ff-rec;
-    if(!L||!W||!F){alert('Enter all');return;}
-    const G= Math.ceil((L*W/3)*F);
+  // Fire-Flow Calculator
+  document.getElementById('ff-go').addEventListener('click', () => {
+    const L = +document.getElementById('ff-l').value;
+    const W = +document.getElementById('ff-w').value;
+    const F = +document.getElementById('ff-f').value;
+    const res = document.getElementById('ff-res');
+    const rec = document.getElementById('ff-rec');
+    if (!L || !W || !F) { alert('Enter all fields'); return; }
+    const G = Math.ceil((L * W / 3) * F);
     res.textContent = `Required Flow: ${G} GPM`;
-    // realistic recommendations
-    let setup='';
-    if(G<=1000) setup='• Use 1 monitor (1,000 gpm)';
-    else if(G<=2000) setup='• 1 monitor (1,000) + 4 handlines (250 gpm each)';
-    else if(G<=3000) setup='• 1 aerial monitor (1,250) + 3 handlines (250 gpm each)';
-    else if(G<=4000) setup='• 2 monitors (1,000 gpm each) + 4 handlines (250 gpm each)';
-    else setup='• 2 monitors + 1 aerial monitor + 4 handlines';
+    let setup = '';
+    if (G <= 1000) setup = '• Use 1 monitor (1,000 gpm)';
+    else if (G <= 2000) setup = '• 1 monitor (1,000) + 4 handlines (250 gpm each)';
+    else if (G <= 3000) setup = '• 1 aerial monitor (1,250) + 3 handlines (250 gpm each)';
+    else if (G <= 4000) setup = '• 2 monitors (1,000 gpm each) + 4 handlines (250 gpm each)';
+    else setup = '• 2 monitors + 1 aerial monitor + 4 handlines';
     rec.textContent = `Suggested setup:\n${setup}`;
-  };
+  });
 
-  // 3) Friction-Loss
-  document.getElementById('fl-go').onclick = () => {
-    const C=+fl-hose.value, Q=+fl-gpm.value, L=+fl-len.value, NP=+fl-np.value, out=fl-out;
-    if(!C||!Q||!L||!NP){alert('All fields');return;}
-    const FL = +(C*(Q/100)**2*(L/100)).toFixed(1),
-          PDP= +(FL+NP).toFixed(1);
+  // Friction-Loss Calculator
+  document.getElementById('fl-go').addEventListener('click', () => {
+    const C = +document.getElementById('fl-hose').value;
+    const Q = +document.getElementById('fl-gpm').value;
+    const L = +document.getElementById('fl-len').value;
+    const NP = +document.getElementById('fl-np').value;
+    const out = document.getElementById('fl-out');
+    if (!C || !Q || !L || !NP) { alert('All fields'); return; }
+    const FL = +(C * (Q / 100) ** 2 * (L / 100)).toFixed(1);
+    const PDP = +(FL + NP).toFixed(1);
     out.textContent = `Friction Loss: ${FL} psi → PDP: ${PDP} psi`;
-  };
+  });
 
-  // 4) Simulator
-  let simLines=0, lines=[];
-  const addLine = () => {
-    const idx=++simLines, ctn=document.getElementById('sim-lines');
+  // Pump-Ops Simulator
+  let hydrantGPM = 0;
+  document.getElementById('hz-go').addEventListener('click', () => {
+    const d = +document.getElementById('hz-dia').value;
+    const c = +document.getElementById('hz-c').value;
+    const p = +document.getElementById('hz-p').value;
+    const out = document.getElementById('hz-out');
+    if (!d || !c || !p) { alert('Enter all fields'); return; }
+    hydrantGPM = Math.round(29.84 * d * c * Math.sqrt(p));
+    out.textContent = `Hydrant → ${hydrantGPM} GPM`;
+  });
+
+  // Add/remove lines
+  const simLinesContainer = document.getElementById('sim-lines');
+  document.getElementById('sim-add').addEventListener('click', addLine);
+  function addLine() {
     const row = document.createElement('div');
     row.innerHTML = `
       <select class="sl-hose">
@@ -421,59 +440,50 @@
         <option value="50">Nozzle 50</option>
         <option value="100">Nozzle 100</option>
       </select>
-      <button class="sl-rem">×</button>
-    `;
-    ctn.appendChild(row);
-    row.querySelector('.sl-rem').onclick = ()=>{row.remove();simLines--;};
-  };
-  document.getElementById('sim-add').onclick = addLine;
+      <button class="sl-rem">×</button>`;
+    simLinesContainer.appendChild(row);
+    row.querySelector('.sl-rem').addEventListener('click', () => row.remove());
+  }
   addLine();
 
-  let hydrantGPM=0;
-  document.getElementById('hz-go').onclick = () => {
-    const d=+hz-dia.value, c=+hz-c.value, p=+hz-p.value, out=hz-out;
-    if(!d||!c||!p){alert('All');return;}
-    hydrantGPM = Math.round(29.84*d*c*Math.sqrt(p));
-    out.textContent = `Hydrant → ${hydrantGPM} GPM`;
-  };
-
-  document.getElementById('sim-go').onclick = () => {
-    // gather inputs
-    const req=+op-req.value, tank=+op-tank.value, pump=+op-pump.value, maxpsi=+op-maxpsi.value;
-    if(!req||!tank||!pump||!maxpsi){alert('Fill Truck & Req');return;}
+  // Evaluate Flow
+  document.getElementById('sim-go').addEventListener('click', () => {
+    const req = +document.getElementById('op-req').value;
+    const tank = +document.getElementById('op-tank').value;
+    const pump = +document.getElementById('op-pump').value;
+    const maxpsi = +document.getElementById('op-maxpsi').value;
+    if (!req || !tank || !pump || !maxpsi) { alert('Fill truck specs & required flow'); return; }
     const supply = Math.min(pump, tank + hydrantGPM);
-    // calculate total discharge demand
-    let demand=0;
-    document.querySelectorAll('#sim-lines div').forEach(r=>{
-      const C=+r.querySelector('.sl-hose').value,
-            Q=+r.querySelector('.sl-gpm').value,
-            L=+r.querySelector('.sl-len').value,
-            NP=+r.querySelector('.sl-np').value;
-      if(C&&Q&&L&&NP){
-        const FL = C*(Q/100)**2*(L/100);
-        const PDP=FL+NP;
-        if(PDP>maxpsi) demand=Infinity; // overload
-        demand+=Q;
+    let demand = 0;
+    document.querySelectorAll('#sim-lines div').forEach(r => {
+      const C = +r.querySelector('.sl-hose').value;
+      const Q = +r.querySelector('.sl-gpm').value;
+      const L = +r.querySelector('.sl-len').value;
+      const NP = +r.querySelector('.sl-np').value;
+      if (C && Q && L && NP) {
+        const FL = C * (Q / 100) ** 2 * (L / 100);
+        if (FL + NP > maxpsi) demand = Infinity;
+        demand += Q;
       }
     });
-    const out= document.getElementById('sim-out');
-    if(demand===Infinity){
+    const out = document.getElementById('sim-out');
+    out.style.whiteSpace = 'pre-wrap';
+    if (demand === Infinity) {
       out.textContent = `Some line needs more than ${maxpsi} psi—cannot supply.`;
-      out.style.color='red';
+      out.style.color = 'red';
       return;
     }
-    // compare demand vs supply vs required
     let msg = `Total Demand: ${demand} GPM • Supply: ${supply} GPM • Required: ${req} GPM\n`;
-    if(demand> supply) msg+=`❌ You’re short by ${demand-supply} GPM`;
-    else if(demand < req) msg+=`⚠️ Demand (${demand}) < Required (${req})`;
-    else if(supply < req) msg+=`⚠️ Supply (${supply}) < Required (${req})`;
-    else msg+=`✅ You meet the required flow!`;
+    if (demand > supply) msg += `❌ You’re short by ${demand - supply} GPM`;
+    else if (demand < req) msg += `⚠️ Demand (${demand}) < Required (${req})`;
+    else if (supply < req) msg += `⚠️ Supply (${supply}) < Required (${req})`;
+    else msg += `✅ You meet the required flow!`;
     out.textContent = msg;
-    out.style.whiteSpace='pre-wrap';
-    out.style.color=(demand<=supply && supply>=req)?'green':'red';
-  };
+    out.style.color = (demand <= supply && supply >= req) ? 'green' : 'red';
+  });
 })();
 </script>
+
 
 
 
