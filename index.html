@@ -174,26 +174,25 @@
     </details>
   </section>
 
-<!-- ─── ERG PDF + HazMat Lookup ─────────────────────────────────── -->
-<section id="erg-section">
-  <h2>📘 Emergency Response Guidebook 2024</h2>
-  <a class="button" href="pdfs/ERG2024-Eng-Web-a.pdf" target="_blank">
-    Open Full PDF
-  </a>
-  <div class="pdf-container" style="width:100%; height:600px; margin-top:1rem;">
-    <!-- This iframe “window” will show your ERG PDF -->
+<!-- ─── Include JSZip from CDN ─────────────────────────────────────────── -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.7.1/jszip.min.js"></script>
+
+<!-- ─── ERG Viewer + HazMat Lookup Section ─────────────────────────────────── -->
+<section id="erg-hazmat">
+  <h2>📘 Emergency Response Guidebook & HazMat Lookup</h2>
+
+  <!-- PDF Viewer -->
+  <div class="pdf-container" style="width:100%; height:600px; border:1px solid #ddd;">
     <iframe
       id="erg-frame"
-      src="pdfs/ERG2024-Eng-Web-a.pdf#view=FitH"
+      src=""
       title="ERG 2024 PDF"
       style="width:100%; height:100%; border:none;"
     ></iframe>
   </div>
-</section>
 
-<section id="hazmat">
-  <h2>☣️ Hazardous Materials Lookup</h2>
-  <div style="padding:1rem; border:1px solid #ddd; background:#f9f9f9;">
+  <!-- HazMat Lookup -->
+  <div style="padding:1rem; margin-top:1.5rem; border:1px solid #ddd; background:#f9f9f9;">
     <label for="hz-input">Enter UN/NA # or Name:</label><br>
     <input
       type="text"
@@ -205,66 +204,73 @@
     <pre id="hz-output"
          style="margin-top:1rem; white-space:pre-wrap; font-family:monospace;"></pre>
   </div>
-  <p class="references"><strong>Source:</strong> ERG 2024 PDF</p>
 </section>
 
 <script>
 document.addEventListener('DOMContentLoaded', () => {
+  // 1) Mini‐database of ERG entries
   const ergIndex = {
-    "1005": {
-      name: "Anhydrous Ammonia",
-      guide: "125",
-      isolation: { yellow: "25–75 m", orange: "800 m", red: "800 m" },
-      protectiveActions: "Shut off valve; water spray to disperse vapor; isolate downwind per Table 1.",
-      firstAid: "Move victim to fresh air; treat for inhalation."
-    },
-    "1017": {
-      name: "Chlorine",
-      guide: "124",
-      isolation: { yellow: "30–50 m", orange: "800 m", red: "800 m" },
-      protectiveActions: "Water spray curtain; avoid breathing vapor; isolate downwind per Table 1.",
-      firstAid: "Flush eyes/skin with water; move to fresh air."
-    },
-    "1203": {
-      name: "Gasoline",
-      guide: "128",
-      isolation: { yellow: "25–75 m", orange: "800 m", red: "800 m" },
-      protectiveActions: "Eliminate ignition; dike with foam; use AFFF; isolate per Table 1.",
-      firstAid: "Remove contaminated clothing; flush skin with water."
-    }
-    // ← add more entries here
+    "1005": { name:"Anhydrous Ammonia", guide:"125",
+               isolation:{yellow:"25–75 m",orange:"800 m",red:"800 m"},
+               protectiveActions:"Shut off valve; water spray to disperse vapor; isolate downwind per Table 1.",
+               firstAid:"Move victim to fresh air; treat for inhalation." },
+    "1017": { name:"Chlorine", guide:"124",
+               isolation:{yellow:"30–50 m",orange:"800 m",red:"800 m"},
+               protectiveActions:"Water spray curtain; avoid breathing vapor; isolate downwind per Table 1.",
+               firstAid:"Flush eyes/skin with water; move to fresh air." },
+    "1203": { name:"Gasoline", guide:"128",
+               isolation:{yellow:"25–75 m",orange:"800 m",red:"800 m"},
+               protectiveActions:"Eliminate ignition; dike with foam; use AFFF; isolate per Table 1.",
+               firstAid:"Remove contaminated clothing; flush skin with water." }
+    // ← add more entries here as needed
   };
 
-  const input   = document.getElementById('hz-input');
-  const button  = document.getElementById('hz-go');
-  const output  = document.getElementById('hz-output');
-  const iframe  = document.getElementById('erg-frame');
+  // 2) Fetch & unzip your ERG.zip -> PDF blob URL
+  let pdfBlobUrl = null;
+  JSZip.loadAsync(fetch('pdfs/ERG.zip').then(r=>r.arrayBuffer()))
+    .then(zip => {
+      // find the PDF inside
+      const pdfName = Object.keys(zip.files).find(n=>n.match(/\.pdf$/i));
+      return zip.file(pdfName).async('blob');
+    })
+    .then(blob => {
+      pdfBlobUrl = URL.createObjectURL(blob);
+      // initial load (fit width)
+      document.getElementById('erg-frame').src = pdfBlobUrl + '#view=FitH';
+    })
+    .catch(err => console.error('Failed to load ERG zip:', err));
 
+  // 3) HazMat lookup DOM refs
+  const input  = document.getElementById('hz-input');
+  const button = document.getElementById('hz-go');
+  const output = document.getElementById('hz-output');
+  const iframe = document.getElementById('erg-frame');
+
+  // 4) On button click: lookup & jump PDF
   button.addEventListener('click', () => {
     const raw = input.value.trim();
     if (!raw) {
       output.textContent = '⚠️ Please enter a UN/NA number or name.';
       return;
     }
-    // first try number, then exact name match
+    // try UN/NA number
     const key = raw.split(/\s*-\s*/)[0];
-    let e = ergIndex[key] ||
-            Object.values(ergIndex).find(o => o.name.toLowerCase() === raw.toLowerCase());
-
+    let e = ergIndex[key]
+         || Object.values(ergIndex).find(o=>o.name.toLowerCase()===raw.toLowerCase());
     if (!e) {
       output.textContent = `⚠️ No ERG entry found for “${raw}”.`;
       return;
     }
 
-    // show the text
+    // display text
     output.textContent =
 `Name: ${e.name}
 UN/NA: ${key}
 ERG Guide: ${e.guide}
 
 Initial Isolation Distances:
- • Small spill (Yellow): ${e.isolation.yellow}
- • Large spill (Orange): ${e.isolation.orange}
+ • Small Spill (Yellow): ${e.isolation.yellow}
+ • Large Spill (Orange): ${e.isolation.orange}
  • Fire (Red):            ${e.isolation.red}
 
 Protective Actions:
@@ -273,11 +279,14 @@ Protective Actions:
 First Aid:
   ${e.firstAid}`;
 
-    // **this** updates the iframe to jump the PDF to the right guide page
-    iframe.src = `pdfs/ERG2024-Eng-Web-a.pdf#page=${e.guide}`;
+    // jump iframe to that guide page (once blob is ready)
+    if (pdfBlobUrl) {
+      iframe.src = pdfBlobUrl + '#page=' + e.guide;
+    }
   });
 });
 </script>
+
 
 
 
