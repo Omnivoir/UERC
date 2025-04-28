@@ -174,118 +174,82 @@
     </details>
   </section>
 
-<!-- ─── Include JSZip from CDN ─────────────────────────────────────────── -->
+<!-- ─── HazMat Lookup Using ERG.zip + pdf.js & JSZip ───────────────────────── -->
+<!-- 1) Load JSZip and PDF.js from CDNs -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.7.1/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.9.179/pdf.min.js"></script>
 
-<!-- ─── ERG Viewer + HazMat Lookup Section ─────────────────────────────────── -->
-<section id="erg-hazmat">
-  <h2>📘 Emergency Response Guidebook & HazMat Lookup</h2>
-
-  <!-- PDF Viewer -->
-  <div class="pdf-container" style="width:100%; height:600px; border:1px solid #ddd;">
-    <iframe
-      id="erg-frame"
-      src=""
-      title="ERG 2024 PDF"
-      style="width:100%; height:100%; border:none;"
-    ></iframe>
-  </div>
-
-  <!-- HazMat Lookup -->
-  <div style="padding:1rem; margin-top:1.5rem; border:1px solid #ddd; background:#f9f9f9;">
-    <label for="hz-input">Enter UN/NA # or Name:</label><br>
-    <input
-      type="text"
-      id="hz-input"
-      placeholder="e.g. 1203 or Gasoline"
-      style="width:18rem; margin-top:0.5rem;"
-    >
+<section id="hazmat">
+  <h2>☣️ Hazardous Materials Response Plan</h2>
+  <div style="padding:1rem; border:1px solid #ddd; background:#f9f9f9;">
+    <label for="hz-input">UN/NA # or Name:</label><br>
+    <input type="text" id="hz-input" placeholder="e.g. 1203 or Gasoline"
+           style="width:18rem; margin-top:0.5rem;">
     <button id="hz-go" style="margin-left:0.5rem;">Lookup</button>
-    <pre id="hz-output"
-         style="margin-top:1rem; white-space:pre-wrap; font-family:monospace;"></pre>
+    <pre id="hz-output" style="margin-top:1rem; white-space:pre-wrap;"></pre>
   </div>
+  <p class="references"><strong>Source:</strong> ERG 2024 (unzipped client-side)</p>
 </section>
 
 <script>
-document.addEventListener('DOMContentLoaded', () => {
-  // 1) Mini‐database of ERG entries
+document.addEventListener('DOMContentLoaded', async () => {
+  // 1) A tiny mapping UN/NA → guide page
   const ergIndex = {
-    "1005": { name:"Anhydrous Ammonia", guide:"125",
-               isolation:{yellow:"25–75 m",orange:"800 m",red:"800 m"},
-               protectiveActions:"Shut off valve; water spray to disperse vapor; isolate downwind per Table 1.",
-               firstAid:"Move victim to fresh air; treat for inhalation." },
-    "1017": { name:"Chlorine", guide:"124",
-               isolation:{yellow:"30–50 m",orange:"800 m",red:"800 m"},
-               protectiveActions:"Water spray curtain; avoid breathing vapor; isolate downwind per Table 1.",
-               firstAid:"Flush eyes/skin with water; move to fresh air." },
-    "1203": { name:"Gasoline", guide:"128",
-               isolation:{yellow:"25–75 m",orange:"800 m",red:"800 m"},
-               protectiveActions:"Eliminate ignition; dike with foam; use AFFF; isolate per Table 1.",
-               firstAid:"Remove contaminated clothing; flush skin with water." }
-    // ← add more entries here as needed
+    "1005": { name:"Anhydrous Ammonia", guide:125 },
+    "1017": { name:"Chlorine",          guide:124 },
+    "1203": { name:"Gasoline",         guide:128 }
+    // ← add more UN/NA → {name,guide} here
   };
 
-  // 2) Fetch & unzip your ERG.zip -> PDF blob URL
-  let pdfBlobUrl = null;
-  JSZip.loadAsync(fetch('pdfs/ERG.zip').then(r=>r.arrayBuffer()))
-    .then(zip => {
-      // find the PDF inside
-      const pdfName = Object.keys(zip.files).find(n=>n.match(/\.pdf$/i));
-      return zip.file(pdfName).async('blob');
-    })
-    .then(blob => {
-      pdfBlobUrl = URL.createObjectURL(blob);
-      // initial load (fit width)
-      document.getElementById('erg-frame').src = pdfBlobUrl + '#view=FitH';
-    })
-    .catch(err => console.error('Failed to load ERG zip:', err));
+  // 2) Load & unzip ERG.zip → ArrayBuffer of the PDF
+  const zipBlob = await fetch('pdfs/ERG.zip').then(r=>r.blob());
+  const zip     = await JSZip.loadAsync(zipBlob);
+  const pdfName = Object.keys(zip.files).find(n=>/\.pdf$/i.test(n));
+  const pdfData = await zip.file(pdfName).async('arraybuffer');
 
-  // 3) HazMat lookup DOM refs
+  // 3) Initialize pdf.js
+  const loadingTask = pdfjsLib.getDocument({ data: pdfData });
+  const pdf        = await loadingTask.promise;
+
+  // 4) Wire up the lookup button
   const input  = document.getElementById('hz-input');
   const button = document.getElementById('hz-go');
   const output = document.getElementById('hz-output');
-  const iframe = document.getElementById('erg-frame');
 
-  // 4) On button click: lookup & jump PDF
-  button.addEventListener('click', () => {
+  button.addEventListener('click', async () => {
     const raw = input.value.trim();
     if (!raw) {
-      output.textContent = '⚠️ Please enter a UN/NA number or name.';
+      output.textContent = '⚠️ Please enter a UN/NA number or chemical name.';
       return;
     }
-    // try UN/NA number
+    // try matching number first
     const key = raw.split(/\s*-\s*/)[0];
-    let e = ergIndex[key]
-         || Object.values(ergIndex).find(o=>o.name.toLowerCase()===raw.toLowerCase());
-    if (!e) {
-      output.textContent = `⚠️ No ERG entry found for “${raw}”.`;
+    let entry = ergIndex[key];
+    // then exact name match
+    if (!entry) {
+      entry = Object.values(ergIndex).find(e => 
+        e.name.toLowerCase() === raw.toLowerCase()
+      );
+    }
+    if (!entry) {
+      output.textContent = `⚠️ No ERG entry for “${raw}”.`;
       return;
     }
 
-    // display text
+    // 5) Fetch that guide page
+    const page = await pdf.getPage(entry.guide);
+    const txt  = await page.getTextContent();
+    const lines = txt.items.map(i => i.str).join(' ');
+
+    // 6) Show the raw text of that Orange-Guide page
     output.textContent =
-`Name: ${e.name}
-UN/NA: ${key}
-ERG Guide: ${e.guide}
+`=== ${entry.name} (UN/${key}) — Guide ${entry.guide} ===
 
-Initial Isolation Distances:
- • Small Spill (Yellow): ${e.isolation.yellow}
- • Large Spill (Orange): ${e.isolation.orange}
- • Fire (Red):            ${e.isolation.red}
-
-Protective Actions:
-  ${e.protectiveActions}
-
-First Aid:
-  ${e.firstAid}`;
-
-    // jump iframe to that guide page (once blob is ready)
-    if (pdfBlobUrl) {
-      iframe.src = pdfBlobUrl + '#page=' + e.guide;
-    }
+${lines}`;
   });
 });
 </script>
+
 
 
 
