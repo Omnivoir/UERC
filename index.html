@@ -174,41 +174,140 @@
     </details>
   </section>
 
-  <section id="hazmat">
-    <h2>☣️ Hazardous Materials Response</h2>
-    <details>
-      <summary>ERG Guidance & Isolation</summary>
-      <div class="details-content">
-        <ul>
-          <li>Identify product via placard/ERG; use guide pages for isolation distances.</li>
-          <li>Initial isolation 25–75 m (yellow) for spills; 800 m (orange/red) for fires.</li>
-          <li>Don Level A or B PPE with SCBA.</li>
-        </ul>
-        <div class="callout">
-          <strong>ERG 2024 Table 1-2:</strong> Match scene scale—protect bystanders with appropriate isolation & protective action distances.
-        </div>
-        <p class="references">
-          SOP 1000.01 | ERG 2024 Ch 1 | NFPA 472 Ch 4 | Company Officer 6e Ch 10
-        </p>
-      </div>
-    </details>
-    <details>
-      <summary>Mitigation & Decontamination</summary>
-      <div class="details-content">
-        <ul>
-          <li>Set up hot/warm/cold zones; control entry.</li>
-          <li>Perform gross & technical decon per SOP 1000.02.</li>
-          <li>Contain runoff; notify environmental agencies.</li>
-        </ul>
-        <div class="callout">
-          <strong>NFPA 1991 6.3:</strong> Establish decon corridor—minimum 50 ft, adequate water flow & waste containment.
-        </div>
-        <p class="references">
-          SOP 1000.02 | ERG 2024 Ch 5 | NFPA 1991 6.3 | Essentials 7e Ch 15
-        </p>
-      </div>
-    </details>
-  </section>
+ <section id="hazmat-ops">
+  <h2>☣️ Hazardous Materials Response</h2>
+
+  <!-- 1) ERG Placard & Guide Lookup -->
+  <details open>
+    <summary>ERG Placard & Guide</summary>
+    <div style="padding:1rem;border:1px solid #ddd;background:#f9f9f9;">
+      <label for="erg-input">Enter UN/NA Number or select Placard:</label>
+      <input type="text" id="erg-input" placeholder="e.g. 1203">
+      <select id="erg-placard">
+        <option value="">— or pick a symbol —</option>
+        <option value="flammable">Flammable Liquids (3)</option>
+        <option value="toxic">Toxic (6)</option>
+        <option value="corrosive">Corrosive (8)</option>
+        <option value="oxidizer">Oxidizer (5.1)</option>
+      </select>
+      <button id="erg-go">Lookup ERG</button>
+      <div id="erg-out" style="margin-top:1rem;"></div>
+      <p style="margin-top:.5rem;font-size:.9rem;color:#555;">
+        <a href="https://www.phmsa.dot.gov/hazmat/erg" target="_blank" rel="noopener">Download the official ERG PDF</a>
+      </p>
+    </div>
+    <p class="references"><strong>Sources:</strong> U.S. DOT Emergency Response Guidebook (public domain)</p>
+  </details>
+
+  <!-- 2) Isolation Distance Calculator -->
+  <details>
+    <summary>Isolation Distance Calculator</summary>
+    <div style="padding:1rem;border:1px solid #ddd;background:#f9f9f9;">
+      <p>Select Guide Page Type:</p>
+      <label><input type="radio" name="iso-type" value="yellow" checked> Yellow (Small Spills)</label>
+      <label><input type="radio" name="iso-type" value="orange"> Orange (Evacuation)</label>
+      <label><input type="radio" name="iso-type" value="red"> Red (Fire)</label>
+      <p>
+        <button id="iso-calc">Calculate Distances</button>
+      </p>
+      <pre id="iso-out" style="font-weight:600;"></pre>
+    </div>
+    <p class="references"><strong>Sources:</strong> ERG 2024 Tables 1–2</p>
+  </details>
+
+  <!-- 3) PPE Selector -->
+  <details>
+    <summary>PPE Level Selector</summary>
+    <div style="padding:1rem;border:1px solid #ddd;background:#f9f9f9;">
+      <p>Answer the prompts to get recommended PPE:</p>
+      <label>Is the atmosphere IDLH?
+        <select id="ppe-idlh">
+          <option value="yes">Yes</option>
+          <option value="no" selected>No</option>
+        </select>
+      </label><br>
+      <label>Routes of exposure:
+        <select id="ppe-route">
+          <option value="inhalation">Inhalation</option>
+          <option value="skin">Skin contact</option>
+          <option value="both" selected>Both</option>
+        </select>
+      </label><br>
+      <button id="ppe-go">Recommend PPE</button>
+      <p id="ppe-out" style="margin-top:.5rem;font-weight:600;"></p>
+    </div>
+    <p class="references"><strong>Sources:</strong> NFPA 1991; NFPA 1992; HFD SOP 1000.01</p>
+  </details>
+
+  <!-- 4) Decontamination Flow Calculator -->
+  <details>
+    <summary>Decontamination Flow Calculator</summary>
+    <div style="padding:1rem;border:1px solid #ddd;background:#f9f9f9;">
+      <label>Number of victims:</label>
+      <input type="number" id="decon-vics" placeholder="e.g. 3" style="width:4rem"><br>
+      <label>Suit Level:
+        <select id="decon-level">
+          <option value="A">Level A</option>
+          <option value="B" selected>Level B</option>
+          <option value="C">Level C</option>
+        </select>
+      </label><br>
+      <button id="decon-go">Calculate Water Needed</button>
+      <p id="decon-out" style="margin-top:.5rem;font-weight:600;"></p>
+    </div>
+    <p class="references"><strong>Sources:</strong> NFPA 1991 §6.3; HFD SOP 1000.02</p>
+  </details>
+</section>
+
+<script>
+(() => {
+  // 1) ERG Lookup (mocked)
+  document.getElementById('erg-go').onclick = () => {
+    const num = document.getElementById('erg-input').value.trim();
+    const plac = document.getElementById('erg-placard').value;
+    const out = document.getElementById('erg-out');
+    if (!num && !plac) return alert('Enter UN/NA or pick a placard');
+    // In a real implementation you'd fetch from an ERG API. Here we mock:
+    if (num === '1203' || plac === 'flammable') {
+      out.innerHTML = `<strong>Guide 128:</strong>
+Initial Isolation: 25 m (Yellow) / Orange: 100 m / Red: 400 m`;
+    } else {
+      out.textContent = 'Guide not found—consult the ERG PDF.';
+    }
+  };
+
+  // 2) Isolation Distance
+  document.getElementById('iso-calc').onclick = () => {
+    const t = document.querySelector('input[name="iso-type"]:checked').value;
+    const d = t === 'yellow' ? 25 : t === 'orange' ? 100 : 400;
+    document.getElementById('iso-out').textContent =
+      `Recommended isolation distance: ${d} m`;
+  };
+
+  // 3) PPE Selector
+  document.getElementById('ppe-go').onclick = () => {
+    const idlh = document.getElementById('ppe-idlh').value === 'yes';
+    const route = document.getElementById('ppe-route').value;
+    let rec = '';
+    if (idlh) rec = 'Level A suit + SCBA';
+    else if (route === 'inhalation') rec = 'Level C respirator + gloves';
+    else if (route === 'skin') rec = 'Level B splash suit + SCBA';
+    else rec = 'Level B suit + SCBA';
+    document.getElementById('ppe-out').textContent = rec;
+  };
+
+  // 4) Decon Flow
+  document.getElementById('decon-go').onclick = () => {
+    const v = +document.getElementById('decon-vics').value || 1;
+    const lvl = document.getElementById('decon-level').value;
+    const per = lvl === 'A' ? 20 : lvl === 'B' ? 15 : 10; // gpm per victim
+    const total = v * per;
+    document.getElementById('decon-out').textContent =
+      `Gross decon water: ${total} GPM for ${v} victim(s)`;
+  };
+})();
+</script>
+
 
   <section id="ems">
     <h2>🚑 Emergency Medical Services</h2>
