@@ -174,29 +174,14 @@
     </details>
   </section>
 
-<!-- ERG & HazMat Lookup Section -->
+<!-- ─── ERG PDF + HazMat Lookup ─────────────────────────────────── -->
 <section id="erg-section">
-  <h2>📘 Emergency Response Guidebook (ERG) 2024</h2>
-  <a class="button" href="/assets/ERG2024-Eng-Web-a.pdf" target="_blank">
-    View full ERG PDF
-  </a>
-  <div class="pdf-container">
-    <iframe
-      src="/assets/ERG2024-Eng-Web-a.pdf#view=FitH"
-      title="ERG 2024 PDF"
-    ></iframe>
-  </div>
-</section>
-
-<!-- 1️⃣ Embed the ERG PDF in an HTML “window” -->
-<section id="erg-section">
-  <h2>📘 Emergency Response Guidebook (ERG) 2024</h2>
-  <!-- A link so people can open the PDF full-screen -->
+  <h2>📘 Emergency Response Guidebook 2024</h2>
   <a class="button" href="pdfs/ERG2024-Eng-Web-a.pdf" target="_blank">
-    View full ERG PDF
+    Open Full PDF
   </a>
-  <!-- The iframe is our “window” into the PDF -->
   <div class="pdf-container" style="width:100%; height:600px; margin-top:1rem;">
+    <!-- This iframe “window” will show your ERG PDF -->
     <iframe
       id="erg-frame"
       src="pdfs/ERG2024-Eng-Web-a.pdf#view=FitH"
@@ -206,7 +191,6 @@
   </div>
 </section>
 
-<!-- 2️⃣ HazMat lookup form -->
 <section id="hazmat">
   <h2>☣️ Hazardous Materials Lookup</h2>
   <div style="padding:1rem; border:1px solid #ddd; background:#f9f9f9;">
@@ -218,65 +202,70 @@
       style="width:18rem; margin-top:0.5rem;"
     >
     <button id="hz-go" style="margin-left:0.5rem;">Lookup</button>
-    <!-- Where we’ll display the text results -->
-    <pre id="hz-output" style="margin-top:1rem; white-space:pre-wrap; font-family:monospace;"></pre>
+    <pre id="hz-output"
+         style="margin-top:1rem; white-space:pre-wrap; font-family:monospace;"></pre>
   </div>
-  <p class="references">
-    <strong>Source:</strong> ERG 2024 PDF
-  </p>
+  <p class="references"><strong>Source:</strong> ERG 2024 PDF</p>
 </section>
 
-<!-- 3️⃣ JavaScript to hook them up -->
 <script>
-  // A tiny “database” of ERG entries by UN/NA number
+document.addEventListener('DOMContentLoaded', () => {
   const ergIndex = {
     "1005": {
       name: "Anhydrous Ammonia",
       guide: "125",
-      isolation: { yellow: "25–75", orange: "800", red: "800" },
+      isolation: { yellow: "25–75 m", orange: "800 m", red: "800 m" },
       protectiveActions: "Shut off valve; water spray to disperse vapor; isolate downwind per Table 1.",
       firstAid: "Move victim to fresh air; treat for inhalation."
     },
     "1017": {
       name: "Chlorine",
       guide: "124",
-      isolation: { yellow: "30–50", orange: "800", red: "800" },
+      isolation: { yellow: "30–50 m", orange: "800 m", red: "800 m" },
       protectiveActions: "Water spray curtain; avoid breathing vapor; isolate downwind per Table 1.",
       firstAid: "Flush eyes/skin with water; move to fresh air."
     },
     "1203": {
       name: "Gasoline",
       guide: "128",
-      isolation: { yellow: "25–75", orange: "800", red: "800" },
+      isolation: { yellow: "25–75 m", orange: "800 m", red: "800 m" },
       protectiveActions: "Eliminate ignition; dike with foam; use AFFF; isolate per Table 1.",
       firstAid: "Remove contaminated clothing; flush skin with water."
     }
-    // ← Add more UN/NA entries here as needed
+    // ← add more entries here
   };
 
-  // When you click “Lookup”…
-  document.getElementById('hz-go').addEventListener('click', () => {
-    const raw = document.getElementById('hz-input').value.trim();
-    // If they typed “1203 - Gasoline” we just want the “1203”
+  const input   = document.getElementById('hz-input');
+  const button  = document.getElementById('hz-go');
+  const output  = document.getElementById('hz-output');
+  const iframe  = document.getElementById('erg-frame');
+
+  button.addEventListener('click', () => {
+    const raw = input.value.trim();
+    if (!raw) {
+      output.textContent = '⚠️ Please enter a UN/NA number or name.';
+      return;
+    }
+    // first try number, then exact name match
     const key = raw.split(/\s*-\s*/)[0];
-    const e = ergIndex[key];
-    const out = document.getElementById('hz-output');
+    let e = ergIndex[key] ||
+            Object.values(ergIndex).find(o => o.name.toLowerCase() === raw.toLowerCase());
 
     if (!e) {
-      out.textContent = '⚠️ UN/NA not found. Please check your entry.';
+      output.textContent = `⚠️ No ERG entry found for “${raw}”.`;
       return;
     }
 
-    // 1) Show the text details
-    out.textContent =
+    // show the text
+    output.textContent =
 `Name: ${e.name}
 UN/NA: ${key}
 ERG Guide: ${e.guide}
 
 Initial Isolation Distances:
- • Small spill (Yellow): ${e.isolation.yellow} m
- • Large spill (Orange): ${e.isolation.orange} m
- • Fire (Red):            ${e.isolation.red} m
+ • Small spill (Yellow): ${e.isolation.yellow}
+ • Large spill (Orange): ${e.isolation.orange}
+ • Fire (Red):            ${e.isolation.red}
 
 Protective Actions:
   ${e.protectiveActions}
@@ -284,12 +273,12 @@ Protective Actions:
 First Aid:
   ${e.firstAid}`;
 
-    // 2) Jump the PDF iframe to that page
-    //    “#page=” is a standard PDF fragment that tells the browser which page to open
-    document.getElementById('erg-frame').src =
-      `pdfs/ERG2024-Eng-Web-a.pdf#page=${e.guide}`;
+    // **this** updates the iframe to jump the PDF to the right guide page
+    iframe.src = `pdfs/ERG2024-Eng-Web-a.pdf#page=${e.guide}`;
   });
+});
 </script>
+
 
 
 <section id="pump-ops">
